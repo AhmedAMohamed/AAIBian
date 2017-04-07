@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     var uri = "mongodb://AhmedAMohamed:gehad1234@ds153710.mlab.com:53710/aaibian";
     mongoose.connect(uri, options, function(error) {
         if(error) {
-            res.json({"Ahmed":"error"});
+            res.json({"Ahmed":error});
         }
         else {
             res.json({"Ahmed":"passed"});
