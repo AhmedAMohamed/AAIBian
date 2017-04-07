@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
                 },
                 approved: false,
             });
-            a.save({},function (err,op) {
+            a.save(function (err,op) {
                 if (error) {
                     res.json({"Ahmed":err});
                 }
