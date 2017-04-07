@@ -5,10 +5,10 @@ var mongoose = require('mongoose');
 router.get('/', function(req, res, next) {
     console.log("here");
     var options = {
-        user: 'alaa',
-        pass: 'ahmed'
+        user: 'AhmedAMohamed',
+        pass: 'gehad1234'
     };
-    var uri = "mongodb://AhmedAMohamed:gehad1234@ds153710.mlab.com:53710/aaibian";
+    var uri = "mongodb://alaa:ahmed@ds153710.mlab.com:53710/aaibian";
     mongoose.connect(uri, options, function(error) {
         if(error) {
             res.json({"Ahmed":error});
