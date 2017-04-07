@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
     var uri = "mongodb://alaa:ahmed@ds153710.mlab.com:53710/aaibian";
     mongoose.connect(uri, options, function(error) {
         if(error) {
-            var x = new user_model();
+            var x = new user_model({});
             x.save({},function (err,op) {
                 if (error) {
                     res.json({"Ahmed":err});
