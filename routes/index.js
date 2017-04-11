@@ -43,6 +43,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/trial', function (req, res, next) {
     fs.createReadStream(process.env.OPENSHIFT_DATA_DIR + 'atm_locations.csv').pipe(csv()).on('data', function (data) {
+        res.json(data);
         console.log(data);
     }).on('end', function (data) {
         console.log("read finished");
