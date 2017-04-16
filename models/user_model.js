@@ -1,16 +1,30 @@
 var mongoose = require('mongoose');
+
 var User_schema = mongoose.Schema(
-    { name: String,
-    description: String,
-    location: { lat: Number, lng: Number },
-    history: {
-        event: String,
-        notes: String,
-        email: String,
-        date: Date,
-    },
-    updateId: String,
-    approved: Boolean,
-});
-var Users = mongoose.model('Users', User_schema);
+    {
+        name: String,
+        reg_id: String,
+        password: {
+                        type: String,
+                        required: true
+                },
+        email: {
+                        type: String,
+                        required: true,
+                        unique: true,
+                        trim: true,
+                        index: true
+                },
+        privilege: String,
+        subscribed_in: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Benefit'
+        }],
+        area: String,
+        job_desc: String,
+        first_login: {type: Boolean, default: true},
+        last_login: {type: Date}
+    }
+);
+var Users = mongoose.model('User', User_schema);
 module.exports = Users;
