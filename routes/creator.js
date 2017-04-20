@@ -2,6 +2,7 @@ var express = require('express');
 var csv = require('fast-csv');
 var fs  = require('fs');
 var sha1 = require('sha1');
+var path = require('path');
 
 var schedule = require('node-schedule');
 
@@ -118,6 +119,10 @@ router.post('/addMedical', function (req, res, next) {
         res.json({"valid":false, msg: "Not authorized"});
     }
 });
+
+router.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+})
 
 router.get('/data', function(req,res){
     res.json([{"id": 1, "name": "Mymm", "city": "Pantano do Sul"},
