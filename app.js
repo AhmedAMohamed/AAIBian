@@ -5,10 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+var index = require('./routes/creator');
 var users = require('./routes/users');
 var db_connector = require('./Utils/DBCOnnector');
-var startup = require('./Utils/startup_midelwares');
+var helpers = require('./Utils/helpers');
 
 var app = express();
 // view engine setup
@@ -26,12 +26,11 @@ console.log("here again");
 
 db_connector("mongodb://alaa:ahmed@ds161400.mlab.com:61400/aaibian", function (valid) {
    if(valid) {
-       console.log("heellllo");
-       startup[0].benefit_schedules();
-       startup[0].benefit_delete_schedule();
+
+       helpers[0].benefit_schedules();
+       helpers[0].benefit_delete_schedule();
        app.use('/', index);
        app.use('/users', users);
-       console.log("HHHHHHHHH");
    }
 });
 

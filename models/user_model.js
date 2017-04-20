@@ -4,6 +4,7 @@ var User_schema = mongoose.Schema(
     {
         name: String,
         reg_id: String,
+        avatar: String,
         password: {
                         type: String,
                         required: true

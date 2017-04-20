@@ -19,6 +19,10 @@ var benefit_schema = mongoose.Schema(
         contacts: [String],
         notification_date: Date,
         deleteDate: Date,
+        notified: {
+            type: Boolean,
+            default: false
+        },
         industry: String,
         offer: String
     }

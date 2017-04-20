@@ -14,7 +14,12 @@ var medical_schema = mongoose.Schema(
         },
         zone: String,
         type: String,
-        phone_number: String
+        phone_number: String,
+        id: {
+            type: String,
+            unique: true,
+            required: true
+        }
     }
 );
 var medical = mongoose.model('Medical', medical_schema);
