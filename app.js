@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var index = require('./routes/creator');
 var users = require('./routes/users');
@@ -29,8 +30,8 @@ db_connector("mongodb://alaa:ahmed@ds161400.mlab.com:61400/aaibian", function (v
 
        helpers[0].benefit_schedules();
        helpers[0].benefit_delete_schedule();
-       app.use('/', index);
-       app.use('/users', users);
+       app.use('/', index, cors());
+       app.use('/users', users, cors());
    }
 });
 
