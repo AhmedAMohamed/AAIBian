@@ -13,6 +13,7 @@ var Benefit = require('../models/benefit_model');
 var Medical = require('../models/medical_sector_model');
 var startups = require('../Utils/helpers');
 var types = require('../Strings/names_translations')[0];
+var msg = require('../Strings/messeges');
 
 router.post('/addBenefits', function (req, res, next) {
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
@@ -69,11 +70,11 @@ router.post('/addBenefits', function (req, res, next) {
                     }
                 });
             });
-            res.json({"valid": true, "msg": "Operation finished"});
+            res.json(msg.not_valid_operation());
         });
     }
     else {
-        res.json({"valid":false, msg: "Not authorized"});
+        res.json(msg.not_valid_operation());
     }
 });
 
@@ -113,29 +114,16 @@ router.post('/addMedical', function (req, res, next) {
             });
 
         });
-        res.json({"valid": true, "msg": "Operation finished"});
+        res.json(msg.not_valid_operation());
     }
     else {
-        res.json({"valid":false, msg: "Not authorized"});
+        res.json(msg.not_valid_operation());
     }
 });
 
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 })
-
-router.get('/data', function(req,res){
-    res.json([{"id": 1, "name": "Mymm", "city": "Pantano do Sul"},
-        {"id": 2, "name": "Skyble", "city": "Guilmaro"},
-        {"id": 3, "name": "Tagfeed", "city": "Gnosjö"},
-        {"id": 4, "name": "Realcube", "city": "Jrashen"},
-        {"id": 5, "name": "Bluejam", "city": "Zhangjiawo"},
-        {"id": 6, "name": "Jayo", "city": "Obonoma"},
-        {"id": 7, "name": "Cogidoo", "city": "Sungsang"},
-        {"id": 8, "name": "Avavee", "city": "Diawara"},
-        {"id": 9, "name": "Tagtune", "city": "Monywa"},
-        {"id": 10, "name": "Centimia", "city": "Retkovci"}]);
-});
 
 
 module.exports = router;

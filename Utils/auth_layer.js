@@ -36,6 +36,21 @@ var auth = {
 
         }
     },
+    auth_check: function (user_id, api_key) {
+      APIKeys.find({api_key: api_key, valid_for:{$in: [user_id]}}, function (err, validations) {
+          if (err) {
+              return false;
+          }
+          else {
+              if (validations.length == 1) {
+                  return true;
+              }
+              else {
+                  return false;
+              }
+          }
+      }) 
+    },
     check_admin: function (email, password, privilege) {
         User.find({email: email, password: password, privilege: privilege}, function (err, users) {
             if (err) {
@@ -47,6 +62,19 @@ var auth = {
                     return users[0];
                 }
             }
+        });
+    },
+    check_admin: function (user_id, privilege) {
+        User.find({_id: user_id, privilege: privilege}, function (err, users) {
+           if (err) {
+               console.log("Error");
+               return null;
+           }
+           else {
+               if (users.length == 1) {
+                   return users[0];
+               }
+           }
         });
     }
 };

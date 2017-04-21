@@ -23,7 +23,7 @@ var User_schema = mongoose.Schema(
         }],
         area: String,
         job_desc: String,
-        first_login: {type: Boolean, default: true},
+        login_status: {type: Boolean, default: true},
         last_login: {type: Date}
     }
 );

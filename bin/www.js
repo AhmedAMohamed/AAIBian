@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('aaibian:server');
 var http = require('http');
-
 /**
  * Get port from environment and store in Express.
  */
@@ -17,6 +16,7 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 //var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
 
 /**
  * Create HTTP server.

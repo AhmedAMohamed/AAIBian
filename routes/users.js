@@ -7,20 +7,10 @@ var API_Key = require('../models/api_key_model');
 var reserved_tokens = require('../Strings/reserved_tokens');
 var messeges = require('../Strings/messeges');
 
-router.get('/', function(req, res, next) {
-    res.json({
-        valid: false,
-        msg: "Not Authorized"
-    });
-});
-
 router.post('/aaibian/user/login', function (req, res, next) {
     API_Key.find({api_key: req.body.api_key, valid_for: { $in: [req.body.email] }}, function (error, valid) {
         if (error) {
-            res.json({
-                valid: false,
-                msg: "Not Authorized"
-            });
+            res.json(messeges.not_valid_operation());
         }
         else {
             if (valid.length == 1) {
@@ -41,7 +31,7 @@ router.post('/aaibian/user/login', function (req, res, next) {
                               login_status: users[0].login_status,
                               changing_session: (users[0].login_status == reserved_tokens.first_login) ?
                                   reserved_tokens.changing : null,
-                              msg: messeges.operation_valid()
+                              msg: messeges.operation_valid_msg()
                           };
                           res.json(response);
                       }
@@ -51,4 +41,7 @@ router.post('/aaibian/user/login', function (req, res, next) {
         }
     })
 });
+
+
+
 module.exports = router;

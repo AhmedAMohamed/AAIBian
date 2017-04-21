@@ -3,6 +3,7 @@ var Benefit = require('../models/benefit_model');
 var User = require('../models/user_model');
 var schedule = require('node-schedule');
 var messages = require('../Strings/messeges');
+var tokens = require('../Strings/validation_tokens');
 
 
 var selectKeys = function (starter, list) {
@@ -20,8 +21,8 @@ var notifyMessage = function(users, mess) {
 };
 
 var users_helpers = {
-    getInterested : function (ben_id) {
-        User.find({subscribed_in : { $in :[ben_id]}}, function (err, users) {
+    getInterested : function (ben_industry) {
+        User.find({subscribed_in : { $in :[ben_industry]}}, function (err, users) {
             if (err) {
                 console.log("Some Error");
             }
@@ -29,6 +30,17 @@ var users_helpers = {
                 return users;
             }
         });
+    },
+    notify_news: function (news_title) {
+        User.find({privilege: tokens.privilege.user },'reg_id', function (err, reg_ids) {
+            if (err) {
+                return false;
+            }
+            else {
+                console.log('send notification about ' + news_title + 'to all those ' + reg_ids);
+                return true;
+            }
+        })
     }
 };
 
@@ -76,7 +88,7 @@ var starter_helper = {
                     benefits.forEach(function (ben) {
                         console.log("Schedule benefit " + ben.id + " to notify at " + ben.notification_date);
                         var j = schedule.scheduleJob("benefit_staff_" + ben.id ,ben.notification_date, function () {
-                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben._id));
+                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
                         });
                     });
                 }
@@ -90,7 +102,7 @@ var starter_helper = {
                    console.log("here");
                    console.log(bens.length);
                    bens.forEach(function (ben) {
-                      notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben._id));
+                      notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
                    });
                }
             });
@@ -108,7 +120,7 @@ var starter_helper = {
                 else {
                     bens.forEach(function (ben) {
                         var j = schedule.scheduleJob("benefit_staff_" + ben.id, ben.notification_date, function () {
-                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben._id));
+                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
                         });
                     });
                 }
@@ -120,7 +132,7 @@ var starter_helper = {
                 }
                 else {
                     bens.forEach(function (ben) {
-                        notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben._id));
+                        notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
                     });
                 }
             });
