@@ -18,10 +18,7 @@ var User_schema = mongoose.Schema(
                         index: true
                 },
         privilege: String,
-        subscribed_in: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Benefit'
-        }],
+        subscribed_in: [String],
         area: String,
         job_desc: String,
         login_status: {type: String, default: reserved_tokens.first_login},

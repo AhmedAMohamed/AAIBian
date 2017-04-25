@@ -1,0 +1,18 @@
+<div id ="form" ng-controller = "addUserController">
+	<form name="AddUser" ng-submit="addUser()">
+		<div class="fish" id="fish"></div>
+		<div class="fish" id="fish2"></div>
+
+		<div id="waterform">
+
+			<div class="formgroup" id="name-form">
+				<label for="email">Email</label><br/>
+				<input type="email" id="email" name="email" ng-model="userData.email" ><br/>
+			</div>
+			<div class="formgroup" id="email-form">
+
+				<input type="submit" value="Add User">
+			</div>
+		</div>
+	</form>
+</div>

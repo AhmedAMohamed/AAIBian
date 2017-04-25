@@ -16,26 +16,28 @@ router.post('/add_user', function (req, res) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
       if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, function(user) {
-
+              console.log("TTTTTTTTT");
+              console.log(user);
               if (user) {
                 if (user.privilege == tokens.privilege.root || user.privilege == tokens.privilege.GM) {
                         var new_user_data = req.body.new_user;
+
                         var data = {
-                            name: new_user_data.name,
                             email: new_user_data.email,
                             password: reserved_tokens.default_password,
                             privilege: (new_user_data.privilege == tokens.privilege.GM && user.privilege == tokens.privilege.root)
                                 ?tokens.privilege.root : new_user_data.privilege,
-                            subscribed_in: [reserved_tokens.all_categories],
-                            area: new_user_data.area,
-                            job_desc: new_user_data.job_desc,
+                            subscribed_in: ["VALID_FOR_ALL"],
                             login_status: reserved_tokens.first_login,
                             last_login: new Date(Date.now())
                         };
+                        console.log(new_user_data);
                         var new_user = new User(data);
                         new_user.save(function (err, emp) {
                             if (err) {
-                                res.json(messeges.not_valid_operation());
+                              console.log("RRRRRRRRRRRRRRRR");
+                              console.log(err);
+                              res.json(messeges.interna_error());
                             }
                             else {
                                 res.json(messeges.valid_operation());
@@ -155,4 +157,21 @@ router.post('/trial_body', function(req, res, next) {
   res.json(req.body.user_data.alaa);
 });
 
+router.get('/list_users', function(req, res, next) {
+  User.find({}, function(err, users) {
+    if(err) {
+      res.json({
+        valid: false,
+        msg: "Internal Error"
+      });
+    }
+    else {
+      res.json({
+        valid : true,
+        result : users,
+        msg : "Done"
+      })
+    }
+  })
+});
 module.exports = router;
