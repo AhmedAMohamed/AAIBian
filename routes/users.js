@@ -24,7 +24,6 @@ router.post('/user/login', function (req, res, next) {
                         });
                     }
                     else {
-
                         if (users.length == 1) {
                           var response = {
                               valid: true,
@@ -48,6 +47,9 @@ router.post('/user/login', function (req, res, next) {
                         }
                     }
                 });
+            }
+            else {
+              res.json(messeges.not_valid_operation());
             }
         }
     });
