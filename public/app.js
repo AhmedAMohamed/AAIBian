@@ -8,10 +8,6 @@ var app = angular.module('myApp',["ngRoute"]);
        templateUrl : "/pages/log.html",
        controller : "loginController",
      }
-     .when("/login", {
-         templateUrl : "/pages/log.html",
-         controller : "loginController",
-     })
      .when("/add_user", {
         templateUrl : "/pages/addUser.html",
         controller : "addUserController"
