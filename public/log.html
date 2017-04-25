@@ -13,16 +13,17 @@
 
 						<div class="formgroup" id="name-form">
 							<label for="email">Email</label><br/>
-							<input type="email" id="email" name="email" ng.model="loginData.name" ><br/>
+							<input type="email" id="email" name="email" ng-model="loginData.email" ><br/>
+							<label for="password">Password</label> <br/>
+							<input type="password" id="password" name="password" ng-model="loginData.password">
 						</div>
 						<div class="formgroup" id="email-form">
-							<label for="password">Password</label> <br/>
-							<input type="password" id="password" name="password" ng-model="loginData.email">
+
 							<input type="submit" value="Login">
 						</div>
 					</div>
 				</form>
-				
+
 			</div>
 
 </html>

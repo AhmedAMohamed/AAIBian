@@ -13,27 +13,27 @@ app.controller('loginController', loginController);
 //dependency injection
 loginController.$inject=['$scope', '$http', '$window'];
 function loginController($scope, $http, $window){
+  $scope.loginData = {};
+  $scope.login = function(){
+    console.log("Ahmed");
 
-	$scope.login = function(){
-		$scope.loginData = {};
-	var logObject = {
-		Api_key: "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
- 		User_name: $scope.loginData.name,
- 		Password:($scope.loginData.pw)
-	};
-	$http({
+    var logObject = {
+		    'api_key':  "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+ 		     'email': ($scope.loginData.email),
+ 		     'password':($scope.loginData.password)
+	       };
+    console.log(logObject);
+  $http({
 		method: 'POST',
-		url:'http://aaibian-ad3rhy2.rhcloud.com/aaibian/user/login',
+		url:'/aaibian/user/login',
+
 		data:JSON.stringify(logObject),
-		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		headers: {'Content-Type': 'application/json'}
 	})
 	.then(function(response) {
-
-					console.log(response.status);
-					console.log(response.data.valid);
+          console.log(response.data);
 					if(response.data.valid){
 						$window.location.href='/home.html';
-
 					}
 					else
 					{
