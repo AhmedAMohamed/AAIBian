@@ -9,7 +9,7 @@ var messeges = require('../Strings/messeges');
 var mhelper = require('../Utils/helpers');
 
 
-router.post('/aaibian/user/login', function (req, res, next) {
+router.post('/user/login', function (req, res, next) {
     API_Key.find({api_key: req.body.api_key, valid_for: { $in: [reserved_tokens.all_user_api_key] }}, function (error, valid) {
         if (error) {
             res.json(messeges.not_valid_operation());

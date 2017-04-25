@@ -153,7 +153,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/home', function(req, res) {
-  res.json(req.body);
+  //res.json(req.body);
 });
 
 router.get('/trial_data', function(req, res) {
