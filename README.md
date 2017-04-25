@@ -6,3 +6,5 @@ admin_auth = C3C15A65CC84484BBDF753F56ECB\
   1- add user<br>
   2- add news<br>
   3- login <br>
+  4- get_news <br>
+  

@@ -4,6 +4,11 @@ var fs  = require('fs');
 var sha1 = require('sha1');
 var path = require('path');
 
+var reserved_tokens = require('../Strings/reserved_tokens');
+
+var API_KEY = require('../models/api_key_model');
+
+var randomstring = require("randomstring");
 var schedule = require('node-schedule');
 
 var router = express.Router();
@@ -65,7 +70,7 @@ router.post('/addBenefits', function (req, res, next) {
                         console.log("Notify id " + da.id + " at " + da.notification_date);
                         console.log("Delete id " + da.id + " at " + da.deleteDate);
                         var j = schedule.scheduleJob("benefit_staff_" + da.id, da.notification_date, function () {
-                            startups[1].notifyAndScheduleDelete(da, startups[2].getInterested(da._id));
+                            startups[1].notifyAndScheduleBenefitDeletion(da, startups[2].get_interested(da._id));
                         });
                     }
                 });
@@ -121,8 +126,38 @@ router.post('/addMedical', function (req, res, next) {
     }
 });
 
+router.post('/addAPI_Key', function (req, res, next) {
+  var api_ke = req.body.api;
+  console.log("Ahmed called it and it is " + api_ke);
+  var api = {
+    api_key: sha1(api_ke) + randomstring.generate(7),
+    creation_date: new Date(Date.now()),
+    valid_for: [reserved_tokens.all_user_api_key]
+  };
+  var ap = new API_KEY(api);
+  ap.save(function(err, a) {
+    if (err) {
+      console.log("Error");
+      res.json(msg.interna_error());
+    }
+    else {
+      console.log("Valid");
+      res.json(msg.valid_operation());
+    }
+  });
+  //res.json("Alaa");
+});
+
 router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'), {"data": {"hello":"here"}});
+});
+
+router.post('/home', function(req, res) {
+  res.json(req.body);
+});
+
+router.get('/trial_data', function(req, res) {
+  res.sendFile(path.join(__dirname, '../', 'views', 'content.html'), {"data": {"hello":"here"}});
 })
 
 

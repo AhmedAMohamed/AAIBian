@@ -9,11 +9,15 @@ var news_schema = mongoose.Schema(
         title: String,
         Body: String,
         creation_date: Date,
+        to_delete_date: Date,
         creator: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
-        to_view: Boolean
+        to_view: {
+            type: Boolean,
+            default: true
+        }
     }
 );
 var news = mongoose.model('News', news_schema);

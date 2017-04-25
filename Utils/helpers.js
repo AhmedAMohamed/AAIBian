@@ -4,7 +4,8 @@ var User = require('../models/user_model');
 var schedule = require('node-schedule');
 var messages = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
-
+var reserved_tokens = require('../Strings/reserved_tokens');
+var News = require('../models/news_model');
 
 var selectKeys = function (starter, list) {
     var keys = [];
@@ -21,7 +22,7 @@ var notifyMessage = function(users, mess) {
 };
 
 var users_helpers = {
-    getInterested : function (ben_industry) {
+    get_interested : function (ben_industry) {
         User.find({subscribed_in : { $in :[ben_industry]}}, function (err, users) {
             if (err) {
                 console.log("Some Error");
@@ -31,21 +32,44 @@ var users_helpers = {
             }
         });
     },
-    notify_news: function (news_title) {
-        User.find({privilege: tokens.privilege.user },'reg_id', function (err, reg_ids) {
+    schedule_news_deletion: function (news_id) {
+        var to_delete_date = new Date(Date.now());
+        to_delete_date.setDate(to_delete_date.getDate() + 7);
+        var j = schedule.scheduleJob("delete_news_" + news_id, to_delete_date, function () {
+           News.findByIdAndRemove(news_id, function (err, obj) {
+               if (err) {
+                   console.log("Error");
+               }
+               else {
+                   console.log("Deleted");
+               }
+           });
+        });
+    },
+    update_user_time: function (user_id, callback) {
+        User.findByIdAndUpdate(user_id, {last_login: new Date(Date.now())}, {new : true}, function (err, t) {
+           if (err) {
+              callback(null);
+           }
+           else {
+             callback(t);
+           }
+        });
+    },
+    update_user_login_status: function (user_id) {
+        User.findByIdAndUpdate(user_id, {login_status: reserved_tokens.old_login}, {new : true}, function (err, user) {
             if (err) {
-                return false;
+                return null;
             }
             else {
-                console.log('send notification about ' + news_title + 'to all those ' + reg_ids);
-                return true;
+                return user;
             }
-        })
+        });
     }
 };
 
 var notification_schedules_helpers = {
-    notifyAndScheduleDelete: function (ben, users) {
+    notifyAndScheduleBenefitDeletion: function (ben, users) {
         notifyMessage(users, messages.benefit_expire(ben.name));
         ben.notified = true;
         ben.save(function (err, upBen) {
@@ -53,11 +77,11 @@ var notification_schedules_helpers = {
                 console.log("Some error");
             }
             else {
-                notification_schedules_helpers.scheduleDeletion(upBen);
+                notification_schedules_helpers.scheduleBenefitDeletion(upBen);
             }
         });
     },
-    scheduleDeletion: function (ben) {
+    scheduleBenefitDeletion: function (ben) {
         var j = schedule.scheduleJob("delete_staff_benefit_" + ben.id, ben.deleteDate, function () {
             Benefit.findByIdAndRemove(ben._id, function (err, b) {
                 if(err) {
@@ -86,9 +110,8 @@ var starter_helper = {
                     console.log("data is processed");
                     console.log(benefits.length);
                     benefits.forEach(function (ben) {
-                        console.log("Schedule benefit " + ben.id + " to notify at " + ben.notification_date);
                         var j = schedule.scheduleJob("benefit_staff_" + ben.id ,ben.notification_date, function () {
-                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
+                            notification_schedules_helpers.notifyAndScheduleBenefitDeletion(ben, users_helpers.get_interested(ben.industry));
                         });
                     });
                 }
@@ -102,14 +125,13 @@ var starter_helper = {
                    console.log("here");
                    console.log(bens.length);
                    bens.forEach(function (ben) {
-                      notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
+                      notification_schedules_helpers.notifyAndScheduleBenefitDeletion(ben, users_helpers.get_interested(ben.industry));
                    });
                }
             });
         }
     },
     benefit_delete_schedule: function () {
-        console.log("Here in delete_schedule function");
         var job_keys = Object.keys(schedule.scheduledJobs);
         var to_delete_jobs = selectKeys("delete_staff_benefit_", job_keys);
         if (to_delete_jobs.length == 0) {
@@ -120,7 +142,7 @@ var starter_helper = {
                 else {
                     bens.forEach(function (ben) {
                         var j = schedule.scheduleJob("benefit_staff_" + ben.id, ben.notification_date, function () {
-                            notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
+                            notification_schedules_helpers.notifyAndScheduleBenefitDeletion(ben, users_helpers.get_interested(ben.industry));
                         });
                     });
                 }
@@ -132,7 +154,7 @@ var starter_helper = {
                 }
                 else {
                     bens.forEach(function (ben) {
-                        notification_schedules_helpers.notifyAndScheduleDelete(ben, users_helpers.getInterested(ben.industry));
+                        notification_schedules_helpers.notifyAndScheduleBenefitDeletion(ben, users_helpers.get_interested(ben.industry));
                     });
                 }
             });
@@ -154,8 +176,52 @@ var starter_helper = {
                 }
             });
         }
+    },
+    news_delete_schdule: function () {
+        console.log("Here is news deletion");
+        var job_keys = Object.keys(schedule.scheduledJobs);
+        var to_delete_jobs = selectKeys("delete_news_", job_keys);
+        if (to_delete_jobs.length == 0) {
+            News.find({to_delete_date: {$lte: new Date(Date.now())}}, function (err, news) {
+                if (err) {
+                    console.log("Some wrong");
+                }
+                else {
+                    news.forEach(function (n) {
+                       News.findByIdAndRemove(n._id, function (e, i) {
+                           if (e) {
+                               console.log("Some error");
+                           }
+                           else {
+                               console.log("Removed");
+                           }
+                       })
+                    });
+                }
+            });
+
+            News.find({to_delete_data: {$gte: new Date(Date.now())}}, function (err, news) {
+                if (err) {
+                    console.log("Some error");
+                }
+                else {
+                    news.forEach(function (n) {
+                        var j = schedule.scheduleJob("delete_news_" + n._id, n.to_delete_date, function () {
+                            News.findByIdAndRemove(n._id, function (err, ne) {
+                                if (err) {
+                                    console.log("Some error");
+                                }
+                                else {
+                                    console.log("Removed");
+                                }
+                            });
+                        });
+                    });
+                }
+            });
+        }
     }
 };
 
 
-module.exports = [starter_helper, notification_schedules_helpers, users_helpers];
+module.exports = {starters: starter_helper, notifiers: notification_schedules_helpers, users:users_helpers};

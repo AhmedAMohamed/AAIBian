@@ -16,6 +16,9 @@ var messages = {
     },
     valid_operation: function () {
         return {valid: true, msg: "Done"};
+    },
+    interna_error: function () {
+        return {valid: false, msg: "Internal server error" };
     }
 };
 

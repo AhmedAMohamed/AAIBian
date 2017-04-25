@@ -6,8 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var index = require('./routes/creator');
+var creator = require('./routes/creator');
 var users = require('./routes/users');
+var admins = require('./routes/admin');
 var db_connector = require('./Utils/DBCOnnector');
 var helpers = require('./Utils/helpers');
 
@@ -28,10 +29,12 @@ console.log("here again");
 db_connector("mongodb://alaa:ahmed@ds161400.mlab.com:61400/aaibian", function (valid) {
    if(valid) {
 
-       helpers[0].benefit_schedules();
-       helpers[0].benefit_delete_schedule();
-       app.use('/', index, cors());
-       app.use('/users', users, cors());
+       //helpers['starters'].benefit_schedules();
+       //helpers['starters'].benefit_delete_schedule();
+       //helpers['starters'].news_delete_schdule();
+       app.use('/creator', creator, cors());
+       app.use('/', users, cors());
+       app.use('/admin', admins, cors());
    }
 });
 

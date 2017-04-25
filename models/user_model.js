@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+var reserved_tokens = require('../Strings/reserved_tokens');
 var User_schema = mongoose.Schema(
     {
         name: String,
@@ -23,7 +24,8 @@ var User_schema = mongoose.Schema(
         }],
         area: String,
         job_desc: String,
-        login_status: {type: Boolean, default: true},
+        login_status: {type: String, default: reserved_tokens.first_login},
+
         last_login: {type: Date}
     }
 );
