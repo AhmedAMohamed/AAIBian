@@ -37,17 +37,17 @@ var auth = {
 
         }
     },
-    auth_check: function (user_id, api_key) {
-      APIKeys.find({api_key: api_key, valid_for:{$in: [user_id]}}, function (err, validations) {
+    auth_check: function (user_id, api_key, callback) {
+      APIKeys.find({api_key: api_key, valid_for:{$in: [reserved.all_user_api_key]}}, function (err, validations) {
           if (err) {
-              return false;
+              callback(null);
           }
           else {
               if (validations.length == 1) {
-                  return true;
+                  callback(validations[0]);
               }
               else {
-                  return false;
+                  callback(null);
               }
           }
       })
@@ -65,16 +65,14 @@ var auth = {
             }
         });
     },
-    check_admin: function (user_id, privilege) {
-        User.find({_id: user_id, privilege: privilege}, function (err, users) {
+    check_admin: function (user_id, privilege, callback) {
+        User.findById(user_id, function (err, users) {
            if (err) {
                console.log("Error");
-               return null;
+               callback(null);
            }
            else {
-               if (users.length == 1) {
-                   return users[0];
-               }
+               callback(users);
            }
         });
     }
