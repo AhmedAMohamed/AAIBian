@@ -149,7 +149,7 @@ router.post('/addAPI_Key', function (req, res, next) {
 });
 
 router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'), {"data": {"hello":"here"}});
+    res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
 router.post('/home', function(req, res) {
