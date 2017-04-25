@@ -35,7 +35,6 @@ router.post('/user/login', function (req, res, next) {
                               },
                               msg: messeges.operation_valid_msg()
                           };
-                          
                           mhelper['users'].update_user_time(users[0]._id, function(u) {
                             if (u != null) {
                                 response.result.user_id = u._id;
@@ -44,6 +43,12 @@ router.post('/user/login', function (req, res, next) {
                             else {
                               res.json(messeges.not_valid_operation());
                             }
+                          });
+                        }
+                        else {
+                          res.json({
+                            valid: false,
+                            msg: "Wrong username or password"
                           });
                         }
                     }
