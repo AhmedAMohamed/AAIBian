@@ -122,7 +122,7 @@ router.post('/add_GM', function(req, res) {
 });
 
 
-router.get('/list_users', function(req, res, next) {
+router.post('/list_users', function(req, res, next) {
   User.find({}, function(err, users) {
     if(err) {
       res.json({

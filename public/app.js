@@ -219,23 +219,24 @@ function getUsersController($scope, $http, $window, $location){
 			    "user_id" : $window.sessionStorage.getItem("id"),
 			    "privilege" : $window.sessionStorage.getItem("type")
 			};
+/*
 			$scope.users.push({name: "A", email:"X", type:"Y"});
 			$scope.users.push({name: "B", email:"C", type:"D"});
 			$scope.users.push({name: "H", email:"I", type:"J"});
-
+*/
 			console.log(reqObject);
 			$http({
 			method: 'POST',
-				url:'/aaibian/admin/users',
+				url:'/aaibian/admin/list_users',
 				data:JSON.stringify(reqObject),
 				headers: {'Content-Type': 'application/JSON'}
 			})
 			.then(function(response) {
-
 				console.log(response.data);
 				console.log(response.data.valid);
 				console.log(response);
 				//console.log("session here");
+        $scope.users = response.data.result;
 				//console.log($window.sessionStorage.getItem("id"));
 				if(response.data.valid){
 					return true;
