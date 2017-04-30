@@ -10,7 +10,7 @@ var tokens = {
     privilege: {
         GM : "gm",
         root: "root",
-        admin: "admin_user",
+        admin: "admin",
         user: "client"
     },
 

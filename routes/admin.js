@@ -16,10 +16,10 @@ router.post('/add_user', function (req, res) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
       if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, function(user) {
-              console.log("TTTTTTTTT");
-              console.log(user);
               if (user) {
-                if (user.privilege == tokens.privilege.root || user.privilege == tokens.privilege.GM) {
+                if (user.privilege == tokens.privilege.root ||
+                    user.privilege == tokens.privilege.GM ||
+                    user.privilege == tokens.privilege.admin) {
                         var new_user_data = req.body.new_user;
 
                         var data = {
@@ -104,10 +104,11 @@ router.post('/add_news', function (req, res) {
 
 router.post('/add_GM', function(req, res) {
   var data = {
-    name: "Ahmed Alaa",
-    password: "Alaa",
+    name: "System General admin",
+    password: "JustForTrial",
     privilege: tokens.privilege.GM,
-    email: "ahmed@alaa.com"
+    subscribed_in: [reserved_tokens.all_user_api_key],
+    email: "trial@aaib.com"
   };
   var x = new User(data);
   x.save(function(err, d) {
