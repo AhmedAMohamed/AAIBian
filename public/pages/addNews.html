@@ -1,0 +1,54 @@
+<div class="row">
+	<div class="col-md-2">
+	<ng-include src="'pages/menu.html'"></ng-include>
+	</div>
+<div class="col-md-10" ng-controller = "addNewsController">
+	<div class="row">
+	  	<div class="col-xs-6 col-xs-offset-2">
+	  		<img src="images/image001.jpg" width="100%" height="200px">
+	  		<div class="content-box-large">
+			  	<div class="panel-heading">
+					<div class="panel-title">Add News</div>					          
+					<div class="panel-options">
+					    <a href="#" data-rel="collapse" ng-click = "resetForm(userData)"><i class="glyphicon glyphicon-refresh"></i></a>
+					    <a href="#" data-rel="reload" ><i class="glyphicon glyphicon-cog"></i></a>
+					</div>
+				</div>
+			  	<div class="panel-body" >
+  					<form class="form-horizontal" ng-submit="addNews()" role="form">
+						<div class="form-group">
+						    <label for="title" class="col-sm-2 control-label">Title</label>
+						    <div class="col-sm-10">
+						     	<input ng-model="newsData.title" type="text" class="form-control" id="title" placeholder="Title">
+						    </div>
+						</div>
+						<div class="form-group">
+					    	<label class="col-sm-2 control-label">Body</label>
+					    	<div class="col-sm-10">
+					    		<textarea ng-model="newsData.body" class="form-control" placeholder="Body" rows="3"></textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="col-md-2 control-label">File input</label>
+							<div class="col-md-10">
+								<input ng-model="newsData.file" type="file" class="btn btn-default" id="exampleInputFile1">
+									<p class="help-block">
+										Upload
+									</p>
+							</div>
+						</div>					  	
+	
+						<div class="form-group">
+					    	<div class="col-sm-offset-2 col-sm-10">
+					    		<button type="submit" class="btn btn-primary">Add News</button>
+					    	</div>
+						</div>
+						<div class="form-group" ng-show="getStatus()">
+					    	<label class="col-sm-2 control-label">News Added Successfully!</label>
+						</div>	
+					</form>
+  				</div>
+  			</div>
+		</div>
+	</div>
+</div>

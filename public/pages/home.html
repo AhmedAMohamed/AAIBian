@@ -1,0 +1,79 @@
+<div class="row">
+	<div class="col-md-2">
+	<ng-include src="'pages/menu.html'"></ng-include>
+	</div>
+	<div class="col-md-10">
+	  	<div class="row">
+	  		<div class="col-xs-6 col-xs-offset-2">
+	  			<img src="images/image001.jpg" width="100%" height="200px">
+	  			<div class="content-box-large">
+			  		<div class="panel-heading">
+			  			<div class="panel-title">Options</div>
+							<div class="panel-options">
+								<a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+								<a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+							</div>
+						</div>
+						<div class="panel-body" ng-controller="homeController">
+							<div ng-show = "testType()" class="form-group" >
+								<button  class="btn btn-primary" ng-click="opt(0)" value = "Show Feedback" >
+								Show Feedback
+								</button>
+								<br/>
+							</div>	
+							<div class="form-group" >							
+								<button class="btn btn-primary" ng-click="opt(1)" value = "Add News">
+								Add News
+								</button>
+								<br/>
+
+							</div>
+							<div class="form-group" id="email-form">
+								<button  class="btn btn-primary" ng-click="opt(2)" value = "Add User" >
+								Add User
+								</button>
+								<br/>
+							</div>
+																	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- /////////////////////////////////**************************_________________***************-->
+			<!-- <div id ="form" ng-controller = "gmController">
+					<div class="fish" id="fish"></div>
+					<div class="fish" id="fish2"></div>
+
+					<div id="waterform">
+
+						<div class="formgroup" id="name-form">
+							<button  ng-click="opt(0)" value = "Add News">
+							Add News
+							</button>
+							<br/>
+						</div>
+						<div class="formgroup" id="email-form">
+							<button  ng-click="opt(1)" value = "Add User" >
+							Add User
+							</button>
+							<br/>
+						</div>
+						<div ng-show = "testType()" class="formgroup" id="email-form">
+							<button  ng-click="opt(2)" value = "Show Feedback" >
+							Show Feedback
+							</button>
+							<br/>
+						</div>
+
+						
+					</div>
+
+			</div>
+ -->

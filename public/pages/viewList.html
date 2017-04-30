@@ -1,7 +1,34 @@
-<div ng-controller= "getUsersController">
-
-    <!-- {{getUsers()}} -->
-    <p>kjhkhkhkhkhkhkhkhkj</p>
-
-    {{getUsers()}}
+<div class="row">
+	<div class="col-md-2">
+		<ng-include src="'pages/menu.html'"></ng-include>
+	</div>
+	<div class="col-md-10" ng-controller= "getUsersController">
+	  	<div class="row" ng-init="getUsers()">
+	  		<div class="col-xs-8 col-xs-offset-1">
+	  			<img src="images/image001.jpg" width="100%" height="200px">
+	  			<div class="content-box-large">
+			  		<div class="panel-heading">
+			    		<table class = "table">
+			    			<thread>
+				    			<tr>
+									<th>Name</th>
+									<th>Email</th>
+									<th>Type</th>
+									<th>Edit</th>
+								</tr>
+							</thread>
+							<tbody>
+								<tr ng-repeat="x in users">
+								    <td>{{ x.name }}</td>
+								    <td>{{ x.email }}</td>
+								    <td>{{ x.type }}</td>
+								    <td><a ng-click=""><i class="glyphicon glyphicon-edit"></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>    
 </div>

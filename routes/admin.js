@@ -24,14 +24,14 @@ router.post('/add_user', function (req, res) {
 
                         var data = {
                             email: new_user_data.email,
-                            password: reserved_tokens.default_password,
+                            password: new_user_data.password,
+                            name: new_user_data.name,
                             privilege: (new_user_data.privilege == tokens.privilege.GM && user.privilege == tokens.privilege.root)
                                 ?tokens.privilege.root : new_user_data.privilege,
                             subscribed_in: ["VALID_FOR_ALL"],
                             login_status: reserved_tokens.first_login,
                             last_login: new Date(Date.now())
                         };
-                        console.log(new_user_data);
                         var new_user = new User(data);
                         new_user.save(function (err, emp) {
                             if (err) {
@@ -58,80 +58,48 @@ router.post('/add_user', function (req, res) {
         res.json(messeges.not_valid_operation());
       }
     });
-      /*
-        var user = Auth.check_admin(req.body.user_id, req.body.privilege);
-        if (user.privilege == tokens.privilege.root || user.privilege == tokens.privilege.GM) {
-            if (user != null) {
-                var new_user_data = req.body.new_user;
-                var data = {
-                    name: new_user_data.name,
-                    email: new_user_data.email,
-                    password: reserved_tokens.default_password,
-                    privilege: (new_user_data.privilege == tokens.privilege.GM && user.privilege == tokens.privilege.root)
-                        ?tokens.privilege.root : new_user_data.privilege,
-                    subscribed_in: [reserved_tokens.all_categories],
-                    area: new_user_data.area,
-                    job_desc: new_user_data.job_desc,
-                    login_status: reserved_tokens.first_login,
-                    last_login: new Date(Date.now())
-                };
-                var new_user = new User(data);
-                new_user.save(function (err, emp) {
-                    if (err) {
-                        res.json(messeges.not_valid_operation());
-                    }
-                    else {
-                        res.json(messeges.valid_operation());
-                    }
-                });
-            }
-            else {
-                res.json(messeges.not_valid_operation());
-            }
-        }
-        else {
-            res.json(messeges.not_valid_operation());
-        }
-    }
-    else {
-        res.json(messeges.not_valid_operation());
-    }
-    */
 });
 
-router.post('/aaibian/admin/add_news', function (req, res) {
-    if (Auth.auth_check(req.body.user_id, req.body.api_key)) {
-        var user = Auth.check_admin(req.body.user_id, req.body.privilege);
-        var to_delete_date = new Date(Date.now());
-        to_delete_date.setDate(to_delete_date.getDate() + 7);
-        if (user != null) {
-            if (user.privilege == tokens.privilege.root ||
-              user.privilege == tokens.privilege.GM
-                || user.privilege == tokens.privilege.admin) {
-                var data = {
-                    title: req.body.news.title,
-                    body: req.body.news.body,
-                    creation_date: new Date(Date.now()),
-                    to_delete_date: to_delete_date,
-                    creator: user._id,
-                    to_view: true
-                };
-                var news = new News(data);
-                news.save(function (err, n) {
-                    if (err) {
-                        res.json(messeges.interna_error());
-                    }
-                    else {
-                        helpers['users'].schedule_news_deletion(n._id);
-                        res.json(messeges.valid_operation());
-                    }
-                });
+router.post('/add_news', function (req, res) {
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(validations) {
+      if(validations) {
+        Auth.check_admin(req.body.user_id, req.body.privilege, function(user) {
+          if(user) {
+            if(user.privilege == tokens.privilege.root || user.privilege == tokens.privilege.GM) {
+              var to_delete_date = new Date(Date.now());
+              to_delete_date.setDate(to_delete_date.getDate() + 7);
+              var data = {
+                title: req.body.news.title,
+                Body: req.body.news.Body,
+                creation_date: new Date(Date.now()),
+                to_delete_date: to_delete_date,
+                creator: user._id,
+                to_view: true
+              };
+              var news = new News(data);
+              news.save(function(err, n) {
+                if(err) {
+                  res.json(messeges.interna_error());
+                }
+                else {
+                  helpers['users'].schedule_news_deletion(n._id);
+                  res.json(messeges.valid_operation());
+                }
+              })
             }
-        }
-        else {
-            res.json(messeges.not_valid_operation());
-        }
-    }
+            else {
+              res.json(messeges.not_valid_operation());
+            }
+          }
+          else {
+              res.json(messeges.interna_error());
+          }
+        });
+      }
+      else {
+        res.json(messeges.not_valid_operation());
+      }
+    });
 });
 
 router.post('/add_GM', function(req, res) {
@@ -153,9 +121,6 @@ router.post('/add_GM', function(req, res) {
   });
 });
 
-router.post('/trial_body', function(req, res, next) {
-  res.json(req.body.user_data.alaa);
-});
 
 router.get('/list_users', function(req, res, next) {
   User.find({}, function(err, users) {
