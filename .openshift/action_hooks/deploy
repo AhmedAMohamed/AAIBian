@@ -10,4 +10,5 @@ if [ ! -d ${OPENSHIFT_DATA_DIR}uploads ]; then
 fi
 
 # create symlink to uploads directory
-ln -sf ${OPENSHIFT_DATA_DIR} ${OPENSHIFT_REPO_DIR}public/data/
+ln -sf ${OPENSHIFT_DATA_DIR} ${OPENSHIFT_REPO_DIR}public/
+echo "AHmed Alaa";
