@@ -66,6 +66,7 @@ var users_helpers = {
             }
         });
     }
+
 };
 
 var notification_schedules_helpers = {

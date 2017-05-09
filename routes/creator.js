@@ -16,9 +16,12 @@ var router = express.Router();
 var Auth = require('../Utils/auth_layer');
 var Benefit = require('../models/benefit_model');
 var Medical = require('../models/medical_sector_model');
+var Categories = require('../models/category_model');
+var Areas = require('../models/area_model');
 var startups = require('../Utils/helpers');
 var types = require('../Strings/names_translations')[0];
 var msg = require('../Strings/messeges');
+
 
 router.post('/addBenefits', function (req, res, next) {
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
@@ -152,13 +155,54 @@ router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
 
-router.post('/home', function(req, res) {
-  //res.json(req.body);
+router.get('/add_areas', function(req, res, next) {
+    Benefit.find().distinct('zone', function(err, bens) {
+        if(err) {
+            console.log("Error");
+        }
+        else {
+            bens.forEach(function(area) {
+                var a = {
+                    name: area,
+                    search_name: area,
+                    creation_date: new Date(Date.now())
+                }
+                var ar = new Areas(a);
+                ar.save(function(err, area) {
+                    if (err) {
+                        console.log("Error");
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
+            })
+        }
+    });
+    Medical.find().distinct('zone', function(err, meds) {
+        if(err) {
+            console.log("Error");
+        }
+        else {
+            meds.forEach(function(area) {
+                var a = {
+                    name: area,
+                    search_name: area,
+                    creation_date: new Date(Date.now())
+                };
+                var ar = new Areas(a);
+                ar.save(function(err, area) {
+                    if(err) {
+                        console.log("Error");
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
+            })
+        }
+    });
 });
-
-router.get('/trial_data', function(req, res) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'content.html'), {"data": {"hello":"here"}});
-})
 
 
 module.exports = router;

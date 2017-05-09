@@ -10,15 +10,11 @@ var mhelper = require('../Utils/helpers');
 
 
 router.post('/user/login', function (req, res, next) {
-    console.log("Here is here");
-    console.log({"Ahmed" : req.body});
     API_Key.find({api_key: req.body.api_key}, function (error, valid) {
         if (error) {
             res.json(messeges.not_valid_operation());
         }
         else {
-          console.log("DODODODODDDD why???");
-          console.log(valid);
             if (valid.length == 1) {
                 User.find({email: req.body.email, password: req.body.password}, function (err, users) {
                     if (err) {
@@ -65,6 +61,17 @@ router.post('/user/login', function (req, res, next) {
     });
 });
 
+router.post('/user/change_password', function (req, res, next) {
+    API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
+        if(error) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            if (valid.length == 1) {
+                
+            }
+        }
+    });
 
-
+}
 module.exports = router;

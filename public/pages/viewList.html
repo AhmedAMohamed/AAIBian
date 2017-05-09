@@ -11,18 +11,20 @@
 			    		<table class = "table">
 			    			<thread>
 				    			<tr>
-									<th>Name</th>
-									<th>Email</th>
-									<th>Type</th>
-									<th>Edit</th>
+									<th align="middle">Name</th>
+									<th align="middle">Email</th>
+									<th align="middle">Type</th>
+									<th align="middle">Edit</th>
+									<th align="middle">Delete</th>
 								</tr>
 							</thread>
 							<tbody>
 								<tr ng-repeat="x in users">
-								    <td>{{ x.name }}</td>
-								    <td>{{ x.email }}</td>
-								    <td>{{ x.privilege }}</td>
-								    <td><a ng-click=""><i class="glyphicon glyphicon-edit"></i></a></td>
+								    <td align="middle">{{ x.name }}</td>
+								    <td align="middle">{{ x.email }}</td>
+								    <td align="middle">{{ x.privilege }}</td>
+								    <td align="middle"><a ng-click=""><i class="glyphicon glyphicon-edit"></i></a></td>
+								    <td align="middle"><a ng-click=""><i class="glyphicon glyphicon-remove"></i></a></td>
 								</tr>
 							</tbody>
 						</table>

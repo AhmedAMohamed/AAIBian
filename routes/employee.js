@@ -14,4 +14,3 @@ var tokens = require('../Strings/validation_tokens');
 var News = require('../models/news_model');
 
 
-router.get()

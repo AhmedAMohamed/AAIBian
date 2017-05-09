@@ -11,7 +11,7 @@ var tokens = {
         GM : "gm",
         root: "root",
         admin: "admin",
-        user: "client"
+        user: "emp"
     },
 
     checks: {
