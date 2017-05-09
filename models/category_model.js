@@ -11,8 +11,8 @@ var category_schema = mongoose.Schema(
         search_name: String,
         img_path: {
             type: String,
-            default: ""
-        }
+            default: "data/uploads/logo.jpg"
+        },
         creation_date: Date
     }
 );

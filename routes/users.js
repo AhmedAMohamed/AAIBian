@@ -68,10 +68,10 @@ router.post('/user/change_password', function (req, res, next) {
         }
         else {
             if (valid.length == 1) {
-                
+
             }
         }
     });
 
-}
+});
 module.exports = router;
