@@ -18,18 +18,23 @@ var mhelper = require('../Utils/helpers');
 
 
 var get_mongoose_ids = function(ids) {
-    var arr = [];
-    var counter = 0;
-    ids.forEach(function(id) {
-        arr.push(mongoose.Types.ObjectId(id));
-        counter += 1;
-        if (arr.length == ids.length) {
-            return arr;
-        }
-    });
+     if (typeof ids == 'undefined') {
+        return null;
+     }
+     else {
+        var arr = [];
+        var counter = 0;
+        ids.forEach(function(id) {
+            arr.push(mongoose.Types.ObjectId(id));
+            counter += 1;
+            if (arr.length == ids.length) {
+                return arr;
+            }
+        });
+     }
 };
 
-router.get('/get_news', function(req, res, next) {
+router.post('/get_news', function(req, res, next) {
     API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
         if (error) {
             res.json(messeges.not_valid_operation());
@@ -38,8 +43,8 @@ router.get('/get_news', function(req, res, next) {
             if (valid.length == 1) {
                 mhelper['users'].get_user_data(req.body.user_id, function(user) {
                     if (user) {
-                        News.find({_id : {$in: get_mongoose_ids(req.body.request.news_ids)},
-                                   creation_data: { $gte : new Date(req.body.request.since_date)},
+                        News.find({//_id : {$in: get_mongoose_ids(req.body.request.news_ids)},
+                                  // creation_data: { $gte : new Date(req.body.request.since_date || "11-11-2010")},
                         },
                         function(err, news) {
                             if (err) {
@@ -75,8 +80,8 @@ router.post('/get_benefits', function(req, res, next) {
                if (valid.length == 1) {
                    mhelper['users'].get_user_data(req.body.user_id, function(user) {
                        if (user) {
-                           Benefits.find({_id : {$in: get_mongoose_ids(req.body.request.ben_ids)},
-                                      creation_data: { $gte : new Date(req.body.request.since_date)},
+                           Benefits.find({//_id : {$in: get_mongoose_ids(req.body.request.ben_ids)},
+                                 //     creation_data: { $gte : new Date(req.body.request.since_date)},
                            },
                            function(err, bens) {
                                if (err) {
@@ -112,10 +117,10 @@ router.post('/get_categories', function(req, res, next) {
                if (valid.length == 1) {
                    mhelper['users'].get_user_data(req.body.user_id, function(user) {
                        if (user) {
-                           Categories.find({_id : {$in: get_mongoose_ids(req.body.request.categories_ids)},
-                                      creation_data: { $gte : new Date(req.body.request.since_date)},
-                                      name: req.body.request.name,
-                                      search_name: req.body.request.search_name
+                           Categories.find({//_id : {$in: get_mongoose_ids(req.body.request.categories_ids)},
+                                      //creation_data: { $gte : new Date(req.body.request.since_date)},
+                                      //name: req.body.request.name,
+                                      //search_name: req.body.request.search_name
                            },
                            function(err, cats) {
                                if (err) {
