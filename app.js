@@ -34,7 +34,7 @@ db_connector("mongodb://alaa:ahmed@ds161400.mlab.com:61400/aaibian", function (v
        app.use('/', creator, cors());
        app.use('/aaibian/user', users, cors());
        app.use('/aaibian/admin', admins, cors());
-       app.usee('/aaibian/emp', employees, cors());
+       app.use('/aaibian/emp', employees, cors());
    }
 });
 
