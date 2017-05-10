@@ -19,6 +19,9 @@ var messages = {
     },
     interna_error: function () {
         return {valid: false, msg: "Internal server error" };
+    },
+    change_password_not_valid: function() {
+        return {valid: false, msg: "Changing password not authorized"};
     }
 };
 

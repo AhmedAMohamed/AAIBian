@@ -9,7 +9,7 @@ var messeges = require('../Strings/messeges');
 var mhelper = require('../Utils/helpers');
 
 
-router.post('/user/login', function (req, res, next) {
+router.post('/login', function (req, res, next) {
     API_Key.find({api_key: req.body.api_key}, function (error, valid) {
         if (error) {
             res.json(messeges.not_valid_operation());
@@ -61,17 +61,68 @@ router.post('/user/login', function (req, res, next) {
     });
 });
 
-router.post('/user/change_password', function (req, res, next) {
+router.post('/change_password', function (req, res, next) {
     API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
         if(error) {
             res.json(messeges.not_valid_operation());
         }
         else {
             if (valid.length == 1) {
-
+                mhelper['users'].get_user_data(req.body.user_id, function(user) {
+                    if(user) {
+                        if (user.login_status == reserved_tokens.first_login) {
+                            user.password = req.body.request.new_password;
+                            user.login_status = reserved_tokens.old_login;
+                            user.save(function(err, user) {
+                                if(err) {
+                                    res.json(res.json(messeges.interna_error()));
+                                }
+                                else {
+                                    res.json(messeges.valid_operation());
+                                }
+                            });
+                        }
+                        else {
+                            res.json(messeges.change_password_not_valid());
+                        }
+                    }
+                    else {
+                        res.json(messeges.interna_error());
+                    }
+                });
+            }
+            else {
+                res.json(messeges.interna_error());
             }
         }
     });
 
 });
+
+router.post('/set_fcm_regId', function(req, res, next) {
+    API_Key.find({api_key: req.body.api_key}, function(err, valid) {
+       if(err) {
+           res.json(messeges.not_valid_operation());
+       }
+       else {
+           mhelper['users'].get_user_data(req.body.user_id, function(user) {
+               if(user) {
+                   user.reg_id = req.body.request.reg_id;
+                   user.save(function(err, u) {
+                       if(err) {
+                           res.json(messeges.interna_error());
+                       }
+                       else {
+                           res.json(messeges.valid_operation());
+                       }
+                   });
+               }
+               else {
+                   res.json(messeges.interna_error());
+               }
+           });
+       }
+    });
+});
+
 module.exports = router;

@@ -30,6 +30,7 @@ router.post('/add_user', function (req, res) {
                     user.privilege == tokens.privilege.admin) {
                         var new_user_data = req.body.new_user;
 
+
                         var data = {
                             email: new_user_data.email,
                             password: new_user_data.password,

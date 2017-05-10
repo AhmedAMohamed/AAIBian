@@ -65,8 +65,17 @@ var users_helpers = {
                 return user;
             }
         });
+    },
+    get_user_data: function(user_id, callback) {
+        User.findById(user_id, function(err, user) {
+            if(err) {
+                callback(null);
+            }
+            else {
+                callback(user);
+            }
+        });
     }
-
 };
 
 var notification_schedules_helpers = {
