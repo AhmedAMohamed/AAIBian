@@ -14,6 +14,9 @@ var ATM_schema = mongoose.Schema(
             type: [Number],
             index: '2d'
         },
+        creation_date: {
+            type: Date
+        },
         id: {
             type: Number,
             unique: true

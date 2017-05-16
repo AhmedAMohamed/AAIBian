@@ -13,6 +13,7 @@ var category_schema = mongoose.Schema(
             type: String,
             default: "data/uploads/logo.jpg"
         },
+        sector: String,
         creation_date: Date
     }
 );

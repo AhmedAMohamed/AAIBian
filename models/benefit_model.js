@@ -17,6 +17,11 @@ var benefit_schema = mongoose.Schema(
             unique: true
         },
         contacts: [String],
+        creation_date: {
+            type: Date,
+            get: v => v.getTime(),
+            set: v => new Date(v)
+        },
         notification_date: Date,
         deleteDate: Date,
         notified: {

@@ -22,6 +22,9 @@ var messages = {
     },
     change_password_not_valid: function() {
         return {valid: false, msg: "Changing password not authorized"};
+    },
+    near_by_not_valid: function() {
+        return {valid: false, msg: "sector field must be set"};
     }
 };
 

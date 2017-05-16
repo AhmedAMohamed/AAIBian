@@ -3,6 +3,7 @@ var csv = require('fast-csv');
 var fs  = require('fs');
 var sha1 = require('sha1');
 var path = require('path');
+var usr = require('url');
 
 var reserved_tokens = require('../Strings/reserved_tokens');
 
@@ -16,6 +17,7 @@ var router = express.Router();
 var Auth = require('../Utils/auth_layer');
 var Benefit = require('../models/benefit_model');
 var Medical = require('../models/medical_sector_model');
+var ATM = require('../models/atm_model');
 var Categories = require('../models/category_model');
 var Areas = require('../models/area_model');
 var startups = require('../Utils/helpers');
@@ -24,8 +26,8 @@ var msg = require('../Strings/messeges');
 
 
 router.post('/addBenefits', function (req, res, next) {
-    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
-            req.body.token, req.body.privilege, req.body.task)) {
+    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
+            req.body.privilege, req.body.task)) {
         var dat = [[]];
         fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "benefits.csv").pipe(csv()).
         on('data', function (data) {
@@ -53,12 +55,13 @@ router.post('/addBenefits', function (req, res, next) {
                     name: data[1],
                     address: data[2],
                     location: [
-                        parseFloat(data[3]),
-                        parseFloat(data[4])
+                        parseFloat(data[4]),
+                        parseFloat(data[3])
                     ],
                     zone: data[5],
                     contacts: [data[6], data[7], data[8]],
                     industry: data[10],
+                    creation_date: new Date(Date.now()),
                     notification_date: notify_date,
                     deleteDate: to_delete_date,
                     notified: false,
@@ -78,12 +81,51 @@ router.post('/addBenefits', function (req, res, next) {
                     }
                 });
             });
-            res.json(msg.not_valid_operation());
+            res.json(msg.valid_operation());
         });
     }
     else {
         res.json(msg.not_valid_operation());
     }
+});
+
+router.post('/addATM', function(req, res, next) {
+
+    var dat = [[]];
+
+    fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "atm_locations.csv").pipe(csv()).
+            on('data', function (data) {
+                if(data.length == 6) {
+                    dat.push(data);
+                }
+            }).on('end', function (dataLength) {
+                console.log("read finished");
+                var counter = 25;
+                dat.forEach(function (data) {
+
+                    var d = {
+                        id: parseInt(data[0]),
+                        loc_name: data[2],
+                        address: data[3],
+                        location: [
+                            parseFloat(data[5]),
+                            parseFloat(data[4])
+                        ],
+                        creation_date: new Date(Date.now()),
+                    };
+                    var atm = new ATM(d);
+                    atm.save(function (err, da) {
+                        if (err) {
+                            console.log(("error in inserting line"));
+                        }
+                        else {
+                            console.log("Inserted");
+                        }
+                    });
+                });
+                res.json(msg.valid_operation());
+            });
+    console.log("Ahmed Alaa");
 });
 
 router.post('/addMedical', function (req, res, next) {
@@ -103,8 +145,8 @@ router.post('/addMedical', function (req, res, next) {
                     zone: data[3],
                     phone_number: data[4],
                     location: [
-                        parseFloat(data[5]),
-                        parseFloat(data[6])
+                        parseFloat(data[6]),
+                        parseFloat(data[5])
                     ]
                 }
                 var medical = new Medical(row);
@@ -148,11 +190,17 @@ router.post('/addAPI_Key', function (req, res, next) {
       res.json(msg.valid_operation());
     }
   });
-  //res.json("Alaa");
+  res.json("Alaa");
 });
 
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+});
+
+router.get('/trial/:id', function(req, res, next) {
+    console.log(req.headers);
+    res.json(req.params.id);
+
 });
 
 router.get('/add_areas', function(req, res, next) {
@@ -165,6 +213,7 @@ router.get('/add_areas', function(req, res, next) {
                 var a = {
                     name: area,
                     search_name: area,
+                    sector: 'ben',
                     creation_date: new Date(Date.now())
                 }
                 var ar = new Areas(a);
@@ -188,6 +237,7 @@ router.get('/add_areas', function(req, res, next) {
                 var a = {
                     name: area,
                     search_name: area,
+                    sector: 'med',
                     creation_date: new Date(Date.now())
                 };
                 var ar = new Areas(a);
@@ -199,9 +249,87 @@ router.get('/add_areas', function(req, res, next) {
                         console.log("Inserted");
                     }
                 });
+            });
+        }
+    });
+    ATM.find().distinct('loc_name', function(err, atms) {
+        if (err) {
+            console.log("Error");
+        }
+        else {
+            atms.forEach(function(area) {
+                var a = {
+                    name: area,
+                    search_name: area,
+                    sector: 'atm',
+                    creation_date: new Date(Date.now())
+                };
+                var ar = new Areas(a);
+                ar.save(function(err, area) {
+                    if(err) {
+                        console.log("error");
+                        console.log(err);
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
+            });
+        }
+    });
+    res.json({"done": "hhefas"});
+});
+
+router.get('/add_categories', function(req, res, next) {
+    Benefit.find().distinct('industry', function(err, bens) {
+        if(err) {
+            console.log("Error");
+        }
+        else {
+            bens.forEach(function(cat) {
+                var a = {
+                    name: cat,
+                    search_name: cat,
+                    sector: 'ben',
+                    creation_date: new Date(Date.now())
+                }
+                var ar = new Categories(a);
+                ar.save(function(err, area) {
+                    if (err) {
+                        console.log("Error");
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
             })
         }
     });
+    Medical.find().distinct('type', function(err, meds) {
+        if(err) {
+            console.log("Error");
+        }
+        else {
+            meds.forEach(function(cat) {
+                var a = {
+                    name: cat,
+                    search_name: cat,
+                    sector: 'med',
+                    creation_date: new Date(Date.now())
+                };
+                var ar = new Categories(a);
+                ar.save(function(err, area) {
+                    if(err) {
+                        console.log("Error");
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
+            })
+        }
+    });
+    res.json({"done": "hhefas"});
 });
 
 

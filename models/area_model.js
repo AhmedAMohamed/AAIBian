@@ -12,6 +12,7 @@ var area_schema = mongoose.Schema(
           type: String,
           unique: true
         },
+        sector: String,
         creation_date: Date
     }
 );
