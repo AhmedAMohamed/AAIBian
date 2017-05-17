@@ -10,52 +10,51 @@ var mhelper = require('../Utils/helpers');
 
 
 router.post('/login', function (req, res, next) {
-    API_Key.find({api_key: req.body.api_key}, function (error, valid) {
-        if (error) {
-            res.json(messeges.not_valid_operation());
+    User.find({email: req.body.email, password: req.body.password}, function (err, users) {
+        if (err) {
+            res.json({
+              valid: false,
+              msg: "Not valid email or password"
+            });
         }
         else {
-            if (valid.length == 1) {
-                User.find({email: req.body.email, password: req.body.password}, function (err, users) {
-                    if (err) {
-                        res.json({
-                          valid: false,
-                          msg: "Not valid email or password"
-                        });
-                    }
-                    else {
-                        if (users.length == 1) {
-                          var response = {
-                              valid: true,
-                              result: {
-                                  user_id: users[0]._id,
-                                  privilege:users[0].privilege,
-                                  user_data: users[0],
-                                  login_status: users[0].login_status
-                              },
-                              msg: messeges.operation_valid_msg()
-                          };
-                          mhelper['users'].update_user_time(users[0]._id, function(u) {
-                            if (u != null) {
-                                response.result.user_id = u._id;
-                                res.json(response);
-                            }
-                            else {
-                              res.json(messeges.not_valid_operation());
-                            }
-                          });
+            if (users.length == 1) {
+              API_Key.find({}, function(err, apis) {
+                if(err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    var api = apis[0];
+                    var response = {
+                          valid: true,
+                          result: {
+                              user_id: users[0]._id,
+                              privilege:users[0].privilege,
+                              user_data: users[0],
+                              api_key: api.api_key,
+                              login_status: users[0].login_status,
+
+                          },
+                          msg: messeges.operation_valid_msg()
+                    };
+                    mhelper['users'].update_user_time(users[0]._id, function(u) {
+                        if (u != null) {
+                            response.result.user_id = u._id;
+                            res.json(response);
                         }
                         else {
-                          res.json({
-                            valid: false,
-                            msg: "Wrong username or password"
-                          });
+                          res.json(messeges.not_valid_operation());
                         }
-                    }
-                });
+                    });
+                }
+              });
+
             }
             else {
-              res.json(messeges.not_valid_operation());
+              res.json({
+                valid: false,
+                msg: "Wrong username or password"
+              });
             }
         }
     });
