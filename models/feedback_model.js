@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 
 var feedback_schema = mongoose.Schema(
     {
-        Body: String,
+        body: String,
         about: String,
         creation_date: Date,
         creator: {

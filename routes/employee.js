@@ -14,6 +14,7 @@ var tokens = require('../Strings/validation_tokens');
 var News = require('../models/news_model');
 var Benefits = require('../models/benefit_model');
 var ATM = require('../models/atm_model');
+var Feedback = require('../models/feedback_model');
 var Medical = require('../models/medical_sector_model');
 var Categories = require('../models/category_model');
 var Areas = require('../models/area_model');
@@ -605,6 +606,44 @@ router.post('/get_nearest', function(req, res, next) {
                                   }
                               });
                         }
+                    }
+                    else {
+                        res.json(messeges.interna_error());
+                    }
+                });
+            }
+            else {
+                res.json(messeges.not_valid_operation());
+            }
+        }
+    });
+});
+
+router.post('/feedback', function(req, res, next) {
+    API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
+        if (error) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            if (valid.length == 1) {
+                mhelper['users'].get_user_data(req.body.user_id, function(user) {
+                    if (user) {
+                        feedback = req.body.request.feedback;
+                        var d = {
+                            "body": feedback.body,
+                             "about": feedback.about,
+                             "creation_date": new Date(Date.now()),
+                             creator: user._id
+                        };
+                        var feed = new Feedback(d);
+                        feed.save(function(err, f) {
+                            if (err) {
+                                res.json(messeges.interna_error());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
+                        });
                     }
                     else {
                         res.json(messeges.interna_error());
