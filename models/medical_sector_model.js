@@ -19,6 +19,10 @@ var medical_schema = mongoose.Schema(
             type: String,
             unique: true,
             required: true
+        },
+        img_path: {
+            type: String,
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
         }
     }
 );

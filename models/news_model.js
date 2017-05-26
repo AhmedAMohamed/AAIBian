@@ -17,6 +17,14 @@ var news_schema = mongoose.Schema(
         to_view: {
             type: Boolean,
             default: true
+        },
+        img_path: {
+            type: String,
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
+        },
+        media_path: {
+            type: String,
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
         }
     }
 );

@@ -11,7 +11,7 @@ var category_schema = mongoose.Schema(
         search_name: String,
         img_path: {
             type: String,
-            default: "data/uploads/logo.jpg"
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
         },
         sector: String,
         creation_date: Date

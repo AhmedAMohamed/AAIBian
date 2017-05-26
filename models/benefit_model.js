@@ -12,10 +12,6 @@ var benefit_schema = mongoose.Schema(
             index: '2d'
         },
         zone: String,
-        id: {
-            type: Number,
-            unique: true
-        },
         contacts: [String],
         creation_date: {
             type: Date,
@@ -29,6 +25,10 @@ var benefit_schema = mongoose.Schema(
             default: false
         },
         industry: String,
+        img_path: {
+            type: String,
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
+        },
         offer: String
     }
 );

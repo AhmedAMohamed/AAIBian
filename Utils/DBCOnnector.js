@@ -14,6 +14,7 @@ var connector = function(url, callback) {
             callback(false);
         }
         else {
+            console.log("here again");
             callback(true);
         }
     });

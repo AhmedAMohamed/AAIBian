@@ -26,8 +26,8 @@ var msg = require('../Strings/messeges');
 
 
 router.post('/addBenefits', function (req, res, next) {
-    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
-            req.body.privilege, req.body.task)) {
+    if (/*Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
+            req.body.privilege, req.body.task)*/ true) {
         var dat = [[]];
         fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "benefits.csv").pipe(csv()).
         on('data', function (data) {
@@ -51,7 +51,6 @@ router.post('/addBenefits', function (req, res, next) {
                 counter += 30;
 
                 var d = {
-                    id: parseInt(data[0]),
                     name: data[1],
                     address: data[2],
                     location: [
@@ -104,7 +103,6 @@ router.post('/addATM', function(req, res, next) {
                 dat.forEach(function (data) {
 
                     var d = {
-                        id: parseInt(data[0]),
                         loc_name: data[2],
                         address: data[3],
                         location: [

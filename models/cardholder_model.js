@@ -13,6 +13,10 @@ var cardHolder_schema = mongoose.Schema(
             type: [Number],
             index: '2d'
         },
+        img_path: {
+            type: String,
+            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
+        },
         merchant: String,
         zone: String,
         id: {

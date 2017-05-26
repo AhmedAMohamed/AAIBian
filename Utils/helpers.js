@@ -69,9 +69,11 @@ var users_helpers = {
     get_user_data: function(user_id, callback) {
         User.findById(user_id, function(err, user) {
             if(err) {
+                console.log(err);
                 callback(null);
             }
             else {
+                console.log(user);
                 callback(user);
             }
         });

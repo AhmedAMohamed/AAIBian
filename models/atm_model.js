@@ -17,10 +17,6 @@ var ATM_schema = mongoose.Schema(
         creation_date: {
             type: Date
         },
-        id: {
-            type: Number,
-            unique: true
-        },
         address: String
     }
 );
