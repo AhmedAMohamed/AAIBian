@@ -17,6 +17,7 @@ var ATM = require('../models/atm_model');
 var Feedback = require('../models/feedback_model');
 var Medical = require('../models/medical_sector_model');
 var Categories = require('../models/category_model');
+var CardHolder = require('../models/cardholder_model');
 var Areas = require('../models/area_model');
 var mhelper = require('../Utils/helpers');
 
@@ -225,6 +226,84 @@ router.post('/get_benefits', function(req, res, next) {
 			   res.json(messeges.not_valid_operation());
 		   }
 	   }
+   });
+});
+
+router.post('get_cardholder', function(req, res, next) {
+    API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
+       if (error) {
+           res.json(messeges.not_valid_operation());
+       }
+       else {
+           if (valid.length == 1) {
+               mhelper['users'].get_user_data(req.body.user_id, function(user) {
+                   if (user) {
+                       get_find_request(reserved_tokens.cardholders_required,req.body.request, function(err,mongIds) {
+                           if(err) {
+                               res.json(messeges.interna_error());
+                           }
+                           else {
+                               var obj = {};
+                               if (mongIds.length != 0) {
+                                   obj._id = {$in: mongIds};
+                               }
+                               if (typeof req.body.request.zone != 'undefined') {
+                                   obj.zone = req.body.request.zone;
+                               }
+                               if (typeof req.body.request.category != 'undefined') {
+                                   obj.industry = req.body.request.category;
+                               }
+                               CardHolder.find(obj,function(err, cards) {
+                                   if (err) {
+                                       res.json(messeges.interna_error());
+                                   }
+                                   else {
+                                       if (typeof req.body.request.since_date != 'undefined') {
+                                          var ar = {};
+                                          var ar_b = [];
+                                          var ar_a = [];
+                                          var counter = 0;
+                                          cards.forEach(function(card) {
+                                              if (card.creation_date > new Date(req.body.request.since_date)) {
+                                                  ar_a.push(card);
+                                                  counter += 1;
+                                              }
+                                              else {
+                                                  ar_b.push(card);
+                                                  counter += 1;
+                                              }
+                                              if (counter == cards.length) {
+                                                  ar['before'] = ar_b;
+                                                  ar['after'] = ar_a;
+                                                  res.json({
+                                                      valid: true,
+                                                      msg: "Done",
+                                                      result: {"cardholders" : ar}
+                                                  });
+                                              }
+                                          });
+                                       }
+                                       else {
+                                           res.json({
+                                               valid: true,
+                                               msg: "Done",
+                                               result: { "cardholders" : cards }
+                                           });
+                                       }
+                                   }
+                               });
+                           }
+                       });
+                   }
+                   else {
+                       res.json(messeges.interna_error());
+                   }
+               });
+           }
+           else {
+               res.json(messeges.not_valid_operation());
+           }
+       }
    });
 });
 

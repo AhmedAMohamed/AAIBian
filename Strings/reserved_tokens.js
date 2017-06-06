@@ -17,6 +17,7 @@ var tokens = {
     news_required: "news_required",
     benefit_required: "ben_required",
     category_required: "cat_required",
+    cardholders_required: "card_required",
     areas_required: "area_required",
     medical_required: "med_required",
     function_name: {

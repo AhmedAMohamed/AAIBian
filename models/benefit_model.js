@@ -27,7 +27,7 @@ var benefit_schema = mongoose.Schema(
         industry: String,
         img_path: {
             type: String,
-            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
+            default: "/uploads/logo.jpg"
         },
         offer: String
     }

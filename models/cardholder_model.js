@@ -15,7 +15,7 @@ var cardHolder_schema = mongoose.Schema(
         },
         img_path: {
             type: String,
-            default: process.env.OPENSHIFT_DATA_DIR + "/uploads/" + "logo.jpg"
+            default: "/uploads/logo.jpg"
         },
         merchant: String,
         zone: String,
