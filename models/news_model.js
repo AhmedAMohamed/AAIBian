@@ -20,11 +20,11 @@ var news_schema = mongoose.Schema(
         },
         img_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
         media_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         }
     }
 );
