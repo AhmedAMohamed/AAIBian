@@ -351,7 +351,13 @@ router.get('/test_notification', function(req, res, next) {
             if (err) {
                 console.log("Something has gone wrong!");
             } else {
+
                 console.log("Successfully sent with response: ", response);
+                res.json({
+                    valid: true,
+                    msg: "Done",
+
+                });
             }
         });
 });
