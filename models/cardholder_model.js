@@ -2,7 +2,6 @@
  * Created by ahmedalaa on 4/15/17.
  */
 
-
 var mongoose = require('mongoose');
 
 var cardHolder_schema = mongoose.Schema(
@@ -15,7 +14,7 @@ var cardHolder_schema = mongoose.Schema(
         },
         img_path: {
             type: String,
-            default: "/uploads/logo.jpg"
+            default: "/data/uploads/logo.jpg"
         },
         merchant: String,
         zone: String,

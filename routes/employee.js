@@ -704,6 +704,32 @@ router.post('/get_nearest', function(req, res, next) {
     });
 });
 
+router.post('/test_card', function(req, res, next) {
+    CardHolder.find({}, function(err, obj) {
+        console.log(err);
+        res.json(obj);
+    });
+});
+
+router.post('/add_card_test', function(req, res, next) {
+    var card = {
+        name: "Ahmed",
+        address: "Alaa",
+        location: [1,1],
+        img_path: "/data/uploads/logo.jpg",
+        merchant: "Mohamed",
+        zone: "Alaa",
+        id: 1000,
+        industry: "visa",
+        offer: "THis is the offer",
+        creation_date: new Date(Date.now())
+    };
+    var m = new CardHolder(card);
+    m.save(function(err, id) {
+        res.json(id);
+    })
+});
+
 router.post('/feedback', function(req, res, next) {
     API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
         if (error) {
