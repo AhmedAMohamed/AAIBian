@@ -229,7 +229,7 @@ router.post('/get_benefits', function(req, res, next) {
    });
 });
 
-router.post('get_cardholder', function(req, res, next) {
+router.post('/get_cardholder', function(req, res, next) {
     API_Key.find({api_key:  req.body.api_key}, function(error, valid) {
        if (error) {
            res.json(messeges.not_valid_operation());
