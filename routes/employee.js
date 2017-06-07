@@ -77,6 +77,12 @@ var get_find_request = function(selection, request, callback) {
     		callback(err, mongIds);
     	});
     }
+    if (selection == reserved_tokens.cardholders_required) {
+            get_mongoose_ids(typeof request.med_ids == 'undefined' ? [] : request.med_ids, function(err, mongIds) {
+       	        console.log("after async finish");
+        		callback(err, mongIds);
+        	});
+        }
 };
 
 router.post('/get_news', function(req, res, next) {
