@@ -22,11 +22,11 @@ var medical_schema = mongoose.Schema(
         },
         img_path: {
             type: String,
-            default: "/uploads/logo.jpg"
+            default: "/data/uploads/logo.jpg"
         },
         pdf_path: {
             type: String,
-            default: "/uploads/logo.jpg"
+            default: "/data/uploads/logo.jpg"
         }
     }
 );
