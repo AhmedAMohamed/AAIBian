@@ -314,6 +314,7 @@ router.get('/add_categories', function(req, res, next) {
                     name: cat,
                     search_name: cat,
                     sector: 'med',
+                    img_path: "data/logos/" + (cat.toLowerCase()).replace(" ", "_") + '.png',
                     creation_date: new Date(Date.now())
                 };
                 var ar = new Categories(a);
