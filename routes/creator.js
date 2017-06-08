@@ -305,6 +305,7 @@ router.get('/add_categories', function(req, res, next) {
         }
     });
     Medical.find().distinct('type', function(err, meds) {
+        var utf8 = require('utf8');
         if(err) {
             console.log("Error");
         }
@@ -314,7 +315,7 @@ router.get('/add_categories', function(req, res, next) {
                     name: cat,
                     search_name: cat,
                     sector: 'med',
-                    img_path: "data/logos/" + (cat.toLowerCase()).replace(" ", "_") + '.png',
+                    img_path: "data/logos/" + utf8.encode((cat.toLowerCase())).replace(" ", "_") + '.png',
                     creation_date: new Date(Date.now())
                 };
                 var ar = new Categories(a);
