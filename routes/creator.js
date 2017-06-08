@@ -289,6 +289,7 @@ router.get('/add_categories', function(req, res, next) {
                     name: cat,
                     search_name: cat,
                     sector: 'ben',
+                    img_path: process.env.OPENSHIFT_DATA_DIR + "logos/" + cat.toLowerCase() + '.png',
                     creation_date: new Date(Date.now())
                 }
                 var ar = new Categories(a);
