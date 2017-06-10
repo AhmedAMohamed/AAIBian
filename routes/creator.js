@@ -127,36 +127,66 @@ router.post('/addATM', function(req, res, next) {
 });
 
 router.post('/addMedical', function (req, res, next) {
-    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
-            req.body.token, req.body.privilege, req.body.task)) {
+    if (//Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
+            /*req.body.token, req.body.privilege, req.body.task) */true) {
         var dat = [];
         var keys = Object.keys(types);
         keys.forEach(function (key) {
             fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + types[key] + ".csv" ).pipe(csv()).
             on('data', function (data) {
                 dat.push(data);
-                var row = {
-                    type : types[key],
-                    id: types[key] + "_" + data[0],
-                    name: data[1],
-                    address: data[2],
-                    zone: data[3],
-                    phone_number: data[4],
-                    location: [
-                        parseFloat(data[6]),
-                        parseFloat(data[5])
-                    ]
+                console.log(types[key]);
+                if (types[key] == "معامل اشعة") {
+                    var row = {
+                        type : types[key],
+                        id: types[key] + "_" + data[0],
+                        name: data[1],
+                        address: data[2],
+                        zone: data[3],
+                        phone_number: data[4],
+//                        location: [
+//                            parseFloat(data[6]),
+//                            parseFloat(data[5])
+//                        ]
+                    }
+                    var medical = new Medical(row);
+                    medical.save(function (err, dent) {
+                        if (err) {
+                            console.log(err);
+                            console.log("Some error");
+                        }
+                        else {
+                            console.log("Done row in " + types[key]);
+                        }
+                    })
                 }
-                var medical = new Medical(row);
-                medical.save(function (err, dent) {
-                    if (err) {
-                        console.log(err);
-                        console.log("Some error");
+                else {
+                    var row = {
+                        type : types[key],
+                        id: types[key] + "_" + data[0],
+                        name: data[1],
+                        address: data[2],
+                        zone: data[3],
+                        phone_number: data[4],
+                        location: [
+                            parseFloat(data[6]),
+                            parseFloat(data[5])
+                        ]
                     }
-                    else {
-                        console.log("Done row in " + types[key]);
-                    }
-                })
+                    var medical = new Medical(row);
+                    medical.save(function (err, dent) {
+                        if (err) {
+                            console.log(err);
+                            console.log("Some error");
+                        }
+                        else {
+                            console.log("Done row in " + types[key]);
+                        }
+                    })
+                }
+                /*
+
+                */
             }).on('end', function (dataLength) {
                 console.log("finished");
             });
@@ -298,7 +328,7 @@ router.get('/add_categories', function(req, res, next) {
                         console.log("Error");
                     }
                     else {
-                        console.log("Inserted");
+                        console.log("Inserted B");
                     }
                 });
             })
@@ -311,11 +341,51 @@ router.get('/add_categories', function(req, res, next) {
         }
         else {
             meds.forEach(function(cat) {
+                var path = "data/logos/";
+                if (cat == "اسنان") {
+                    path += "dent.png";
+                }
+                else if (cat == "انف و اذن") {
+                    path += "nose.png";
+                }
+                else if (cat == "باطنة") {
+                    path += "stom.png";
+                }
+                else if (cat == "جلدية") {
+                    path += "skin.png";
+                }
+                else if (cat == "علاج طبيعي") {
+                    path += "natural.png";
+                }
+                else if (cat == "عيون") {
+                    path += "eye.png";
+                }
+                else if (cat == "عظام") {
+                    path += "bone.png";
+                }
+                else if (cat == "جراحة") {
+                    path += "surg.png";
+                }
+                else if (cat == "صدر و قلب") {
+                    path += "chest.png";
+                }
+                else  if (cat == "مسالك بولية") {
+                    path += "masalek.png";
+                }
+                else if (cat == "مستشفيات") {
+                    path += "hospitals.png";
+                }
+                else if (cat == "معامل تحاليل") {
+                    path += "ta7lel.png";
+                }
+                else if (cat == "معامل أشعة") {
+                    path += "xray.png";
+                }
                 var a = {
                     name: cat,
                     search_name: cat,
                     sector: 'med',
-                    img_path: "data/logos/" + utf8.encode((cat.toLowerCase())).replace(" ", "_") + '.png',
+                    img_path: path,
                     creation_date: new Date(Date.now())
                 };
                 var ar = new Categories(a);
@@ -324,7 +394,7 @@ router.get('/add_categories', function(req, res, next) {
                         console.log("Error");
                     }
                     else {
-                        console.log("Inserted");
+                        console.log("Inserted M");
                     }
                 });
             })

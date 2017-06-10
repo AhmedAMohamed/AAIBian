@@ -46,12 +46,17 @@
   								</div>
   								<div class="radio">
  									<label>
-    									<input type="radio" ng-model="userData.type" value="empl">
+    									<input type="radio" id="empl" value ="empl" ng-model="userData.type" value="empl">
     										Employee
   									</label><br/>
   								</div>
 					    	</div>
 							</ul>
+						</div>
+						<div class="form-group" ng-show = "userData.type == 'empl'">
+					    	<div class="col-sm-offset-2 col-sm-10">
+					    		<label class="col-sm-2 control-label">Div to be added</label>
+					    	</div>
 						</div>
 						<div class="form-group">
 					    	<div class="col-sm-offset-2 col-sm-10">

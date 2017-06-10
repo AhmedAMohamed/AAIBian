@@ -43,7 +43,7 @@ function loginController($scope, $http, $window, $location){
 	$scope.login = function(){
 
 	var logObject = {
-		'api_key': "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+		//'api_key': "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
  		'email': $scope.loginData.email,
  		'password': $scope.loginData.password
 	};
@@ -58,15 +58,23 @@ function loginController($scope, $http, $window, $location){
 		console.log(response.data.valid);
 		if(response.data.valid){
 			$window.sessionStorage.setItem("id", response.data.result.user_id);
+			$window.sessionStorage.setItem("api_key", response.data.result.api_key);
 			$window.sessionStorage.setItem("logged", "true");
 			$window.sessionStorage.setItem("type", response.data.result.privilege);
-			$location.path('/home');
-            // if(response.data.result.privilege == "gm") {
-
-            // }
-            // else {
-
-            // }
+			$http({
+				method: 'GET',
+				url:'/aaibian/admin/get_privilege/' + $window.sessionStorage.getItem("type"),
+				data:JSON.stringify(logObject),
+				headers: {'Content-Type': 'application/json'}
+			}).then(function(res){
+				if(response.data.valid){
+					$window.sessionStorage.setItem("functions", JSON.stringify(res.data.functions));
+					console.log($window.sessionStorage.getItem("functions"));
+					$location.path('/home');
+				}
+				else
+				$location.path('/error');
+			});
 		}
 		else
 		{
@@ -115,27 +123,60 @@ app.controller('menuController', menuController);
 menuController.$inject=['$scope', '$http', '$window', '$location'];
 function menuController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
-
-		$scope.behaviour=function(num){
-			if(num == 0 ){
+		var res=JSON.parse($window.sessionStorage.getItem("functions"));
+		$scope.functions = [];
+		var icons = [];
+		for (var x in res){
+		   	res.hasOwnProperty(x) && $scope.functions.push(res[x])
+			// var obj = {};
+			// if (res[x] == "add_user") {
+			// 	obj.add_user = "glyphicon glyphicon-user";
+			// }
+			// icons.push(obj);
+		}
+		//$scope.icons = icons;
+		console.log($scope.functions);
+		$scope.behaviour=function(val){
+			if(val == "Show Feedback"){
 				$location.path('/feedback');
 			}
-			else if(num == 1){
+			else if(val == "Add News"){
 				console.log("hi");
 				$location.path('/add-news');
 			}
-			else if(num == 2){
+			else if(val == "Add User"){
 				$location.path('/add-user');
 			}
-			else if (num ==3){
+			else if (val == 3){
 				$window.sessionStorage.clear();
 				$location.path('/');
 			}
-			else if (num ==4){
+			else if (val == 4){
 				$location.path('/list_users');
 			}
-			else if(num == 5){
+			else if(val == "set_privilege"){
 				$location.path('/edit_roles');
+			}
+			else if(val == "Add Category"){
+				$location.path('/add_category');
+			}
+			else if(val == "Add Staff Benefits"){
+				$location.path('/add_staff_benefits');
+			}
+			else if(val == "Add Medical Benefits"){
+				$location.path('/add_medical_benefits');
+			}
+			else if(val == "Add ATM"){
+				$location.path('/add_atm');
+			}
+			else if(val == 'Add Cardholders Benefits'){
+				$location.path('/add_carholders_benefits');
+			}
+			else if(val == 'Add  Area'){
+				$location.path('/add_area');
+			}
+			else if(val == 'Change Staff Password'){
+				$location.path('/change_staff_password');
 			}
 		}
 		$scope.testType = function(){
@@ -154,47 +195,54 @@ editRolesController.$inject=['$scope', '$http', '$window','$location'];
 function editRolesController($scope, $http, $window, $location){
 	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
-		$scope.roles = [];
+		//$scope.roles = [];
+		$scope.options = ["Add Users", "Add Category","Add Staff Benefits","Add News", 
+		"Add Medical Benefits","Add ATM","Add Cardholders Benefits","Add Area","Change Staff Password","Show Feedback"];
+		$scope.root_privilege = [];
+		$scope.admin_privilege = [];
 		
 		$scope.setRoles = function(){
 			console.log("here");
-			$scope.roles.push({option: "Add News", root: false, admin: false});
-			$scope.roles.push({option: "Add Users", root: false, admin: false});
-			$scope.roles.push({option: "Show Feedback", root: false, admin: false});
+
+			// $scope.roles.push({option: "Add News", root: false, admin: false});
+			// $scope.roles.push({option: "Add Users", root: false, admin: false});
+			// $scope.roles.push({option: "Show Feedback", root: false, admin: false});
+
+
 		  	var reqObject = {
 		    	"api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
 			    "user_id" : $window.sessionStorage.getItem("id"),
-			    "privilege" : $window.sessionStorage.getItem("type")
+			    "privilege" : $window.sessionStorage.getItem("type"),
+			    "request": {
+				        "root_privilege": Object.keys($scope.root_privilege),
+				        "admin_privilege":Object.keys($scope.admin_privilege)
+				    }
 			};
 
-			
-			
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/set_privilege',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				console.log(response.data);
+				console.log(response.data.valid);
+				console.log(response);
+				//console.log("session here");
+        		//$scope.users = response.data.result;
+				//console.log($window.sessionStorage.getItem("id"));
+				if(response.data.valid){
+					return true;
 
-			console.log(reqObject);
-			// $http({
-			// method: 'POST',
-			// 	url:'/aaibian/admin/list_users',
-			// 	data:JSON.stringify(reqObject),
-			// 	headers: {'Content-Type': 'application/JSON'}
-			// })
-			// .then(function(response) {
-			// 	console.log(response.data);
-			// 	console.log(response.data.valid);
-			// 	console.log(response);
-			// 	//console.log("session here");
-   //      		$scope.users = response.data.result;
-			// 	//console.log($window.sessionStorage.getItem("id"));
-			// 	if(response.data.valid){
-			// 		return true;
-
-			// 		//$location.path('/new_user');
-			// 	}
-			// 	else
-			// 	{
-			// 		return false;
-			// 		//$window.location.href='/pages/homeFalse.html';
-			// 	}
-		 //    });
+					//$location.path('/new_user');
+				}
+				else
+				{
+					return false;
+					//$window.location.href='/pages/homeFalse.html';
+				}
+		    });
 		}
 	}
 }
@@ -277,35 +325,35 @@ function getUsersController($scope, $http, $window, $location){
 			    "privilege" : $window.sessionStorage.getItem("type")
 			};
 
-			$scope.users.push({name: "A", email:"X", type:"Y"});
-			$scope.users.push({name: "B", email:"C", type:"D"});
-			$scope.users.push({name: "H", email:"I", type:"J"});
+			// $scope.users.push({name: "A", email:"X", type:"Y"});
+			// $scope.users.push({name: "B", email:"C", type:"D"});
+			// $scope.users.push({name: "H", email:"I", type:"J"});
 
 			console.log(reqObject);
-			// $http({
-			// method: 'POST',
-			// 	url:'/aaibian/admin/list_users',
-			// 	data:JSON.stringify(reqObject),
-			// 	headers: {'Content-Type': 'application/JSON'}
-			// })
-			// .then(function(response) {
-			// 	console.log(response.data);
-			// 	console.log(response.data.valid);
-			// 	console.log(response);
-			// 	//console.log("session here");
-   //      		$scope.users = response.data.result;
-			// 	//console.log($window.sessionStorage.getItem("id"));
-			// 	if(response.data.valid){
-			// 		return true;
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/list_users',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				console.log(response.data);
+				console.log(response.data.valid);
+				console.log(response);
+				//console.log("session here");
+        		$scope.users = response.data.result;
+				//console.log($window.sessionStorage.getItem("id"));
+				if(response.data.valid){
+					return true;
 
-			// 		//$location.path('/new_user');
-			// 	}
-			// 	else
-			// 	{
-			// 		return false;
-			// 		//$window.location.href='/pages/homeFalse.html';
-			// 	}
-		 //    });
+					//$location.path('/new_user');
+				}
+				else
+				{
+					return false;
+					//$window.location.href='/pages/homeFalse.html';
+				}
+		    });
 		 
 		}
 	}

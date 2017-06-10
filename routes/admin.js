@@ -70,10 +70,13 @@ router.post('/add_news', multiparty() , function (req, res) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
                 if(user) {
+                    var to_delete_date = new Date(Date.now());
                     to_delete_date.setDate(to_delete_date.getDate() + 7);
-                    var file_temp_path = req.files.FIELDNAME.path;
-                    var file_name = req.files.FIELDNAME.originalFileName;
-                    var newPath = reserved_tokens.upload_dir + '/' + sha1(file_name) + randomstring.generate(7);
+                    var file_temp_path = req.files.file.path;
+                    var file_name = req.files.file.originalFileName;
+
+                    var newPath = reserved_tokens.upload_dir + '/' + file_name + randomstring.generate(7);
+                    console.log(newPath);
                     fs.readFile(file_temp_path, function (err, data) {
                         if (err) {
                             res.json(messeges.interna_error());
@@ -92,9 +95,11 @@ router.post('/add_news', multiparty() , function (req, res) {
                                        file_path: newPath,
                                        creator: user_id
                                    };
+
                                    var news = new News(data);
                                    news.save(function(err, sNews) {
                                        if(err) {
+                                           console.log(err);
                                            res.json(messeges.interna_error());
                                        }
                                        else {
@@ -291,7 +296,7 @@ router.post('/add_atm', function(req, res, next) {
     });
 });
 */
-router.get('/get_privilege/:privilege', function() {
+router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
     if (privilege == validation_tokens.privilege.GM) {
         var respond = {

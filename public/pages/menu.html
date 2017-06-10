@@ -2,10 +2,13 @@
     <ul class="nav">
                     <!-- Main menu -->
         <li ng-show = "testType()" ><a ng-click="behaviour(0)"><i class="glyphicon glyphicon-comment"></i> Show Feedback</a></li>
-        <li><a ng-click="behaviour(1)"><i class="glyphicon glyphicon-folder-open"></i> Add News</a></li>
-        <li><a ng-click="behaviour(2)"><i class="glyphicon glyphicon-user"></i> Add User</a></li>
+        <div ng-repeat="x in functions" class='nav'>
+        	<li><a ng-click="behaviour(x)"  ><i class="glyphicon glyphicon-adjust"></i>{{x}}</a></li>
+        <!-- <li><a ng-click="behaviour(2)"><i class="glyphicon glyphicon-user"></i> Add User</a></li>
         <li><a ng-click="behaviour(4)"><i class="glyphicon glyphicon-user"></i> View Users</a></li>
         <li><a ng-click="behaviour(5)"><i class="glyphicon glyphicon-adjust"></i> Edit Roles</a></li>
+         -->
+        </div>
         <li><a ng-click="behaviour(3)"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
     </ul>
 </div>

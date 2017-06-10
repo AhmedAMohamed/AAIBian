@@ -21,15 +21,17 @@ var tokens = {
     areas_required: "area_required",
     medical_required: "med_required",
     function_name: {
-        add_user: "add_user",
-        add_cat: "add_category",
-        add_benefit: "add_benefit",
-        add_medical: "add_medical",
-        add_atm: "add_atm",
-        add_news: "add_news",
-        add_area: "add_area",
-        change_password: "change_password",
-        set_privilege: "set_privilege"
+        add_user: "Add Users",
+        add_cat: "Add Category",
+        add_benefit: "Add Staff Benefits",
+        add_medical: "Add Medical Benefits",
+        add_atm: "Add ATM",
+        add_cardholder: "Add Cardholders Benefits",
+        add_news: "Add News",
+        add_area: "Add Area",
+        change_password: "Change Staff Password",
+        set_privilege: "set_privilege",
+        show_feedbacks: "Show Feedback"
     },
     radius: (15 / 3963.2),
     upload_dir: process.env.OPENSHIFT_DATA_DIR + "/uploads/"
