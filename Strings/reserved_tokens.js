@@ -34,7 +34,7 @@ var tokens = {
         show_feedbacks: "Show Feedback"
     },
     radius: (15 / 3963.2),
-    upload_dir: process.env.OPENSHIFT_DATA_DIR + "/uploads/"
+    upload_dir: /*"/Users/ahmedalaa/Desktop" */process.env.OPENSHIFT_DATA_DIR + "/uploads/"
 };
 
 module.exports = tokens;

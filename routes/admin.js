@@ -66,6 +66,8 @@ router.post('/add_news', multiparty() , function (req, res) {
     var api_key = req.body.api_key;
     var privilege = req.body.privilege;
     var news = req.body.news;
+    console.log(news);
+    console.log(req.body);
     Auth.auth_check(user_id, api_key, function(validations) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
@@ -73,52 +75,49 @@ router.post('/add_news', multiparty() , function (req, res) {
                     var to_delete_date = new Date(Date.now());
                     to_delete_date.setDate(to_delete_date.getDate() + 7);
                     var file_temp_path = req.files.file.path;
-                    var file_name = req.files.file.originalFileName;
-
-                    var newPath = reserved_tokens.upload_dir + '/' + file_name + randomstring.generate(7);
-                    console.log(newPath);
+                    var file_name = req.files.file.originalFilename;
+                    var newPath = reserved_tokens.upload_dir + '/' + randomstring.generate(7) + file_name;
                     fs.readFile(file_temp_path, function (err, data) {
                         if (err) {
                             res.json(messeges.interna_error());
                         }
                         else {
-                            fs.writeFile(newPath, data, function (err) {
-                               if (err) {
+                            var writeStream = fs.createWriteStream(newPath);
+                            writeStream.write(data);
+                            writeStream.end();
+                            var data = {
+                               title: req.body.news.title,
+                               Body: req.body.news.body,
+                               creation_date: new Date(Date.now()),
+                               to_delete_date: to_delete_date,
+                               media_path: newPath,
+                               creator: user_id
+                           };
+
+                           var news = new News(data);
+                           news.save(function(err, sNews) {
+                               if(err) {
+                                   console.log("save error");
+                                   console.log(err);
                                    res.json(messeges.interna_error());
                                }
                                else {
-                                   var data = {
-                                       title: news.title,
-                                       Body: news.body,
-                                       creation_date: new Date(Date.now()),
-                                       to_delete_date: to_delete_date,
-                                       file_path: newPath,
-                                       creator: user_id
-                                   };
-
-                                   var news = new News(data);
-                                   news.save(function(err, sNews) {
-                                       if(err) {
-                                           console.log(err);
-                                           res.json(messeges.interna_error());
-                                       }
-                                       else {
-                                           fs.unlink(file_temp_path);
-                                           helpers['users'].schedule_news_deletion(sNews._id);
-                                           res.json(messeges.valid_operation())
-                                       }
-                                   });
+                                   fs.unlink(file_temp_path);
+                                   helpers['users'].schedule_news_deletion(sNews._id);
+                                   res.json(messeges.valid_operation())
                                }
-                            });
+                           });
                         }
                     });
                 }
                 else {
+                    console.log("error")
                     res.json(messeges.not_valid_operation());
                 }
             });
         }
         else {
+            console.log("not all")
             res.json(messeges.not_valid_operation());
         }
     });
