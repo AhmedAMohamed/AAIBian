@@ -31,9 +31,9 @@ db_connector("mongodb://alaa:ahmed@ds161400.mlab.com:61400/aaibian", function (v
        //helpers['starters'].benefit_delete_schedule();
        //helpers['starters'].news_delete_schdule();
        app.use('/', creator, cors());
-       //app.use('/aaibian/user', users, cors());
-       //app.use('/aaibian/admin', admins, cors());
-       //app.use('/aaibian/emp', employees, cors());
+       app.use('/aaibian/user', users, cors());
+       app.use('/aaibian/admin', admins, cors());
+       app.use('/aaibian/emp', employees, cors());
    }
 });
 

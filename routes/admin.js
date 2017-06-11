@@ -22,9 +22,9 @@ var helpers = require('../Utils/helpers');
 
 //var sha1 = require('sha1');
 var randomstring = require("randomstring");
-//var FCM = require('fcm-node');
+var FCM = require('fcm-node');
 
-/*
+
 router.post('/add_user', function (req, res) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
       if (key) {
@@ -277,8 +277,6 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         }
     });
 });
-*/
-/*
 router.post('/add_atm', function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
           if (key) {
@@ -299,8 +297,6 @@ router.post('/add_atm', function(req, res, next) {
           }
     });
 });
-*/
-/*
 router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
     if (privilege == validation_tokens.privilege.GM) {
@@ -407,8 +403,6 @@ router.post('/add_GM', function(req, res) {
     }
   });
 });
-*/
-/*
 router.post('/list_users', function(req, res, next) {
   User.find({}, function(err, users) {
     if(err) {
@@ -426,8 +420,6 @@ router.post('/list_users', function(req, res, next) {
     }
   })
 });
-*/
-/*
 router.get('/upload_test', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'upload_form.html'));
 });
