@@ -67,6 +67,8 @@ router.post('/add_news', multiparty() , function (req, res) {
     var api_key = req.body.api_key;
     var privilege = req.body.privilege;
     var news = req.body.news;
+    console.log("THe news");
+    console.log(news);
     Auth.auth_check(user_id, api_key, function(validations) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
