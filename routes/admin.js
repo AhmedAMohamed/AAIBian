@@ -89,7 +89,7 @@ router.post('/add_news', multiparty() , function (req, res) {
                             writeStream.end();
                             var data = {
                                title: req.body.news.title,
-                               Body: req.body.news.body,
+                               Body: req.body.news.Body,
                                creation_date: new Date(Date.now()),
                                to_delete_date: to_delete_date,
                                media_path: "/data/uploads/" + file_name_path,
