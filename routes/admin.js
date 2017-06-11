@@ -76,7 +76,8 @@ router.post('/add_news', multiparty() , function (req, res) {
                     to_delete_date.setDate(to_delete_date.getDate() + 7);
                     var file_temp_path = req.files.file.path;
                     var file_name = req.files.file.originalFilename;
-                    var newPath = reserved_tokens.upload_dir + '/' + randomstring.generate(7) + file_name;
+                    var file_name_path = randomstring.generate(7) + file_name;
+                    var newPath = reserved_tokens.upload_dir + '/' + file_name_path;
                     fs.readFile(file_temp_path, function (err, data) {
                         if (err) {
                             res.json(messeges.interna_error());
@@ -90,7 +91,7 @@ router.post('/add_news', multiparty() , function (req, res) {
                                Body: req.body.news.body,
                                creation_date: new Date(Date.now()),
                                to_delete_date: to_delete_date,
-                               media_path: newPath,
+                               media_path: "/data/uploads/" + file_name_path,
                                creator: user_id
                            };
 
