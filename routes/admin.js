@@ -22,7 +22,7 @@ var helpers = require('../Utils/helpers');
 
 //var sha1 = require('sha1');
 var randomstring = require("randomstring");
-//var FCM = require('fcm-node');
+var FCM = require('fcm-node');
 
 /*
 router.post('/add_user', function (req, res) {
