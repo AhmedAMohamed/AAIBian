@@ -116,7 +116,8 @@ var notification_schedules_helpers = {
                 title: news.title,
                 body: news.Body
             },
-            data: news
+            data: news,
+            priority : "high"
         };
         fcm.send(message, function(err, response){
             if (err) {
