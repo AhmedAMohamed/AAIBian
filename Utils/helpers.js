@@ -6,6 +6,8 @@ var messages = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
 var reserved_tokens = require('../Strings/reserved_tokens');
 var News = require('../models/news_model');
+var FCM = require('fcm-node');
+
 
 var selectKeys = function (starter, list) {
     var keys = [];
@@ -103,6 +105,28 @@ var notification_schedules_helpers = {
                     console.log("Deleted from schedule");
                 }
             });
+        });
+    },
+    notifyNews: function (title, body, id, callback) {
+        var fcm = new FCM(reserved_tokens.server_name);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            to: '/topics/news',
+            collapse_key: 'trial',
+
+            data: {  //you can send only notification or only data(or include both)
+                title: title,
+                Body: body,
+                id: id
+            }
+        };
+        fcm.send(message, function(err, response){
+            if (err) {
+                console.log("Something has gone wrong!");
+                callback(false);
+            } else {
+                console.log("Successfully sent with response: ", response);
+                callback(true);
+            }
         });
     }
 };

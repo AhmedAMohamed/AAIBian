@@ -61,13 +61,10 @@ router.post('/add_user', function (req, res) {
 });
 
 router.post('/add_news', multiparty() , function (req, res) {
-
     var user_id = req.body.user_id;
     var api_key = req.body.api_key;
     var privilege = req.body.privilege;
     var news = req.body.news;
-    console.log(news);
-    console.log(req.body);
     Auth.auth_check(user_id, api_key, function(validations) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
@@ -94,18 +91,24 @@ router.post('/add_news', multiparty() , function (req, res) {
                                media_path: "/data/uploads/" + file_name_path,
                                creator: user_id
                            };
-
                            var news = new News(data);
                            news.save(function(err, sNews) {
                                if(err) {
-                                   console.log("save error");
-                                   console.log(err);
                                    res.json(messeges.interna_error());
                                }
                                else {
                                    fs.unlink(file_temp_path);
                                    helpers['users'].schedule_news_deletion(sNews._id);
-                                   res.json(messeges.valid_operation())
+                                   helpers['notifiers'].notifyNews(req.body.news.title, req.body.news.body, sNews._id,
+                                   function(valid) {
+                                      if(valid) {
+                                          res.json(messeges.valid_operation());
+                                      }
+                                      else {
+                                          console.log("notification sent");
+                                          res.json(messeges.not_valid_operation());
+                                      }
+                                   });
                                }
                            });
                         }
