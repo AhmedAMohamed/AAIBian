@@ -428,5 +428,4 @@ router.post('/upload_trial', multiparty(),function(req, res, next) {
 
   res.json(req.files);
 });
-*/
 module.exports = router;
