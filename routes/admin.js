@@ -99,15 +99,15 @@ router.post('/add_news', multiparty() , function (req, res) {
                                else {
                                    fs.unlink(file_temp_path);
                                    helpers['users'].schedule_news_deletion(sNews._id);
-                                   helpers['notifiers'].notifyNews(req.body.news.title, req.body.news.body, sNews._id,
-                                   function(valid) {
-                                      if(valid) {
-                                          res.json(messeges.valid_operation());
-                                      }
-                                      else {
-                                          res.json(messeges.not_valid_operation());
-                                      }
-                                   });
+//                                   helpers['notifiers'].notifyNews(req.body.news.title, req.body.news.body, sNews._id,
+//                                   function(valid) {
+//                                      if(valid) {
+//                                          res.json(messeges.valid_operation());
+//                                      }
+//                                      else {
+//                                          res.json(messeges.not_valid_operation());
+//                                      }
+//                                   });
                                }
                            });
                         }
