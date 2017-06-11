@@ -6,7 +6,7 @@ var messages = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
 var reserved_tokens = require('../Strings/reserved_tokens');
 var News = require('../models/news_model');
-var FCM = require('fcm-node');
+//var FCM = require('fcm-node');
 
 
 var selectKeys = function (starter, list) {
