@@ -410,7 +410,10 @@ router.get('/test_notification', function(req, res, next) {
     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
         to: '/topics/news',
         collapse_key: 'trial',
-
+        notification: {
+            "body" : "This week’s edition is now available.",
+            "title": "Portugal vs. Denmark",
+        },
         data: {  //you can send only notification or only data(or include both)
             title: 'Ahmed',
             Body: 'my another value',
