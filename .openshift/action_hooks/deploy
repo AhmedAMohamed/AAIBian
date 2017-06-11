@@ -11,4 +11,4 @@ fi
 
 # create symlink to uploads directory
 ln -sf ${OPENSHIFT_DATA_DIR} ${OPENSHIFT_REPO_DIR}public/
-echo "AHmed Alaa";
+echo "AHmed Alaa New server";
