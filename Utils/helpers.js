@@ -113,8 +113,8 @@ var notification_schedules_helpers = {
             to: '/topics/news',
             collapse_key: 'trial',
             notification: {
-                title: news.title,
-                body: news.Body
+                title: "AHmed",
+                body: "Alaa"
             },
             data: news,
             priority : "high"
