@@ -105,7 +105,6 @@ router.post('/add_news', multiparty() , function (req, res) {
                                           res.json(messeges.valid_operation());
                                       }
                                       else {
-                                          console.log("notification sent");
                                           res.json(messeges.not_valid_operation());
                                       }
                                    });
@@ -115,13 +114,11 @@ router.post('/add_news', multiparty() , function (req, res) {
                     });
                 }
                 else {
-                    console.log("error")
                     res.json(messeges.not_valid_operation());
                 }
             });
         }
         else {
-            console.log("not all")
             res.json(messeges.not_valid_operation());
         }
     });
