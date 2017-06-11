@@ -22,6 +22,8 @@ var helpers = require('../Utils/helpers');
 
 var sha1 = require('sha1');
 var randomstring = require("randomstring");
+var FCM = require('fcm-node');
+
 
 router.post('/add_user', function (req, res) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {

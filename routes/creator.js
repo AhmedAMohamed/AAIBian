@@ -405,6 +405,7 @@ router.get('/add_categories', function(req, res, next) {
 
 
 router.get('/test_notification', function(req, res, next) {
+    var FCM = require('fcm-node');
 
     var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
     '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
