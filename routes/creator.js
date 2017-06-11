@@ -23,7 +23,7 @@ var startups = require('../Utils/helpers');
 var types = require('../Strings/names_translations')[0];
 var msg = require('../Strings/messeges');
 
-/*
+
 router.post('/addBenefits', function (req, res, next) {
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
             req.body.privilege, req.body.task) || true) {
@@ -195,8 +195,7 @@ router.post('/addMedical', function (req, res, next) {
         res.json(msg.not_valid_operation());
     }
 });
-*/
-/*
+
 router.post('/addAPI_Key', function (req, res, next) {
   var api_ke = req.body.api;
   console.log("Ahmed called it and it is " + api_ke);
@@ -218,11 +217,11 @@ router.post('/addAPI_Key', function (req, res, next) {
   });
   res.json("Alaa");
 });
-*/
+
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
-/*
+
 router.get('/trial/:id', function(req, res, next) {
     console.log(req.headers);
     res.json(req.params.id);
@@ -317,7 +316,7 @@ router.get('/add_categories', function(req, res, next) {
                     name: cat,
                     search_name: cat,
                     sector: 'ben',
-                    img_path: "data/logos/" + (cat.toLowerCase()).replace(" ", "_") + '.png',
+                    img_path: "data/logos/" + (cat.toLowerCase()).replace(/ /g, "_") + '.png',
                     creation_date: new Date(Date.now())
                 }
                 var ar = new Categories(a);
@@ -402,35 +401,35 @@ router.get('/add_categories', function(req, res, next) {
 });
 
 
-//router.get('/test_notification', function(req, res, next) {
-////    var FCM = require('fcm-node');
-////
-////    var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
-////    '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
-////    var fcm = new FCM(serverKey);
-////    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-////        to: '/topics/news',
-////        collapse_key: 'trial',
-////
-////        data: {  //you can send only notification or only data(or include both)
-////            title: 'Ahmed',
-////            Body: 'my another value',
-////            id: "ahmed alaa "
-////        }
-////    };
-////    fcm.send(message, function(err, response){
-////            if (err) {
-////                console.log("Something has gone wrong!");
-////            } else {
-////
-////                console.log("Successfully sent with response: ", response);
-////                res.json({
-////                    valid: true,
-////                    msg: "Done",
-////
-////                });
-////            }
-////        });
-//});
-*/
+router.get('/test_notification', function(req, res, next) {
+    var FCM = require('fcm-node');
+
+    var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
+    '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
+    var fcm = new FCM(serverKey);
+    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+        to: '/topics/news',
+        collapse_key: 'trial',
+
+        data: {  //you can send only notification or only data(or include both)
+            title: 'Ahmed',
+            Body: 'my another value',
+            id: "ahmed alaa "
+        }
+    };
+    fcm.send(message, function(err, response){
+            if (err) {
+                console.log("Something has gone wrong!");
+            } else {
+
+                console.log("Successfully sent with response: ", response);
+                res.json({
+                    valid: true,
+                    msg: "Done",
+
+                });
+            }
+        });
+});
+
 module.exports = router;
