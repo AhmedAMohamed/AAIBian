@@ -121,8 +121,10 @@ var notification_schedules_helpers = {
         };
         fcm.send(message, function(err, response){
             if (err) {
+                console.log("Error in fcm");
                 callback(false);
             } else {
+                console.log("Send msg");
                 callback(true);
             }
         });
