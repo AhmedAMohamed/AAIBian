@@ -23,10 +23,10 @@ var startups = require('../Utils/helpers');
 var types = require('../Strings/names_translations')[0];
 var msg = require('../Strings/messeges');
 
-
+/*
 router.post('/addBenefits', function (req, res, next) {
-    if (/*Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
-            req.body.privilege, req.body.task)*/ true) {
+    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
+            req.body.privilege, req.body.task) || true) {
         var dat = [[]];
         fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "benefits.csv").pipe(csv()).
         on('data', function (data) {
@@ -126,8 +126,8 @@ router.post('/addATM', function(req, res, next) {
 });
 
 router.post('/addMedical', function (req, res, next) {
-    if (//Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
-            /*req.body.token, req.body.privilege, req.body.task) */true) {
+    if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
+            req.body.token, req.body.privilege, req.body.task) || true) {
         var dat = [];
         var keys = Object.keys(types);
         keys.forEach(function (key) {
@@ -183,9 +183,7 @@ router.post('/addMedical', function (req, res, next) {
                         }
                     })
                 }
-                /*
 
-                */
             }).on('end', function (dataLength) {
                 console.log("finished");
             });
@@ -197,7 +195,8 @@ router.post('/addMedical', function (req, res, next) {
         res.json(msg.not_valid_operation());
     }
 });
-
+*/
+/*
 router.post('/addAPI_Key', function (req, res, next) {
   var api_ke = req.body.api;
   console.log("Ahmed called it and it is " + api_ke);
@@ -219,11 +218,11 @@ router.post('/addAPI_Key', function (req, res, next) {
   });
   res.json("Alaa");
 });
-
+*/
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
 });
-
+/*
 router.get('/trial/:id', function(req, res, next) {
     console.log(req.headers);
     res.json(req.params.id);
@@ -433,5 +432,5 @@ router.get('/add_categories', function(req, res, next) {
 ////            }
 ////        });
 //});
-
+*/
 module.exports = router;
