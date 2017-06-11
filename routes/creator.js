@@ -405,34 +405,34 @@ router.get('/add_categories', function(req, res, next) {
 
 
 router.get('/test_notification', function(req, res, next) {
-    var FCM = require('fcm-node');
-
-    var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
-    '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
-    var fcm = new FCM(serverKey);
-    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-        to: '/topics/news',
-        collapse_key: 'trial',
-
-        data: {  //you can send only notification or only data(or include both)
-            title: 'Ahmed',
-            Body: 'my another value',
-            id: "ahmed alaa "
-        }
-    };
-    fcm.send(message, function(err, response){
-            if (err) {
-                console.log("Something has gone wrong!");
-            } else {
-
-                console.log("Successfully sent with response: ", response);
-                res.json({
-                    valid: true,
-                    msg: "Done",
-
-                });
-            }
-        });
+//    var FCM = require('fcm-node');
+//
+//    var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
+//    '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
+//    var fcm = new FCM(serverKey);
+//    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+//        to: '/topics/news',
+//        collapse_key: 'trial',
+//
+//        data: {  //you can send only notification or only data(or include both)
+//            title: 'Ahmed',
+//            Body: 'my another value',
+//            id: "ahmed alaa "
+//        }
+//    };
+//    fcm.send(message, function(err, response){
+//            if (err) {
+//                console.log("Something has gone wrong!");
+//            } else {
+//
+//                console.log("Successfully sent with response: ", response);
+//                res.json({
+//                    valid: true,
+//                    msg: "Done",
+//
+//                });
+//            }
+//        });
 });
 
 module.exports = router;
