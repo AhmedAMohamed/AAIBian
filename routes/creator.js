@@ -415,7 +415,8 @@ router.get('/test_notification', function(req, res, next) {
             title: 'Ahmed',
             Body: 'my another value',
             id: "ahmed alaa "
-        }
+        },
+        priority : "high"
     };
     fcm.send(message, function(err, response){
             if (err) {
