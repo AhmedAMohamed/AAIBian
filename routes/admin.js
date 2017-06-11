@@ -277,26 +277,26 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         }
     });
 });
-router.post('/add_atm', function(req, res, next) {
-    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
-          if (key) {
-              Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_atm, function(user) {
-                  if (user) {
-                    var d = {
-                        loc_name: req.body.new_atm.loc_name,
-                        address: req.
-                    }
-                  }
-                  else {
-                    res.json(messeges.not_valid_operation());
-                  }
-              });
-          }
-          else {
-            res.json(messeges.not_valid_operation());
-          }
-    });
-});
+//router.post('/add_atm', function(req, res, next) {
+//    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+//          if (key) {
+//              Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_atm, function(user) {
+//                  if (user) {
+//                    var d = {
+//                        loc_name: req.body.new_atm.loc_name,
+//                        address: req.
+//                    }
+//                  }
+//                  else {
+//                    res.json(messeges.not_valid_operation());
+//                  }
+//              });
+//          }
+//          else {
+//            res.json(messeges.not_valid_operation());
+//          }
+//    });
+//});
 router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
     if (privilege == validation_tokens.privilege.GM) {
