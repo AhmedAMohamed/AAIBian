@@ -107,26 +107,21 @@ var notification_schedules_helpers = {
             });
         });
     },
-//    notifyNews: function (title, body, id, callback) {
-////        var fcm = new FCM(reserved_tokens.server_name);
-////        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-////            to: '/topics/news',
-////            collapse_key: 'trial',
-////
-////            data: {  //you can send only notification or only data(or include both)
-////                title: title,
-////                Body: body,
-////                id: id
-////            }
-////        };
-////        fcm.send(message, function(err, response){
-////            if (err) {
-////                callback(false);
-////            } else {
-////                callback(true);
-////            }
-////        });
-//    }
+    notifyNews: function (news, callback) {
+        var fcm = new FCM(reserved_tokens.server_name);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            to: '/topics/news',
+            collapse_key: 'trial',
+            data: news
+        };
+        fcm.send(message, function(err, response){
+            if (err) {
+                callback(false);
+            } else {
+                callback(true);
+            }
+        });
+    }
 };
 
 var starter_helper = {

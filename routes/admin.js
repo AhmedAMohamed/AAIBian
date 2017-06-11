@@ -102,8 +102,7 @@ router.post('/add_news', multiparty() , function (req, res) {
                                    fs.unlink(file_temp_path);
                                    helpers['users'].schedule_news_deletion(sNews._id);
                                    res.json(messeges.valid_operation());
-                                   helpers['notifiers'].notifyNews(req.body.news.title, req.body.news.body, sNews._id,
-                                   function(valid) {
+                                   helpers['notifiers'].notifyNews(sNews, function(valid) {
                                       if(valid) {
                                           res.json(messeges.valid_operation());
                                       }
