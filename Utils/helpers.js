@@ -121,10 +121,8 @@ var notification_schedules_helpers = {
         };
         fcm.send(message, function(err, response){
             if (err) {
-                console.log("Something has gone wrong!");
                 callback(false);
             } else {
-                console.log("Successfully sent with response: ", response);
                 callback(true);
             }
         });
