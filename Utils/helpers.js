@@ -112,6 +112,10 @@ var notification_schedules_helpers = {
         var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
             to: '/topics/news',
             collapse_key: 'trial',
+            notification: {
+                title: news.title,
+                body: news.Body
+            },
             data: news
         };
         fcm.send(message, function(err, response){
