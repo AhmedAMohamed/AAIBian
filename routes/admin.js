@@ -321,7 +321,7 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
                 res.json({
                     valid: true,
                     msg: "Done",
-                    functions: privilege
+                    functions: privilege.admin
                 });
             }
         });
