@@ -12,10 +12,12 @@ var User = require('../models/user_model');
 var Areas = require('../models/area_model');
 var Categories = require('../models/category_model');
 var API_Key = require('../models/api_key_model');
+var Cardholder = require('../models/cardholder_model');
 var reserved_tokens = require('../Strings/reserved_tokens');
 var validation_tokens = require('../Strings/validation_tokens');
 var messeges = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
+var ATMs = require('../models/atm_model');
 var News = require('../models/news_model');
 var Privilege = require('../models/privileges_model');
 var helpers = require('../Utils/helpers');
@@ -277,26 +279,81 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         }
     });
 });
-//router.post('/add_atm', function(req, res, next) {
-//    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
-//          if (key) {
-//              Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_atm, function(user) {
-//                  if (user) {
-//                    var d = {
-//                        loc_name: req.body.new_atm.loc_name,
-//                        address: req.
-//                    }
-//                  }
-//                  else {
-//                    res.json(messeges.not_valid_operation());
-//                  }
-//              });
-//          }
-//          else {
-//            res.json(messeges.not_valid_operation());
-//          }
-//    });
-//});
+
+router.post('/add_atm', function(req, res, next) {
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+          if (key) {
+              Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_atm, function(user) {
+                  if (user) {
+                    var d = {
+                        loc_name: req.body.new_atm.loc_name,
+                        address: req.body.new_atm.address,
+                        creation_date: new Date(Date.now()),
+                        location: [
+                            parseFloat(req.body.new_atm.location.lat),
+                            parseFloat(req.body.new_atm.location.lng),
+                        ]
+                    }
+                    var atm = new ATMs(d);
+                    atm.save(function(err, nATM) {
+                        if (err) {
+                            res.json(messeges.interna_error());
+                        }
+                        else {
+                            res.json(messeges.valid_operation);
+                        }
+                    });
+                  }
+                  else {
+                    res.json(messeges.not_valid_operation());
+                  }
+              });
+          }
+          else {
+            res.json(messeges.not_valid_operation());
+          }
+    });
+});
+
+router.post('/add_cardholder', function(req, res, next) {
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
+                if (user) {
+                    var d = {
+                        name: req.body.new_cardholder.name,
+                        address: req.body.new_cardholder.address,
+                        location: [
+                            parseFloat(req.body.new_cardholder.location.lat),
+                            parseFloat(req.body.new_cardholder.location.lng)
+                        ],
+                        merchant: req.body.new_cardholder.merchant,
+                        zone: req.body.new_cardholder.zone,
+                        industry: req.body.new_cardholder.category,
+                        offer: req.body.new_cardholder.offer,
+                        creation_date: new Date(Date.now())
+                    };
+                    var card = new Cardholder(d);
+                    card.save(function(err, nCard) {
+                        if (err) {
+                            res.json(messeges.interna_error());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+                    res.json(messeges.not_valid_operation());
+                }
+            });
+        }
+        else {
+            res.json(messeges.not_valid_operation());
+        }
+    }
+});
+
 router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
     if (privilege == validation_tokens.privilege.GM) {
@@ -446,12 +503,5 @@ router.post('/list_users', function(req, res, next) {
     }
   })
 });
-router.get('/upload_test', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'upload_form.html'));
-});
 
-router.post('/upload_trial', multiparty(),function(req, res, next) {
-
-  res.json(req.files);
-});
 module.exports = router;

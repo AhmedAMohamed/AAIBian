@@ -12,19 +12,8 @@ var cardHolder_schema = mongoose.Schema(
             type: [Number],
             index: '2d'
         },
-        img_path: {
-            type: String,
-            default: "/data/uploads/logo.jpg"
-        },
         merchant: String,
         zone: String,
-        id: {
-            type: Number,
-            unique: true
-        },
-        contacts: [String],
-        validity_date: Number,
-        industry: String,
         offer: String,
         creation_date: Date
     }
