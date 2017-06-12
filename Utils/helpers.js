@@ -111,15 +111,15 @@ var notification_schedules_helpers = {
         var fcm = new FCM(reserved_tokens.server_name);
         console.log("this is the data payload");
         var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-            to: '/topics/news',
-            collapse_key: 'trial',
-            notification: {
+            "to": '/topics/news',
+            "collapse_key": 'trial',
+            "notification": {
                 title: news.title,
                 body: news.Body,
                 sound: " "
             },
-            data: news,
-            priority: "high",
+            "data": news,
+            "priority": "high",
             "content-available": true
         };
 

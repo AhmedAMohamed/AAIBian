@@ -311,7 +311,19 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
 
     }
     else if (privilege == validation_tokens.privilege.admin) {
-
+        Privilege.find({}, function(err, privileges) {
+            if(err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                var privilege = privileges[0];
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    functions: privilege
+                });
+            }
+        });
     }
     else {
         res.json(messeges.not_valid_operation());

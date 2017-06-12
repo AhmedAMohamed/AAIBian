@@ -63,7 +63,7 @@ router.post('/addBenefits', function (req, res, next) {
                     notification_date: notify_date,
                     deleteDate: to_delete_date,
                     notified: false,
-                    offer: data[11]
+                    offer: data[11],
                 };
                 var benefit = new Benefit(d);
                 benefit.save(function (err, da) {
