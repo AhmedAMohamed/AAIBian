@@ -30,7 +30,7 @@ var tokens = {
         add_news: "Add News",
         add_area: "Add Area",
         change_password: "Change Staff Password",
-        set_privilege: "set_privilege",
+        set_privilege: "Edit Roles",
         show_feedbacks: "Show Feedback"
     },
     radius: (15 / 3963.2),
