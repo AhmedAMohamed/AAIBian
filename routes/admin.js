@@ -317,6 +317,7 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
             }
             else {
                 var privilege = privileges[0];
+                console.log(privilege);
                 res.json({
                     valid: true,
                     msg: "Done",
