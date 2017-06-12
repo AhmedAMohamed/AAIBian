@@ -120,7 +120,7 @@ var notification_schedules_helpers = {
             },
             data: news,
             priority: "high",
-            content-available: true
+            "content-available": true
         };
 
         fcm.send(message, function(err, response){
