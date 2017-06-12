@@ -110,17 +110,19 @@ var notification_schedules_helpers = {
     notifyNews: function (news, callback) {
         var fcm = new FCM(reserved_tokens.server_name);
         console.log("this is the data payload");
-        console.log(news);
         var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
             to: '/topics/news',
             collapse_key: 'trial',
             notification: {
-                title: "AHmed",
-                body: "Alaa"
+                title: news.title,
+                body: news.Body,
+                sound: " "
             },
             data: news,
-            priority : "high"
+            priority: "high",
+            content-available: true
         };
+
         fcm.send(message, function(err, response){
             if (err) {
                 console.log("Error in fcm");
