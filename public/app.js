@@ -154,7 +154,7 @@ function menuController($scope, $http, $window, $location){
 			else if (val == 4){
 				$location.path('/list_users');
 			}
-			else if(val == "set_privilege"){
+			else if(val == "Edit Roles"){
 				$location.path('/edit_roles');
 			}
 			else if(val == "Add Category"){
