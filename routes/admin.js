@@ -351,7 +351,7 @@ router.post('/add_cardholder', function(req, res, next) {
         else {
             res.json(messeges.not_valid_operation());
         }
-    }
+    });
 });
 
 router.get('/get_privilege/:privilege', function(req, res, next) {
