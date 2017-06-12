@@ -308,7 +308,20 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
         res.json(respond);
     }
     else if (privilege == validation_tokens.privilege.root) {
-
+        Privilege.find({}, function(err, privileges) {
+            if(err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                var privilege = privileges[0];
+                console.log(privilege);
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    functions: privilege.root
+                });
+            }
+        });
     }
     else if (privilege == validation_tokens.privilege.admin) {
         Privilege.find({}, function(err, privileges) {
