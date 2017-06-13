@@ -92,13 +92,19 @@ app.controller('homeController', homeController);
 homeController.$inject=['$scope', '$http', '$window', '$location'];
 function homeController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
-		$scope.opt = function(num){
+		var res=JSON.parse($window.sessionStorage.getItem("functions"));
+        $scope.functions = [];
+        for (var x in res){
+            res.hasOwnProperty(x) && $scope.functions.push(res[x])
+        }
+
+		$scope.opt = function(val){
+
 
 			if(num == 0 ){
 				$location.path('/feedback');
 			}
 			else if(num == 1){
-				//console.log("hi");
 				$location.path('/add-news');
 			}
 			else if(num == 2){
@@ -125,17 +131,9 @@ function menuController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
 		var res=JSON.parse($window.sessionStorage.getItem("functions"));
 		$scope.functions = [];
-		var icons = [];
 		for (var x in res){
 		   	res.hasOwnProperty(x) && $scope.functions.push(res[x])
-			// var obj = {};
-			// if (res[x] == "add_user") {
-			// 	obj.add_user = "glyphicon glyphicon-user";
-			// }
-			// icons.push(obj);
 		}
-		//$scope.icons = icons;
-		console.log($scope.functions);
 		$scope.behaviour=function(val){
 			if(val == "Show Feedback"){
 				$location.path('/feedback');
@@ -181,7 +179,6 @@ function menuController($scope, $http, $window, $location){
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
-				console.log("here wrong");
 				return true;
 			}
 			else return false;
