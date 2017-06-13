@@ -107,6 +107,7 @@ function homeController($scope, $http, $window, $location){
                 $location.path('/add-news');
             }
             else if(val == "Add User"){
+                console.log("Ahmed Alaa Mohamed");
                 $location.path('/add-user');
             }
             else if (val == 3){
@@ -353,11 +354,6 @@ function getUsersController($scope, $http, $window, $location){
 			    "privilege" : $window.sessionStorage.getItem("type")
 			};
 
-			// $scope.users.push({name: "A", email:"X", type:"Y"});
-			// $scope.users.push({name: "B", email:"C", type:"D"});
-			// $scope.users.push({name: "H", email:"I", type:"J"});
-
-			console.log(reqObject);
 			$http({
 			method: 'POST',
 				url:'/aaibian/admin/list_users',
