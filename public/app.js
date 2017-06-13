@@ -388,6 +388,7 @@ function getUsersController($scope, $http, $window, $location){
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "User deleted";
+                    console.log("here before update");
                     $location.path('/list_users');
 		        }
 		        else {
