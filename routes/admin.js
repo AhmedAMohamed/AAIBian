@@ -354,6 +354,18 @@ router.post('/add_cardholder', function(req, res, next) {
     });
 });
 
+router.post('/delete_user', function(req, res, next) {
+    var id = req.body.id;
+    User.remove({_id: id}, function(err) {
+        if (err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    })
+});
+
 router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
     if (privilege == validation_tokens.privilege.GM) {
