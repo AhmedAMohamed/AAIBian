@@ -334,7 +334,7 @@ function addUserController($scope, $http, $window, $location){
 ///////////////////////////////////////////////////// ***** VIEW USERS
 app.controller('getUsersController', getUsersController);
 //dependency injection
-getUsersController.$inject=['$scope', '$http', '$window','$location'];
+getUsersController.$inject=['$scope', '$http', '$route', '$window','$location'];
 function getUsersController($scope, $http, $window, $location){
 	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
