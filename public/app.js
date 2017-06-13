@@ -389,6 +389,7 @@ function getUsersController($scope, $http, $window, $location){
                     $scope.created = true;
                     $scope.msg = "User deleted";
                     console.log("here before update");
+                    $scope.getUsers();
 		        }
 		        else {
                     $scope.created = false;
