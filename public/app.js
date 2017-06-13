@@ -110,13 +110,6 @@ function homeController($scope, $http, $window, $location){
                 console.log("Ahmed Alaa Mohamed");
                 $location.path('/add-user');
             }
-            else if (val == 3){
-                $window.sessionStorage.clear();
-                $location.path('/');
-            }
-            else if (val == 4){
-                $location.path('/list_users');
-            }
             else if(val == "Edit Roles"){
                 $location.path('/edit_roles');
             }
