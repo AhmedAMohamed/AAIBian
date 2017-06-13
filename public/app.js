@@ -99,6 +99,7 @@ function homeController($scope, $http, $window, $location){
         }
 
 		$scope.opt = function(val){
+			console.log(val);
 			if(val == "Show Feedback"){
                 $location.path('/feedback');
             }
