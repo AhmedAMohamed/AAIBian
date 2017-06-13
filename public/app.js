@@ -363,7 +363,6 @@ function getUsersController($scope, $http, $window, $location){
 				//console.log($window.sessionStorage.getItem("id"));
 				if(response.data.valid){
 					return true;
-
 					//$location.path('/new_user');
 				}
 				else
@@ -373,6 +372,32 @@ function getUsersController($scope, $http, $window, $location){
 				}
 		    });
 		 
+		}
+
+		$scope.deleteUser = function(id) {
+		    var request = {
+		        to_delete_id: id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_user',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "User deleted";
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "User not deleted yet";
+		        }
+		    });
+		}
+
+		$scope.getStatus = function() {
+            return $scope.created;
 		}
 	}
 }
