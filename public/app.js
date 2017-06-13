@@ -389,7 +389,7 @@ function getUsersController($scope, $http, $window, $location){
                     $scope.created = true;
                     $scope.msg = "User deleted";
                     console.log("here before update");
-                    $location.path('/list_users');
+                    $route.reload();
 		        }
 		        else {
                     $scope.created = false;
