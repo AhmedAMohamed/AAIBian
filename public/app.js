@@ -99,17 +99,47 @@ function homeController($scope, $http, $window, $location){
         }
 
 		$scope.opt = function(val){
-
-
-			if(num == 0 ){
-				$location.path('/feedback');
-			}
-			else if(num == 1){
-				$location.path('/add-news');
-			}
-			else if(num == 2){
-				$location.path('/add-user');
-			}
+			if(val == "Show Feedback"){
+                $location.path('/feedback');
+            }
+            else if(val == "Add News"){
+                console.log("hi");
+                $location.path('/add-news');
+            }
+            else if(val == "Add User"){
+                $location.path('/add-user');
+            }
+            else if (val == 3){
+                $window.sessionStorage.clear();
+                $location.path('/');
+            }
+            else if (val == 4){
+                $location.path('/list_users');
+            }
+            else if(val == "Edit Roles"){
+                $location.path('/edit_roles');
+            }
+            else if(val == "Add Category"){
+                $location.path('/add_category');
+            }
+            else if(val == "Add Staff Benefits"){
+                $location.path('/add_staff_benefits');
+            }
+            else if(val == "Add Medical Benefits"){
+                $location.path('/add_medical_benefits');
+            }
+            else if(val == "Add ATM"){
+                $location.path('/add_atm');
+            }
+            else if(val == 'Add Cardholders Benefits'){
+                $location.path('/add_carholders_benefits');
+            }
+            else if(val == 'Add  Area'){
+                $location.path('/add_area');
+            }
+            else if(val == 'Change Staff Password'){
+                $location.path('/change_staff_password');
+            }
 		}
 
 		$scope.testType = function(){
