@@ -181,6 +181,7 @@ function menuController($scope, $http, $window, $location){
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
+				console.log("here wrong");
 				return true;
 			}
 			else return false;
