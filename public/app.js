@@ -390,8 +390,9 @@ function getUsersController($scope, $http, $window, $location){
 
                     $scope.msg = "User deleted";
                     setTimeout(function() {
+                        console.log("To hide");
                         $scope.created = false;
-                    }, 10000)
+                    }, 100)
 		        }
 		        else {
                     $scope.created = false;
