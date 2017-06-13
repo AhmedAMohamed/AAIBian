@@ -387,12 +387,8 @@ function getUsersController($scope, $http, $window, $location){
 		    .then(function(response) {
 		        if (response.data.valid) {
                     $scope.created = true;
-
                     $scope.msg = "User deleted";
-                    setTimeout(function() {
-                        console.log("To hide");
-                        $scope.created = false;
-                    }, 100)
+                    $location.path('/list_users');
 		        }
 		        else {
                     $scope.created = false;
