@@ -387,7 +387,11 @@ function getUsersController($scope, $http, $window, $location){
 		    .then(function(response) {
 		        if (response.data.valid) {
                     $scope.created = true;
+
                     $scope.msg = "User deleted";
+                    settimeout(function() {
+                        $scope.created = false;
+                    }, 10000)
 		        }
 		        else {
                     $scope.created = false;
