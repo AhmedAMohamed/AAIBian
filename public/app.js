@@ -334,7 +334,7 @@ function addUserController($scope, $http, $window, $location){
 ///////////////////////////////////////////////////// ***** VIEW USERS
 app.controller('getUsersController', getUsersController);
 //dependency injection
-getUsersController.$inject=['$scope', '$http', '$route', '$window','$location'];
+getUsersController.$inject=['$scope', '$http', '$window','$location'];
 function getUsersController($scope, $http, $window, $location){
 	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -389,7 +389,6 @@ function getUsersController($scope, $http, $window, $location){
                     $scope.created = true;
                     $scope.msg = "User deleted";
                     console.log("here before update");
-                    $route.reload();
 		        }
 		        else {
                     $scope.created = false;
