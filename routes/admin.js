@@ -356,11 +356,15 @@ router.post('/add_cardholder', function(req, res, next) {
 
 router.post('/delete_user', function(req, res, next) {
     var id = req.body.id;
-    User.remove({_id: id}, function(err) {
+    console.log("this is the ID");
+    console.log(id);
+    User.findByIdAndRemove(id, function(err) {
         if (err) {
+
             res.json(messeges.not_valid_operation());
         }
         else {
+            console.log("Ahmed Alaa Remove");
             res.json(messeges.valid_operation());
         }
     })
