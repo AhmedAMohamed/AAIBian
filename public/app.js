@@ -107,7 +107,7 @@ function homeController($scope, $http, $window, $location){
                 console.log("hi");
                 $location.path('/add-news');
             }
-            else if(val == "Add User"){
+            else if(val == "Add Users"){
                 console.log("Ahmed Alaa Mohamed");
                 $location.path('/add-user');
             }
@@ -167,7 +167,7 @@ function menuController($scope, $http, $window, $location){
 				console.log("hi");
 				$location.path('/add-news');
 			}
-			else if(val == "Add User"){
+			else if(val == "Add Users"){
 				$location.path('/add-user');
 			}
 			else if (val == 3){
