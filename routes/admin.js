@@ -355,7 +355,8 @@ router.post('/add_cardholder', function(req, res, next) {
 });
 
 router.post('/delete_user', function(req, res, next) {
-    var id = req.body.id;
+    var id = req.body.to_delete_id;
+    console.log(reg.body);
     console.log("this is the ID");
     console.log(id);
     User.findByIdAndRemove(id, function(err) {
