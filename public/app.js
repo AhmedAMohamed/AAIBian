@@ -376,7 +376,7 @@ function getUsersController($scope, $http, $window, $location){
 
 		$scope.deleteUser = function(id) {
 		    var request = {
-		        to_delete_id: id
+		        "to_delete_id": id
 		    };
 		    $http({
 		        method: 'POST',
