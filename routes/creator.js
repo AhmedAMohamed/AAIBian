@@ -351,7 +351,7 @@ router.get('/add_categories', function(req, res, next) {
                 else if (cat == "جلدية") {
                     path += "skin.png";
                 }
-                else if (cat == "علاج طبيعي") {
+                else if (cat == "علاج طبيعى") {
                     path += "natural.png";
                 }
                 else if (cat == "عيون") {
