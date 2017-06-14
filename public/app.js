@@ -25,7 +25,7 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      	controller:"editRolesController"
      }).when("/feedback",{
      	templateUrl: "/pages/feedback.html",
-     	controller:""
+     	controller:"feedbackController"
      }).when("/error",{
      	templateUrl: "/pages/error.html",
      	controller:""
@@ -358,17 +358,13 @@ function getUsersController($scope, $http, $window, $location){
 				console.log(response.data);
 				console.log(response.data.valid);
 				console.log(response);
-				//console.log("session here");
         		$scope.users = response.data.result;
-				//console.log($window.sessionStorage.getItem("id"));
 				if(response.data.valid){
 					return true;
-					//$location.path('/new_user');
 				}
 				else
 				{
 					return false;
-					//$window.location.href='/pages/homeFalse.html';
 				}
 		    });
 		 
@@ -430,7 +426,6 @@ app.controller('addNewsController', addNewsController);
 //dependency injection
 addNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addNewsController($scope, $http, $window, $location, Upload){
-	// if user is logged in
 	if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.newsData = {};
 		$scope.created = false;
@@ -490,4 +485,39 @@ function addNewsController($scope, $http, $window, $location, Upload){
 
 	}
 	else $location.path('/error');
+}
+
+/////////// feedback controller
+app.controller('feedbackController', feedbackController);
+
+feedbackController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function feedbackController($scope, $http, $window,$location, Upload) {
+    if($window.sessionStorage.getItem("logged") == "true"){
+        $scope.feedbacks = [];
+        $scope.getFeedbacks = function() {
+            var reqObject = {
+                "api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type")
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/show_feedbacks',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    $scope.feedbacks = response.data.result;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+    }
+    else {
+        $location.path('/error');
+    }
 }

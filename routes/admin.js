@@ -19,6 +19,7 @@ var messeges = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
 var ATMs = require('../models/atm_model');
 var News = require('../models/news_model');
+var FeedBack = require('../models/feedback_model');
 var Privilege = require('../models/privileges_model');
 var helpers = require('../Utils/helpers');
 
@@ -483,6 +484,21 @@ router.post('/set_privilege', function(req, res, next) {
         }
     });
 });
+
+router.post('/show_feedbacks', function(req, res, next) {
+    FeedBack.find({}, function(err, feedbacks) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: feedbacks
+            });
+        }
+    });
+})
 
 router.post('/add_GM', function(req, res) {
   var data = {
