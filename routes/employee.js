@@ -741,8 +741,8 @@ router.post('/feedback', function(req, res, next) {
                     if (user) {
                         feedback = req.body.request.feedback;
                         var d = {
-                            "body": feedback.body,
-                             "about": feedback.about,
+                            "body": req.body.request.feedback.body,
+                             "about": req.body.request.feedback.about,
                              "creation_date": new Date(Date.now()),
                              creator: user._id
                         };

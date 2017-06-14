@@ -342,7 +342,7 @@ router.get('/add_categories', function(req, res, next) {
                 if (cat == "اسنان") {
                     path += "dent.png";
                 }
-                else if (cat == "انف و اذن") {
+                else if (cat == "انف واذن") {
                     path += "nose.png";
                 }
                 else if (cat == "باطنة") {
