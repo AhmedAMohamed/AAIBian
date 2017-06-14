@@ -738,8 +738,8 @@ router.post('/feedback', function(req, res, next) {
         else {
             if (valid.length == 1) {
                 mhelper['users'].get_user_data(req.body.user_id, function(user) {
+                    console.log(req.body);
                     if (user) {
-                        feedback = req.body.request.feedback;
                         var d = {
                             "body": req.body.request.feedback.body,
                              "about": req.body.request.feedback.about,
