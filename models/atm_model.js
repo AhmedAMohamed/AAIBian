@@ -17,7 +17,11 @@ var ATM_schema = mongoose.Schema(
         creation_date: {
             type: Date
         },
-        address: String
+        address: String,
+        zone: {
+            type: String,
+            default: "cairo"
+        }
     }
 );
 var ATM = mongoose.model('ATMs', ATM_schema);

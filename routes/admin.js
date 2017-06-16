@@ -1,5 +1,3 @@
-
-
 var path = require('path');
 var multiparty = require('connect-multiparty');
 var util = require('util')
@@ -18,12 +16,14 @@ var validation_tokens = require('../Strings/validation_tokens');
 var messeges = require('../Strings/messeges');
 var tokens = require('../Strings/validation_tokens');
 var ATMs = require('../models/atm_model');
+var Benefit = require('../models/benefit_model');
+var Medical = require('../models/medical_sector_model');
 var News = require('../models/news_model');
 var FeedBack = require('../models/feedback_model');
 var Privilege = require('../models/privileges_model');
 var helpers = require('../Utils/helpers');
 
-//var sha1 = require('sha1');
+var sha1 = require('sha1');
 var randomstring = require("randomstring");
 var FCM = require('fcm-node');
 
@@ -70,8 +70,6 @@ router.post('/add_news', multiparty() , function (req, res) {
     var api_key = req.body.api_key;
     var privilege = req.body.privilege;
     var news = req.body.news;
-    console.log("THe news");
-    console.log(news);
     Auth.auth_check(user_id, api_key, function(validations) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
@@ -216,9 +214,10 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_benefit, function(user) {
             if (user) {
-                var file_temp_path = req.files.FIELDNAME.path;
-                var file_name = req.files.FIELDNAME.originalFileName;
-                var file_upload_path = reserved_tokens.upload_dir + '/' + sha1(file_name) + randomstring.generate(7);
+                var file_temp_path = req.files.file.path;
+                var file_name = req.files.file.originalFileName;
+                var file_new_name =  randomstring.generate(7) + file_name;
+                var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
                 fs.readFile(file_temp_path, function(err, data) {
                     fs.writeFile(file_upload_path, data, function(err) {
                         if (err) {
@@ -236,24 +235,24 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                             to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
                             to_delete_date.setHours(to_delete_date.getHours());
                             counter += 30;
-                            var new_benefit;
                             var d = {
-                                name: new_benefit.name,
-                                address: new_benefit.address,
+                                name: req.body.new_benefit.name,
+                                address: req.body.new_benefit.address,
                                 location: [
-                                    parseFloat(new_benefit.lng),
-                                    parseFloat(new_benefit.lat)
+                                    parseFloat(req.body.new_benefit.location.lat),
+                                    parseFloat(req.body.new_benefit.location.lng)
                                 ],
-                                zone: new_benefit.zone,
-                                contacts: new_benefit.contacts,
-                                industry: new_benefit.category,
+                                zone: req.body.new_benefit.zone,
+                                contacts: req.body.new_benefit.contacts,
+                                industry: req.body.new_benefit.category,
                                 creation_date: new Date(Date.now()),
                                 notification_date: notify_date,
                                 deleteDate: to_delete_date,
                                 notified: false,
                                 offer: new_benefit.offer,
-                                img_path: file_upload_path,
+                                img_path: "/data/uploads/" + file_new_name
                             };
+                            var benefit = new Benefit(d);
                             benefit.save(function (err, da) {
                                 if (err) {
                                     console.log(("error in inserting line"));
@@ -293,15 +292,17 @@ router.post('/add_atm', function(req, res, next) {
                         location: [
                             parseFloat(req.body.new_atm.location.lat),
                             parseFloat(req.body.new_atm.location.lng),
-                        ]
-                    }
+                        ],
+                        zone: req.body.new_atm.city,
+                        id: req.body.new_atm.id
+                    };
                     var atm = new ATMs(d);
                     atm.save(function(err, nATM) {
                         if (err) {
                             res.json(messeges.interna_error());
                         }
                         else {
-                            res.json(messeges.valid_operation);
+                            res.json(messeges.valid_operation());
                         }
                     });
                   }
@@ -355,6 +356,7 @@ router.post('/add_cardholder', function(req, res, next) {
     });
 });
 
+
 router.post('/delete_user', function(req, res, next) {
     var id = req.body.to_delete_id;
     console.log(req.body);
@@ -369,8 +371,118 @@ router.post('/delete_user', function(req, res, next) {
             console.log("Ahmed Alaa Remove");
             res.json(messeges.valid_operation());
         }
-    })
+    });
 });
+
+router.post('/delete_feedback', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    console.log(req.body);
+    console.log("this is the ID");
+    console.log(id);
+    FeedBack.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            console.log("Ahmed Alaa Remove 2");
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('/delete_atm', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    console.log(req.body);
+    console.log("this is the ID");
+    console.log(id);
+    ATMs.findByIdAndRemove(id, function(err) {
+        if (err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('/delete_cards', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    Cardholder.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('/delete_benefit', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    Benefit.findByIdAndRemove(id, function(err) {
+        if (err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('/delete_medical', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    Medical.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('delete_area', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    Areas.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('delete_category', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    Categories.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.post('delete_news', function(req, res, next) {
+    var id = req.body.to_delete_id;
+    News.findByIdAndRemove(id, function(err) {
+        if (err) {
+
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
 
 router.get('/get_privilege/:privilege', function(req, res, next) {
     var privilege = req.params.privilege;
@@ -418,6 +530,7 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
         res.json(messeges.not_valid_operation());
     }
 });
+
 router.post('/set_privilege', function(req, res, next) {
     API_Key.find({api_key: req.body.api_key}, function(err, valid) {
         if (err) {
@@ -485,20 +598,6 @@ router.post('/set_privilege', function(req, res, next) {
     });
 });
 
-router.post('/show_feedbacks', function(req, res, next) {
-    FeedBack.find({}, function(err, feedbacks) {
-        if(err) {
-            res.json(messeges.not_valid_operation());
-        }
-        else {
-            res.json({
-                valid: true,
-                msg: "Done",
-                result: feedbacks
-            });
-        }
-    });
-})
 
 router.post('/add_GM', function(req, res) {
   var data = {
@@ -519,7 +618,10 @@ router.post('/add_GM', function(req, res) {
     }
   });
 });
+
+
 router.post('/list_users', function(req, res, next) {
+
   User.find({}, function(err, users) {
     if(err) {
       res.json({
@@ -537,4 +639,133 @@ router.post('/list_users', function(req, res, next) {
   })
 });
 
+router.post('/show_feedbacks', function(req, res, next) {
+    FeedBack.find({}, function(err, feedbacks) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            console.log(feedbacks);
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: feedbacks
+            });
+        }
+    });
+});
+
+router.post('/show_news', function(req, res, next) {
+    News.find({}, function(err, news) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: news
+            });
+        }
+    });
+});
+
+router.post('/show_areas', function(req, res, next) {
+    Areas.find({}, function(err, areas) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: areas
+            });
+        }
+    });
+});
+
+router.post('/show_categories', function(req, res, next) {
+    Categories.find({}, function(err, cats) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: cats
+            });
+        }
+    });
+});
+
+router.post('/show_benefits', function(req, res, next) {
+    Benefit.find({}, function(err, bens) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: bens
+            });
+        }
+    });
+});
+
+router.post('/show_medicals', function(req, res, next) {
+    Medical.find({}, function(err, meds) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: meds
+            });
+        }
+    });
+});
+
+router.post('/show_cards', function(req, res, next) {
+    Cardholder.find({}, function(err, cards) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: cards
+            });
+        }
+    });
+});
+
+router.post('/show_atms', function(req, res, next) {
+    ATMs.find({}, function(err, atms) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: atms
+            });
+        }
+    });
+});
+
+
+router.post('/get_areas', function(req, res, next) {
+
+});
+
+router.post('/get_categories', function(req, res, next) {
+
+});
 module.exports = router;

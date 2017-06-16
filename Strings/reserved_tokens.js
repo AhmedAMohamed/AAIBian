@@ -20,6 +20,7 @@ var tokens = {
     cardholders_required: "card_required",
     areas_required: "area_required",
     medical_required: "med_required",
+    atm_required: "atm_required",
     function_name: {
         add_user: "Add Users",
         add_cat: "Add Category",
@@ -29,9 +30,28 @@ var tokens = {
         add_cardholder: "Add Cardholders Benefits",
         add_news: "Add News",
         add_area: "Add Area",
+
         change_password: "Change Staff Password",
+
         set_privilege: "Edit Roles",
-        show_feedbacks: "Show Feedback"
+
+        show_feedbacks: "Show Feedback",
+        show_news: "Show News",
+        show_users: "Show Users",
+        show_atms: "Show ATMs",
+        show_benefits: "Show Staff Benefits",
+        show_cards: "Show Cardholders Benefits",
+        show_medicals: "Show Medical Benefits",
+        show_areas: "Show Areas",
+        show_cat: "Show Categories",
+
+        edit_atm: "Edit ATM",
+        edit_card: "Edit Cardholder Benefits",
+        edit_ben: "Edit Staff Benefits",
+        edit_med: "Edit Medical Benefits",
+        edit_news: "Edit news",
+        edit_category: "Edit Category",
+        edit_area: "Edit Area"
     },
     radius: (15 / 3963.2),
     upload_dir: /* "/Users/ahmedalaa/Desktop", */process.env.OPENSHIFT_DATA_DIR + "/uploads/",

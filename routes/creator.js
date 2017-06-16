@@ -88,9 +88,7 @@ router.post('/addBenefits', function (req, res, next) {
 });
 
 router.post('/addATM', function(req, res, next) {
-
     var dat = [[]];
-
     fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "atm_locations.csv").pipe(csv()).
             on('data', function (data) {
                 if(data.length == 6) {
@@ -122,7 +120,6 @@ router.post('/addATM', function(req, res, next) {
                 });
                 res.json(msg.valid_operation());
             });
-    console.log("Ahmed Alaa");
 });
 
 router.post('/addMedical', function (req, res, next) {
@@ -332,7 +329,6 @@ router.get('/add_categories', function(req, res, next) {
         }
     });
     Medical.find().distinct('type', function(err, meds) {
-        var utf8 = require('utf8');
         if(err) {
             console.log("Error");
         }
@@ -397,6 +393,32 @@ router.get('/add_categories', function(req, res, next) {
             })
         }
     });
+    ATM.find().distinct('zone', function(err, atms) {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            console.log("heheehheheheheheheheheheheh");
+
+            atms.forEach(function(cat) {
+                var a = {
+                    name: cat,
+                    search_name: cat,
+                    sector: 'atm',
+                    creation_date: new Date(Date.now())
+                };
+                var ar = new Categories(a);
+                ar.save(function(err, arr) {
+                    if(err) {
+                        console.log("Error")
+                    }
+                    else {
+                        console.log("Inserted");
+                    }
+                });
+            });
+        }
+    })
     res.json({"done": "hhefas"});
 });
 

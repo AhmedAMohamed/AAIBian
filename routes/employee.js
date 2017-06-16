@@ -78,7 +78,13 @@ var get_find_request = function(selection, request, callback) {
     	});
     }
     if (selection == reserved_tokens.cardholders_required) {
-        get_mongoose_ids(typeof request.med_ids == 'undefined' ? [] : request.med_ids, function(err, mongIds) {
+        get_mongoose_ids(typeof request.card_ids == 'undefined' ? [] : request.cards_ids, function(err, mongIds) {
+            console.log("after async finish");
+            callback(err, mongIds);
+        });
+    }
+    if (selection == reserved_tokens.atm_required) {
+        get_mongoose_ids(typeof request.atm_ids == 'undefined' ? [] : request.med_ids, function(err, mongIds) {
             console.log("after async finish");
             callback(err, mongIds);
         });
@@ -320,17 +326,61 @@ router.post('/get_atms', function(req, res, next) {
        }
        else {
            if (valid.length == 1) {
-               mhelper['users'].get_user_data(req.body.user_id, function(user) {
+                mhelper['users'].get_user_data(req.body.user_id, function(user) {
                    if (user) {
-                       ATM.find({}, function(err, atms) {
-                           if (err) {
+                       get_find_request(reserved_tokens.atm_required,req.body.request, function(err,mongIds) {
+                           if(err) {
                                res.json(messeges.interna_error());
                            }
                            else {
-                               res.json({
-                                   valid: true,
-                                   msg: "Done",
-                                   result: {"ATMS" : atms}
+                               var obj = {};
+                               if (mongIds.length != 0) {
+                                   obj._id = {$in: mongIds};
+                               }
+                               if (typeof req.body.request.city != 'undefined') {
+                                   obj.zone = req.body.request.city;
+                               }
+                               if (typeof req.body.request.area != 'undefined') {
+                                   obj.loc_name = req.body.request.area;
+                               }
+                               ATM.find(obj,function(err, atms) {
+                                   if (err) {
+                                       res.json(messeges.interna_error());
+                                   }
+                                   else {
+                                       if (typeof req.body.request.since_date != 'undefined') {
+                                          var ar = {};
+                                          var ar_b = [];
+                                          var ar_a = [];
+                                          var counter = 0;
+                                          atms.forEach(function(atm) {
+                                              if (atm.creation_date > new Date(req.body.request.since_date)) {
+                                                  ar_a.push(atm);
+                                                  counter += 1;
+                                              }
+                                              else {
+                                                  ar_b.push(atm);
+                                                  counter += 1;
+                                              }
+                                              if (counter == atms.length) {
+                                                  ar['before'] = ar_b;
+                                                  ar['after'] = ar_a;
+                                                  res.json({
+                                                      valid: true,
+                                                      msg: "Done",
+                                                      result: {"benefits" : ar}
+                                                  });
+                                              }
+                                          });
+                                       }
+                                       else {
+                                           res.json({
+                                               valid: true,
+                                               msg: "Done",
+                                               result: { "benefits" : atms }
+                                           });
+                                       }
+                                   }
                                });
                            }
                        });
@@ -338,7 +388,26 @@ router.post('/get_atms', function(req, res, next) {
                    else {
                        res.json(messeges.interna_error());
                    }
-               });
+                });
+//               mhelper['users'].get_user_data(req.body.user_id, function(user) {
+//                   if (user) {
+//                       ATM.find({}, function(err, atms) {
+//                           if (err) {
+//                               res.json(messeges.interna_error());
+//                           }
+//                           else {
+//                               res.json({
+//                                   valid: true,
+//                                   msg: "Done",
+//                                   result: {"ATMS" : atms}
+//                               });
+//                           }
+//                       });
+//                   }
+//                   else {
+//                       res.json(messeges.interna_error());
+//                   }
+//               });
            }
            else {
                res.json(messeges.not_valid_operation());
@@ -635,8 +704,25 @@ router.post('/get_nearest', function(req, res, next) {
                                     res.json(locs);
                                 });
                             }
-                            // to be implemented for cardholders
-
+                            else if (req.body.request.sector == reserved_tokens.card_selected) {
+                                var obj = {};
+                                if (typeof req.body.request.category != 'undefined') {
+                                    obj.type = req.body.request.category;
+                                }
+                                var location = req.body.request.location;
+                                obj.location = {
+                                    $geoWithin:{
+                                        $centerSphere: [ [ Number(location[0]), Number(location[1]) ], reserved_tokens.radius ]
+                                    }
+                                }
+                                CardHolder.find(obj, function(err, locs) {
+                                    console.log(locs.length)
+                                    res.json(locs);
+                                });
+                            }
+                            else {
+                                res.json(messeges.not_valid_operation());
+                            }
                         }
                         else { // get all near by
                             console.log("No sector selected");
@@ -676,18 +762,28 @@ router.post('/get_nearest', function(req, res, next) {
                                                            nearby.atms = atms;
 
                                                            // to add cardholders when it is added
+                                                           CardHolder.find({location:{$geoWithin:
+                                                                {$centerSphere: [ [ Number(location[0]),
+                                                                Number(location[1]) ], reserved_tokens.radius ]}}},
+                                                                function(err, cards){
+                                                                    if (err) {
+                                                                        res.json(messeges.interna_error());
+                                                                    }
+                                                                    else {
+                                                                        console.log("Cards added");
+                                                                        nearby.cards = cards;
+                                                                        res.json({
+                                                                           valid: true,
+                                                                           msg: "Done",
+                                                                           result: {"offers" : nearby}
+                                                                       });
+                                                                    }
+                                                           })
 
-                                                           res.json({
-                                                               valid: true,
-                                                               msg: "Done",
-                                                               result: {"offers" : nearby}
-                                                           });
                                                        }
                                                  });
                                             }
                                         });
-
-
                                   }
                               });
                         }

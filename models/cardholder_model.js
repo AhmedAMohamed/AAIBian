@@ -15,6 +15,7 @@ var cardHolder_schema = mongoose.Schema(
         merchant: String,
         zone: String,
         offer: String,
+        type: String,
         creation_date: Date
     }
 );
