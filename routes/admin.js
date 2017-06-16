@@ -540,11 +540,8 @@ router.post('/set_privilege', function(req, res, next) {
             if (valid.length == 1) {
                 Auth.check_admin(req.body.user_id, req.body.privilege,
                    reserved_tokens.function_name.set_privilege, function(user) {
-                    console.log("first");
                     if (user) {
                         Privilege.find({}, function(err, privileges) {
-                            console.log(err);
-                            console.log("here");
                             if (err) {
                                 res.json(messeges.interna_error());
                             }

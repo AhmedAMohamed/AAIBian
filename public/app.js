@@ -239,61 +239,72 @@ app.controller('editRolesController', editRolesController);
 //dependency injection
 editRolesController.$inject=['$scope', '$http', '$window','$location'];
 function editRolesController($scope, $http, $window, $location){
-	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
-//		$scope.getRoles = function(role) {
-//		    console.log("get the privileges");
-//		    $http({
-//		        method: 'GET',
-//		        url: 'aaibian/admin/get_privilege/' + role,
-//		        headers: {'Content-Type': 'application/json'}
-//
-//		    }).then(function(response) {
-//		        if (response.data.valid) {
-//		            console.log(JSON.stringify(response.data.functions));
-//		            return JSON.stringify(response.data.functions);
-//		        }
-//		        else {
-//		            return [];
-//		        }
-//		    })
-//		};
+		$scope.getRoles = function(role) {
+		    console.log("get the privileges");
+		    $http({
+		        method: 'GET',
+		        url: 'aaibian/admin/get_privilege/' + role,
+		        headers: {'Content-Type': 'application/json'}
 
-//		$scope.admin_role = $scope.getRoles('admin');
-//		console.log($scope.admin_role);
-//		var root_role = $scope.getRoles('root');
-		$scope.options = ["Add Users", "Add Category","Add Staff Benefits","Add News", 
+		    }).then(function(response) {
+		        console.log("called to get role");
+                console.log(role);
+                console.log("he asked for that role");
+
+		        if (response.data.valid) {
+                    if (role == "admin") {
+                        $scope.admin_role = response.data.functions;
+                        console.log("that was the admin roles");
+                        console.log($scope.admin_role);
+		            }
+		            else if (role == 'root') {
+                        $scope.root_role = response.data.functions;
+                        console.log("that was the root roles");
+                        console.log($scope.root_role);
+		            }
+
+		            $scope.getCheckedValue = function(option, role) {
+                        console.log("in view the checked");
+                        if (role == "admin") {
+                            for(var val in $scope.admin_role) {
+                                console.log("in loop admin");
+                                console.log($scope.admin_role[val]);
+                                console.log(option);
+                                console.log("that was one check");
+                                if(option == $scope.admin_role[val]) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        else if (role == 'root') {
+                            for (var val in $scope.root_role) {
+                                console.log("in loop for the root");
+                                console.log($scope.root_role[val]);
+                                console.log(option);
+                                console.log("that was two check");
+                                if (option == $scope.root_role[val]) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    };
+
+		        }
+		        else {
+		            return [];
+		        }
+		    })
+		};
+        $scope.getRoles('admin');
+        $scope.getRoles('root');
+		$scope.options = ["Add Users", "Add Category","Add Staff Benefits","Add News",
 		"Add Medical Benefits","Add ATM","Add Cardholders Benefits","Add Area","Change Staff Password","Show Feedback"];
 		$scope.root_privilege = [];
 		$scope.admin_privilege = [];
 
-//		$scope.getCheckedValue = function(option, role) {
-//		    console.log("in view the checked");
-//            if (role == "admin") {
-//                console.log($scope.admin_role);
-//                for(var val in $scope.admin_role) {
-//                    console.log("in loop admin");
-//                    console.log(val);
-//                    console.log(option);
-//                    if(option == val) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//            else if (role == 'root') {
-//                for (var val in root_role) {
-//                    console.log("in loop admin");
-//
-//                    console.log(val);
-//                    console.log(option);
-//                    if (option == val) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//		};
 
 		$scope.setRoles = function(){
 		  	var reqObject = {
