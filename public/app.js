@@ -741,10 +741,42 @@ app.controller('addBenefitController', addBenefitController);
 addBenefitController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addBenefitController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
-		console.log("hi");
 		$scope.benefitData = {};
 		$scope.created = false;
 		$scope.file ={};
+		$scope.getZones = function() {
+		    $http({
+		        method: 'POST',
+		        url: 'aaibian/admin/get_areas',
+                headers: {'Content-Type': 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+		            $scope.zones = response.data.results;
+		        }
+		        else {
+		            $scope.zones = [];
+		        }
+		    });
+		};
+
+		$scope.getCategories = function() {
+		    $http({
+		        method: 'POST',
+		        url: 'aaibian/admin/get_categories',
+                headers: {'Content-Type': 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+		            $scope.industries = response.data.results;
+		        }
+		        else {
+		            $scope.industries = [];
+		        }
+		    })
+		}
+		$scope.getZones();
+		$scope.getCategories();
 		// function to reset the form
 		$scope.resetForm = function(form) {
 	      	$scope.created = false;
@@ -759,8 +791,6 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				if (files && files.length)
 				$scope.file = files[0];
 			}
-            console.log("here");
-            console.log($scope.file);
             var benefitObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
@@ -773,13 +803,18 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				    	"lat": $scope.benefitData.lat,
 			      		"lng": $scope.benefitData.lng
 				    },
-				    "zone": $scope.benefitData.zone,
+				    "zone": $scope.benefitData.zone.name,
 				    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
 				    $scope.benefitData.contact3],
-				    "industry": $cope.benefitData.industry,
+				    "industry": $scope.benefitData.industry.name,
 				    "offer": $scope.benefitData.offer
 				}
 			};
+
+			console.log("This is ");
+			console.log(benefitObject);
+			console.log("That was ");
+
             Upload.upload({
                 url:'/aaibian/admin/add_benefit',
                 method: 'POST',
@@ -796,9 +831,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
                         $location.path('/error');
                     }
               });
-            console.log("getsFiles");
-       // };
-		}
+        };
 		$scope.getStatus = function(){
 			console.log($scope.created);
 			if($scope.created){

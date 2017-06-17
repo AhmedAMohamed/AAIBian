@@ -23,6 +23,7 @@ var FeedBack = require('../models/feedback_model');
 var Privilege = require('../models/privileges_model');
 var helpers = require('../Utils/helpers');
 
+var schedule = require('node-schedule');
 var sha1 = require('sha1');
 var randomstring = require("randomstring");
 var FCM = require('fcm-node');
@@ -214,8 +215,12 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_benefit, function(user) {
             if (user) {
+
+                var counter = 7;
+
                 var file_temp_path = req.files.file.path;
-                var file_name = req.files.file.originalFileName;
+                var file_name = req.files.file.originalFilename;
+                console.log(req.files);
                 var file_new_name =  randomstring.generate(7) + file_name;
                 var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
                 fs.readFile(file_temp_path, function(err, data) {
@@ -249,13 +254,14 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                 notification_date: notify_date,
                                 deleteDate: to_delete_date,
                                 notified: false,
-                                offer: new_benefit.offer,
+                                offer: req.body.new_benefit.offer,
                                 img_path: "/data/uploads/" + file_new_name
                             };
                             var benefit = new Benefit(d);
                             benefit.save(function (err, da) {
                                 if (err) {
                                     console.log(("error in inserting line"));
+                                    res.json(messeges.not_valid_operation());
                                 }
                                 else {
                                     console.log("Notify id " + da.id + " at " + da.notification_date);
@@ -263,6 +269,7 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                     var j = schedule.scheduleJob("benefit_staff_" + da.id, da.notification_date, function () {
                                         helpers[1].notifyAndScheduleBenefitDeletion(da, helpers[2].get_interested(da._id));
                                     });
+                                    res.json(messeges.valid_operation());
                                 }
                             });
                         }
@@ -759,10 +766,32 @@ router.post('/show_atms', function(req, res, next) {
 
 
 router.post('/get_areas', function(req, res, next) {
-
+    Areas.find({}, 'name', function(err, areas) {
+        if (err) {
+            res.json(messeges.interna_error());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                results: areas
+            });
+        }
+    });
 });
 
 router.post('/get_categories', function(req, res, next) {
-
+    Categories.find({}, 'name', function(err, cats) {
+        if(err) {
+            res.json(messeges.interna_error());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                results: cats
+            });
+        }
+    });
 });
 module.exports = router;
