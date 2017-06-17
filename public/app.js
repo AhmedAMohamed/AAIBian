@@ -36,11 +36,14 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
         templateUrl : "/pages/addBenefit.html",
         controller : "addBenefitController"
      }).when("/add_area", {
-               templateUrl : "/pages/addArea.html",
-               controller : "addAreaController"
+        templateUrl : "/pages/addArea.html",
+        controller : "addAreaController"
+     }).when("/add_category", {
+        templateUrl : "/pages/addCategory.html",
+        controller : "addCategoryController"
      }).otherwise({
         redirectTo: '/error'
-      });
+     });
      $locationProvider.html5Mode(true);
  }]);
 ////////////////////////****************************   LOGIN Controller
@@ -473,28 +476,6 @@ function getUsersController($scope, $http, $window, $location){
 		}
 	}
 }
-//////////////////////////////////////////////////// ************** Add News Controller + Directive
-/*The purpose of using the link option is to capture any changes that 
-occur in the file input element. 
-Now, how do we get the values? The answer is AngularJS $parse service. 
-Usually, a $parse takes an expression and returns a function and our link option,
-also, needs a function to return. 
-The parsed function onChange will have two parameters. The first parameter is the scope 
-and the second will add the files details in $files variable through the event object.*/
-//app.directive('ngFiles', ['$parse', function ($parse) {
-//
-//        function fn_link(scope, element, attrs) {
-//            console.log("fn_link");
-//            var onChange = $parse(attrs.ngFiles);
-//            element.on('change', function (event) {
-//                onChange(scope, { $files: event.target.files });
-//            });
-//        };
-//
-//        return {
-//            link: fn_link
-//        }
-//} ]);
 
 app.controller('addNewsController', addNewsController);
 //dependency injection
@@ -917,3 +898,96 @@ function addAreaController($scope, $http, $window, $location, Upload){
 }
 
 
+app.controller('addCategoryController', addCategoryController);
+//dependency injection
+addCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addCategoryController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.categoryData = {};
+		$scope.created = false;
+		$scope.file ={};
+
+		$scope.getSectors = function() {
+		    var sectors = [
+		        {
+		            "key": "atm",
+		            "value": "ATMs"
+		        },
+		        {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+		    ];
+
+		    $scope.sectors = sectors;
+		};
+        $scope.getSectors();
+		// function to reset the form
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+    	$scope.fileUploadValue = true;
+    	// function to get the files from the form
+    	//var formdata = new FormData();
+        $scope.msg = "";
+        //function to add the news, calls the api
+        $scope.addCategory = function(){
+			$scope.uploadFile = function(files){
+				if (files && files.length)
+				$scope.file = files[0];
+			}
+
+            var categoryObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"file" : $scope.file,
+				"new_category" : {
+				    "name" : $scope.categoryData.name,
+				    "sector" : $scope.categoryData.sector.key,
+				}
+			};
+            console.log("This is category object");
+            console.log(categoryObject);
+
+            Upload.upload({
+                url:'/aaibian/admin/add_category',
+                method: 'POST',
+                data: categoryObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Category Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Category not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}

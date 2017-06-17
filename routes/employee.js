@@ -337,11 +337,11 @@ router.post('/get_atms', function(req, res, next) {
                                if (mongIds.length != 0) {
                                    obj._id = {$in: mongIds};
                                }
-                               if (typeof req.body.request.city != 'undefined') {
-                                   obj.zone = req.body.request.city;
+                               if (typeof req.body.request.category != 'undefined') {
+                                   obj.zone = req.body.request.category;
                                }
-                               if (typeof req.body.request.area != 'undefined') {
-                                   obj.loc_name = req.body.request.area;
+                               if (typeof req.body.request.zone != 'undefined') {
+                                   obj.loc_name = req.body.request.zone;
                                }
                                ATM.find(obj,function(err, atms) {
                                    if (err) {
@@ -389,25 +389,6 @@ router.post('/get_atms', function(req, res, next) {
                        res.json(messeges.interna_error());
                    }
                 });
-//               mhelper['users'].get_user_data(req.body.user_id, function(user) {
-//                   if (user) {
-//                       ATM.find({}, function(err, atms) {
-//                           if (err) {
-//                               res.json(messeges.interna_error());
-//                           }
-//                           else {
-//                               res.json({
-//                                   valid: true,
-//                                   msg: "Done",
-//                                   result: {"ATMS" : atms}
-//                               });
-//                           }
-//                       });
-//                   }
-//                   else {
-//                       res.json(messeges.interna_error());
-//                   }
-//               });
            }
            else {
                res.json(messeges.not_valid_operation());
