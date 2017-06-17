@@ -368,7 +368,7 @@ router.post('/get_atms', function(req, res, next) {
                                                   res.json({
                                                       valid: true,
                                                       msg: "Done",
-                                                      result: {"benefits" : ar}
+                                                      result: {"atms" : ar}
                                                   });
                                               }
                                           });
@@ -377,7 +377,7 @@ router.post('/get_atms', function(req, res, next) {
                                            res.json({
                                                valid: true,
                                                msg: "Done",
-                                               result: { "benefits" : atms }
+                                               result: { "atms" : atms }
                                            });
                                        }
                                    }
