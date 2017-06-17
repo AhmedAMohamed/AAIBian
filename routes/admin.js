@@ -220,61 +220,71 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
 
                 var file_temp_path = req.files.file.path;
                 var file_name = req.files.file.originalFilename;
-                console.log(req.files);
-                var file_new_name =  randomstring.generate(7) + file_name;
-                var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
-                fs.readFile(file_temp_path, function(err, data) {
-                    fs.writeFile(file_upload_path, data, function(err) {
-                        if (err) {
-                            res.json(messeges.interna_error());
-                        }
-                        else {
-                            var notify_date = new Date(Date.now());
-                            notify_date.setSeconds(notify_date.getSeconds() + counter);
-                            notify_date.setMinutes(notify_date.getMinutes() + 1);
-                            notify_date.setFullYear(notify_date.getFullYear() + 1);
+                if (req.files.file.type.indexOf('pdf') == -1) {
+                    console.log("NOt valid");
+                    res.json({
+                        valid: false,
+                        msg: "Can not upload this type of files",
+                    });
+                }
+                else {
+                    var file_new_name =  randomstring.generate(7) + file_name;
+                    var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
+                    fs.readFile(file_temp_path, function(err, data) {
+                        fs.writeFile(file_upload_path, data, function(err) {
+                            if (err) {
+                                res.json(messeges.interna_error());
+                            }
+                            else {
+                                var notify_date = new Date(Date.now());
+                                notify_date.setSeconds(notify_date.getSeconds() + counter);
+                                notify_date.setMinutes(notify_date.getMinutes() + 1);
+                                notify_date.setFullYear(notify_date.getFullYear() + 1);
 
-                            var to_delete_date = new Date(Date.now());
-                            to_delete_date.setMinutes(to_delete_date.getMinutes() + 2);
-                            to_delete_date.setSeconds(to_delete_date.getSeconds() + 2 * counter);
-                            to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
-                            to_delete_date.setHours(to_delete_date.getHours());
-                            counter += 30;
-                            var d = {
-                                name: req.body.new_benefit.name,
-                                address: req.body.new_benefit.address,
-                                location: [
-                                    parseFloat(req.body.new_benefit.location.lat),
-                                    parseFloat(req.body.new_benefit.location.lng)
-                                ],
-                                zone: req.body.new_benefit.zone,
-                                contacts: req.body.new_benefit.contacts,
-                                industry: req.body.new_benefit.category,
-                                creation_date: new Date(Date.now()),
-                                notification_date: notify_date,
-                                deleteDate: to_delete_date,
-                                notified: false,
-                                offer: req.body.new_benefit.offer,
-                                img_path: "/data/uploads/" + file_new_name
-                            };
-                            var benefit = new Benefit(d);
-                            benefit.save(function (err, da) {
-                                if (err) {
-                                    console.log(("error in inserting line"));
-                                    res.json(messeges.not_valid_operation());
-                                }
-                                else {
-                                    console.log("Notify id " + da.id + " at " + da.notification_date);
-                                    console.log("Delete id " + da.id + " at " + da.deleteDate);
-                                    var j = schedule.scheduleJob("benefit_staff_" + da.id, da.notification_date, function () {
-                                        helpers[1].notifyAndScheduleBenefitDeletion(da, helpers[2].get_interested(da._id));
-                                    });
-                                    res.json(messeges.valid_operation());
-                                }
-                            });
-                        }
-                    })
-                });
+                                var to_delete_date = new Date(Date.now());
+                                to_delete_date.setMinutes(to_delete_date.getMinutes() + 2);
+                                to_delete_date.setSeconds(to_delete_date.getSeconds() + 2 * counter);
+                                to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
+                                to_delete_date.setHours(to_delete_date.getHours());
+                                counter += 30;
+                                var d = {
+                                    name: req.body.new_benefit.name,
+                                    address: req.body.new_benefit.address,
+                                    location: [
+                                        parseFloat(req.body.new_benefit.location.lat),
+                                        parseFloat(req.body.new_benefit.location.lng)
+                                    ],
+                                    zone: req.body.new_benefit.zone,
+                                    contacts: req.body.new_benefit.contacts,
+                                    industry: req.body.new_benefit.category,
+                                    creation_date: new Date(Date.now()),
+                                    notification_date: notify_date,
+                                    deleteDate: to_delete_date,
+                                    notified: false,
+                                    offer: req.body.new_benefit.offer,
+                                    pdf_path: "/data/uploads/" + file_new_name
+                                };
+                                var benefit = new Benefit(d);
+                                benefit.save(function (err, da) {
+                                    if (err) {
+                                        console.log(("error in inserting line"));
+                                        console.log(err);
+                                        res.json(messeges.not_valid_operation());
+                                    }
+                                    else {
+                                        console.log("Notify id " + da.id + " at " + da.notification_date);
+                                        console.log("Delete id " + da.id + " at " + da.deleteDate);
+                                        var j = schedule.scheduleJob("benefit_staff_" + da.id, da.notification_date, function () {
+                                            helpers[1].notifyAndScheduleBenefitDeletion(da, helpers[2].get_interested(da._id));
+                                        });
+                                        res.json(messeges.valid_operation());
+                                    }
+                                });
+                            }
+                        })
+                    });
+                }
+
             }
             else {
                 res.json(messeges.not_valid_operation());

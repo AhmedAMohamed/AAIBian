@@ -782,15 +782,17 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 	      	$scope.created = false;
 	      	angular.copy({},form);
     	}
+    	$scope.fileUploadValue = true;
     	// function to get the files from the form 
     	//var formdata = new FormData();
-
+        $scope.msg = "";
         //function to add the news, calls the api
         $scope.addBenefit = function(){
 			$scope.uploadFile = function(files){
 				if (files && files.length)
 				$scope.file = files[0];
 			}
+
             var benefitObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
@@ -811,10 +813,6 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				}
 			};
 
-			console.log("This is ");
-			console.log(benefitObject);
-			console.log("That was ");
-
             Upload.upload({
                 url:'/aaibian/admin/add_benefit',
                 method: 'POST',
@@ -833,11 +831,14 @@ function addBenefitController($scope, $http, $window, $location, Upload){
               });
         };
 		$scope.getStatus = function(){
-			console.log($scope.created);
 			if($scope.created){
+				$scope.message = "Benefit Added Successfully"
 				return true;
 			}
-			else return false;
+			else {
+                $scope.message = "Benefit not added correctly try again"
+                return false;
+			}
 		}
 
 	}
