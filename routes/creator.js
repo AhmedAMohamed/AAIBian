@@ -18,6 +18,7 @@ var Benefit = require('../models/benefit_model');
 var Medical = require('../models/medical_sector_model');
 var ATM = require('../models/atm_model');
 var Categories = require('../models/category_model');
+var News = require('../models/news_model');
 var Areas = require('../models/area_model');
 var startups = require('../Utils/helpers');
 var types = require('../Strings/names_translations')[0];
@@ -428,34 +429,38 @@ router.get('/test_notification', function(req, res, next) {
 
     var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
     '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'; //put your server key here
-    var fcm = new FCM(serverKey);
-    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-        to: '/topics/news',
-        collapse_key: 'trial',
-        notification: {
-            "body" : "This week’s edition is now available.",
-            "title": "Portugal vs. Denmark",
-        },
-        data: {  //you can send only notification or only data(or include both)
-            title: 'Ahmed',
-            Body: 'my another value',
-            id: "ahmed alaa "
-        },
-        priority : "high"
-    };
-    fcm.send(message, function(err, response){
-            if (err) {
-                console.log("Something has gone wrong!");
-            } else {
 
-                console.log("Successfully sent with response: ", response);
-                res.json({
-                    valid: true,
-                    msg: "Done",
+    News.find({}, function(err, news) {
+        if (err) {
+            res.json(msg.not_valid_operation());
+        }
+        else {
+            var fcm = new FCM(serverKey);
+            var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                to: '/topics/news',
+                collapse_key: 'trial',
+                notification: {
+                    "body" : "This week’s edition is now available.",
+                    "title": "Portugal vs. Denmark",
+                },
+                data: news[0],
+                priority : "high"
+            };
+            fcm.send(message, function(err, response){
+                if (err) {
+                    console.log("Something has gone wrong!");
+                } else {
 
-                });
-            }
-        });
+                    console.log("Successfully sent with response: ", response);
+                    res.json({
+                        valid: true,
+                        msg: "Done",
+
+                    });
+                }
+            });
+        }
+    });
 });
 
 module.exports = router;
