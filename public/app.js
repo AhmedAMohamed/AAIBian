@@ -636,21 +636,41 @@ function addATMController($scope, $http, $window, $location){
     	}
 
     	$scope.getZone = function() {
+    	    console.log("here in areas");
             var reqObject = {
-                "api_key" : $window.sessionStorage.getItem("api_key"),
-                "user_id" : $window.sessionStorage.getItem("id"),
-                "privilege" : $window.sessionStorage.getItem("type")
+                "sector": 'atm'
             };
             $http({
                 method: 'POST',
-                url: '/aaibian/admin/get_zone/ben',
+                url: '/aaibian/admin/get_areas',
                 data: JSON.stringify(reqObject),
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
                 if(response.data.valid) {
-                    console.log(response.data.result);
-                    $scope.zones = response.data.result;
+                    console.log(response.data.results);
+                    $scope.areas = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+        $scope.getCategories = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_categories',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.results);
+                    $scope.cities = response.data.results;
                     return true;
                 }
                 else {
@@ -659,69 +679,48 @@ function addATMController($scope, $http, $window, $location){
             });
         }
 
-        $scope.getIndustry = function() {
-            var reqObject = {
-                "api_key" : $window.sessionStorage.getItem("api_key"),
-                "user_id" : $window.sessionStorage.getItem("id"),
-                "privilege" : $window.sessionStorage.getItem("type")
-            };
-            $http({
-                method: 'POST',
-                url: '/aaibian/admin/get_industry/ben',
-                data: JSON.stringify(reqObject),
-                headers: {'Content-Type': 'application/JSON'}
-            })
-            .then(function(response) {
-                if(response.data.valid) {
-                    console.log(response.data.result);
-                    $scope.industries = response.data.result;
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            });
-        }
+
+        $scope.getZone();
+        $scope.getCategories();
 
 		$scope.addATM = function(){
-			console.log("here");
-	  	var atmObject = {
-	      	"api_key" : $window.sessionStorage.getItem("api_key"),
-		    "user_id" : $window.sessionStorage.getItem("id"),
-		    "privilege" : $window.sessionStorage.getItem("type"),
-		    "new_atm" : {
-			      "loc_name" : $scope.ATMData.loc_name,
-			      "address": $scope.ATMData.address,
-			      "location": {	
-			      		"lat": $scope.ATMData.lat,
-			      		"lng": $scope.ATMData.lng
-			    	},
-			    	"id": new Date(Date.now()).getTime()
-				}
-		    };
-		    console.log(atmObject);
-		$http({
-			method: 'POST',
-			url:'/aaibian/admin/add_atm',
-			data:JSON.stringify(atmObject),
-			headers: {'Content-Type': 'application/JSON'}
-		})
-		.then(function(response) {
+            var atmObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "new_atm" : {
+                      "loc_name" : $scope.ATMData.loc_name.name,
+                      "address": $scope.ATMData.address,
+                      "location": {
+                            "lat": $scope.ATMData.lat,
+                            "lng": $scope.ATMData.lng
+                        },
+                        "id": new Date(Date.now()).getTime(),
+                        "city": $scope.ATMData.city.name
+                    }
+                };
+            $http({
+                method: 'POST',
+                url:'/aaibian/admin/add_atm',
+                data:JSON.stringify(atmObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
 
-						console.log(response.data);
-						console.log(response.data.valid);
-						console.log(response);
-						if(response.data.valid){
-							$scope.created = true;
-							//$location.path('/new_user');
-						}
-						else
-						{
-							$scope.created = false;
-							$location.path('/error');
-						}
-	    });
-	}
+                            console.log(response.data);
+                            console.log(response.data.valid);
+                            console.log(response);
+                            if(response.data.valid){
+                                $scope.created = true;
+                                //$location.path('/new_user');
+                            }
+                            else
+                            {
+                                $scope.created = false;
+                                $location.path('/error');
+                            }
+            });
+        }
 		
 		$scope.getStatus = function(){
 			//console.log($scope.created);
@@ -731,7 +730,6 @@ function addATMController($scope, $http, $window, $location){
 			else return false;
 		}
 	}
-	
 	else $location.path('/error');
 }
 //////////////////////////////////////////////////// ************** Add Benefit Controller 

@@ -267,8 +267,6 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                 var benefit = new Benefit(d);
                                 benefit.save(function (err, da) {
                                     if (err) {
-                                        console.log(("error in inserting line"));
-                                        console.log(err);
                                         res.json(messeges.not_valid_operation());
                                     }
                                     else {
@@ -776,32 +774,64 @@ router.post('/show_atms', function(req, res, next) {
 
 
 router.post('/get_areas', function(req, res, next) {
-    Areas.find({}, 'name', function(err, areas) {
-        if (err) {
-            res.json(messeges.interna_error());
-        }
-        else {
-            res.json({
-                valid: true,
-                msg: "Done",
-                results: areas
-            });
-        }
-    });
+    if(req.body.sector != 'undefined') {
+        Areas.find({sector: req.body.sector}, 'name', function(err, areas) {
+            if (err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    results: areas
+                });
+            }
+        });
+    }
+    else {
+        Areas.find({}, 'name', function(err, areas) {
+            if (err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    results: areas
+                });
+            }
+        });
+    }
 });
 
 router.post('/get_categories', function(req, res, next) {
-    Categories.find({}, 'name', function(err, cats) {
-        if(err) {
-            res.json(messeges.interna_error());
-        }
-        else {
-            res.json({
-                valid: true,
-                msg: "Done",
-                results: cats
-            });
-        }
-    });
+    if (req.body.sector != 'undefined') {
+        Categories.find({sector: req.body.sector}, 'name', function(err, cats) {
+            if(err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    results: cats
+                });
+            }
+        });
+    }
+    else {
+        Categories.find({}, 'name', function(err, cats) {
+            if(err) {
+                res.json(messeges.interna_error());
+            }
+            else {
+                res.json({
+                    valid: true,
+                    msg: "Done",
+                    results: cats
+                });
+            }
+        });
+    }
 });
 module.exports = router;
