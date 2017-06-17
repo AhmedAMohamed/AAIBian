@@ -134,9 +134,8 @@ router.post('/add_category', multiparty(), function(req, res, next) {
        if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cat, function(user) {
                 if (user) {
-
                     var file_temp_path = req.files.file.path;
-                    var file_name = req.files.file.originalFileName;
+                    var file_name = req.files.file.originalFilename;
                     var file_new_name = randomstring.generate(7) + file_name;
                     var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
                     fs.readFile(file_temp_path, function(err, data) {
@@ -146,9 +145,9 @@ router.post('/add_category', multiparty(), function(req, res, next) {
                             }
                             else {
                                 var dat = {
-                                    sector: req.body.category.sector,
-                                    name: req.body.category.name,
-                                    search_name: req.body.category.name,
+                                    sector: req.body.new_category.sector,
+                                    name: req.body.new_category.name,
+                                    search_name: req.body.new_category.name,
                                     creation_date: new Date(Date.now()),
                                     img_path: "data/uploads/" + file_new_name
                                 };

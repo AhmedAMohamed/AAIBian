@@ -54,7 +54,7 @@ var tokens = {
         edit_area: "Edit Area"
     },
     radius: (15 / 3963.2),
-    upload_dir:  "/Users/ahmedalaa/Desktop", //process.env.OPENSHIFT_DATA_DIR + "/uploads/",
+    upload_dir:  /*"/Users/ahmedalaa/Desktop", */ process.env.OPENSHIFT_DATA_DIR + "/uploads/",
     server_name: 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
                  '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'
 };
