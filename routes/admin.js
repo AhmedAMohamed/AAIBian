@@ -333,6 +333,75 @@ router.post('/add_atm', function(req, res, next) {
     });
 });
 
+router.post('/add_medical', multiparty(), function(req, res, next) {
+
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+          Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_medical, function(user) {
+            if (user) {
+                var file_temp_path = req.files.file.path;
+                var file_name = req.files.file.originalFilename;
+                if (req.files.file.type.indexOf('pdf') == -1) {
+                    console.log("NOt valid");
+                    res.json({
+                        valid: false,
+                        msg: "Can not upload this type of files",
+                    });
+                }
+                else {
+                    var file_new_name =  randomstring.generate(7) + file_name;
+                    var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
+                    fs.readFile(file_temp_path, function(err, data) {
+                        fs.writeFile(file_upload_path, data, function(err) {
+                            if (err) {
+                                console.log(err);
+                                console.log("not valid");
+                                res.json(messeges.interna_error());
+                            }
+                            else {
+                                console.log(req.body);
+                                var d = {
+                                    name: req.body.new_medical.name,
+                                    address: req.body.new_medical.address,
+                                    location: [
+                                        parseFloat(req.body.new_medical.location.lat),
+                                        parseFloat(req.body.new_medical.location.lng)
+                                    ],
+                                    zone: req.body.new_medical.zone.name,
+                                    type: req.body.new_medical.type.name,
+                                    phone_number: req.body.new_medical.phone,
+                                    id: new Date(Date.now()).getTime(),
+                                    pdf_path: "/data/uploads/" + file_new_name
+                                };
+                                var medical = new Medical(d);
+                                console.log("here valid");
+                                medical.save(function (err, da) {
+                                    if (err) {
+                                        console.log(err);
+                                        console.log("NNNNNN");
+                                        res.json(messeges.not_valid_operation());
+                                    }
+                                    else {
+                                        res.json(messeges.valid_operation());
+                                    }
+                                });
+                            }
+                        })
+                    });
+                }
+
+            }
+            else {
+                res.json(messeges.not_valid_operation());
+            }
+          });
+        }
+        else {
+            res.json(messeges.not_valid_operation());
+        }
+    });
+});
+
 router.post('/add_cardholder', function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
@@ -759,6 +828,7 @@ router.post('/show_cards', function(req, res, next) {
 });
 
 router.post('/show_atms', function(req, res, next) {
+
     ATMs.find({}, function(err, atms) {
         if(err) {
             res.json(messeges.not_valid_operation());
@@ -771,6 +841,7 @@ router.post('/show_atms', function(req, res, next) {
             });
         }
     });
+
 });
 
 

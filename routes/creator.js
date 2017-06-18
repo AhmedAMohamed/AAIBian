@@ -89,6 +89,7 @@ router.post('/addBenefits', function (req, res, next) {
 });
 
 router.post('/addATM', function(req, res, next) {
+
     var dat = [[]];
     fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + "atm_locations.csv").pipe(csv()).
             on('data', function (data) {
@@ -124,6 +125,7 @@ router.post('/addATM', function(req, res, next) {
 });
 
 router.post('/addMedical', function (req, res, next) {
+
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
             req.body.token, req.body.privilege, req.body.task) || true) {
         var dat = [];
@@ -195,6 +197,7 @@ router.post('/addMedical', function (req, res, next) {
 });
 
 router.post('/addAPI_Key', function (req, res, next) {
+
   var api_ke = req.body.api;
   console.log("Ahmed called it and it is " + api_ke);
   var api = {
@@ -227,6 +230,7 @@ router.get('/trial/:id', function(req, res, next) {
 });
 
 router.get('/add_areas', function(req, res, next) {
+
     Benefit.find().distinct('zone', function(err, bens) {
         if(err) {
             console.log("Error");
@@ -425,6 +429,7 @@ router.get('/add_categories', function(req, res, next) {
 
 
 router.get('/test_notification', function(req, res, next) {
+
     var FCM = require('fcm-node');
 
     var serverKey = 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +

@@ -41,6 +41,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/add_category", {
         templateUrl : "/pages/addCategory.html",
         controller : "addCategoryController"
+     }).when("/add_medical", {
+        templateUrl : "/pages/addMedical.html",
+        controller : "addMedicalController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -116,7 +119,6 @@ function homeController($scope, $http, $window, $location){
         for (var x in res){
             res.hasOwnProperty(x) && $scope.functions.push(res[x])
         }
-
 		$scope.opt = function(val){
 			console.log(val);
 			if(val == "Show Feedback"){
@@ -140,13 +142,13 @@ function homeController($scope, $http, $window, $location){
                 $location.path('/add_staff_benefits');
             }
             else if(val == "Add Medical Benefits"){
-                $location.path('/add_medical_benefits');
+                $location.path('/add_medical');
             }
             else if(val == "Add ATM"){
                 $location.path('/add_atm');
             }
             else if(val == 'Add Cardholders Benefits'){
-                $location.path('/add_carholders_benefits');
+                $location.path('/add_cardholders_benefits');
             }
             else if(val == 'Add  Area'){
                 $location.path('/add_area');
@@ -157,9 +159,7 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Add Area'){
                 $location.path('/add_area');
             }
-
 		}
-
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
 				return true;
@@ -210,7 +210,7 @@ function menuController($scope, $http, $window, $location){
 				$location.path('/add_staff_benefits');
 			}
 			else if(val == "Add Medical Benefits"){
-				$location.path('/add_medical_benefits');
+				$location.path('/add_medical');
 			}
 			else if(val == "Add ATM"){
 				$location.path('/add_atm');
@@ -753,7 +753,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		            $scope.industries = [];
 		        }
 		    })
-		}
+		};
 		$scope.getZones();
 		$scope.getCategories();
 		// function to reset the form
@@ -897,7 +897,7 @@ function addAreaController($scope, $http, $window, $location, Upload){
 	else $location.path('/error');
 }
 
-
+//////////////////////////////////////////////////// ************** Add Category Controller
 app.controller('addCategoryController', addCategoryController);
 //dependency injection
 addCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
@@ -956,13 +956,132 @@ function addCategoryController($scope, $http, $window, $location, Upload){
 				    "sector" : $scope.categoryData.sector.key,
 				}
 			};
-            console.log("This is category object");
-            console.log(categoryObject);
-
             Upload.upload({
                 url:'/aaibian/admin/add_category',
                 method: 'POST',
                 data: categoryObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Category Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Category not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+
+//////////////////////////////////////////////////// ************** Add Medical benefit Controller
+app.controller('addMedicalController', addMedicalController);
+//dependency injection
+addMedicalController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addMedicalController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.medData = {};
+		$scope.created = false;
+		$scope.file ={};
+
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "med"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+
+                    var reqObject = {
+                        "sector" : "med"
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'aaibian/admin/get_categories',
+                        data: reqObject,
+                        headers: {'Content-Type': 'application/JSON'}
+                    })
+                    .then(function(response) {
+                        if (response.data.valid) {
+                            $scope.types = response.data.results;
+                        }
+                        else {
+                            $scope.types = [];
+                        }
+                    });
+                };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+
+    	$scope.fileUploadValue = true;
+
+        $scope.msg = "";
+
+        $scope.addMedical = function(){
+			$scope.uploadFile = function(files){
+				if (files && files.length)
+				$scope.file = files[0];
+			}
+
+            var medObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"file" : $scope.file,
+				"new_medical" : {
+				    "name" : $scope.medData.name,
+				    "address" : $scope.medData.address,
+				    "location" : {
+                            "lat" : $scope.medData.location.lat,
+                            "lng" : $scope.medData.location.lng
+				    },
+				    "zone" : $scope.medData.zone,
+				    "type" : $scope.medData.type,
+				    "phone" : $scope.medData.phone
+				}
+			};
+
+			console.log(medObject);
+
+            Upload.upload({
+                url:'/aaibian/admin/add_medical',
+                method: 'POST',
+                data: medObject,
                 headers: {'Content-Type': 'application/JSON'}
               })
             .then(function(response) {
