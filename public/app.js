@@ -122,7 +122,7 @@ function homeController($scope, $http, $window, $location){
         for (var x in res){
             res.hasOwnProperty(x) && $scope.functions.push(res[x])
         }
-        console.log(functions);
+        console.log($scope.functions);
 		$scope.opt = function(val){
 			console.log(val);
 			if(val == "Show Feedback"){
