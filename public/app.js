@@ -122,6 +122,7 @@ function homeController($scope, $http, $window, $location){
         for (var x in res){
             res.hasOwnProperty(x) && $scope.functions.push(res[x])
         }
+        console.log(functions);
 		$scope.opt = function(val){
 			console.log(val);
 			if(val == "Show Feedback"){
@@ -162,6 +163,7 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Add Area'){
                 $location.path('/add_area');
             }
+
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
