@@ -44,6 +44,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/add_medical", {
         templateUrl : "/pages/addMedical.html",
         controller : "addMedicalController"
+     }).when("/add_cardholder", {
+        templateUrl : "/pages/addCardholder.html",
+        controller : "addCardholderController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -148,7 +151,7 @@ function homeController($scope, $http, $window, $location){
                 $location.path('/add_atm');
             }
             else if(val == 'Add Cardholders Benefits'){
-                $location.path('/add_cardholders_benefits');
+                $location.path('/add_cardholder');
             }
             else if(val == 'Add  Area'){
                 $location.path('/add_area');
@@ -216,7 +219,7 @@ function menuController($scope, $http, $window, $location){
 				$location.path('/add_atm');
 			}
 			else if(val == 'Add Cardholders Benefits'){
-				$location.path('/add_carholders_benefits');
+				$location.path('/add_cardholder');
 			}
 			else if(val == 'Add  Area'){
 				$location.path('/add_area');
@@ -1082,6 +1085,94 @@ function addMedicalController($scope, $http, $window, $location, Upload){
                 url:'/aaibian/admin/add_medical',
                 method: 'POST',
                 data: medObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Category Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Category not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+
+//////////////////////////////////////////////////// ************** Add Cardholder benefit Controller
+app.controller('addCardholderController', addCardholderController);
+//dependency injection
+addCardholderController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addCardholderController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.cardData = {};
+		$scope.created = false;
+		$scope.file ={};
+
+		$scope.getCategories = function() {
+                    var reqObject = {
+                        "sector" : "card"
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'aaibian/admin/get_categories',
+                        data: reqObject,
+                        headers: {'Content-Type': 'application/JSON'}
+                    })
+                    .then(function(response) {
+                        if (response.data.valid) {
+                            $scope.types = response.data.results;
+                        }
+                        else {
+                            $scope.types = [];
+                        }
+                    });
+                };
+
+        $scope.getCategories();
+
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+
+    	$scope.fileUploadValue = true;
+
+        $scope.msg = "";
+
+        $scope.addCardholder = function(){
+
+            var cardObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"new_cardholder" : {
+				    "name" : $scope.cardData.name,
+				    "offer" : $scope.cardData.offer,
+				    "type" : $scope.cardData.type
+				}
+			};
+
+            $http({
+                url:'/aaibian/admin/add_cardholder',
+                method: 'POST',
+                data: cardObject,
                 headers: {'Content-Type': 'application/JSON'}
               })
             .then(function(response) {

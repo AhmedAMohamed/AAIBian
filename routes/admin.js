@@ -407,22 +407,17 @@ router.post('/add_cardholder', function(req, res, next) {
         if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
                 if (user) {
+
                     var d = {
                         name: req.body.new_cardholder.name,
-                        address: req.body.new_cardholder.address,
-                        location: [
-                            parseFloat(req.body.new_cardholder.location.lat),
-                            parseFloat(req.body.new_cardholder.location.lng)
-                        ],
-                        merchant: req.body.new_cardholder.merchant,
-                        zone: req.body.new_cardholder.zone,
-                        industry: req.body.new_cardholder.category,
+                        type: req.body.new_cardholder.type.name,
                         offer: req.body.new_cardholder.offer,
                         creation_date: new Date(Date.now())
                     };
                     var card = new Cardholder(d);
                     card.save(function(err, nCard) {
                         if (err) {
+                            console.log(err);
                             res.json(messeges.interna_error());
                         }
                         else {
