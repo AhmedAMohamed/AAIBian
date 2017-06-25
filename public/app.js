@@ -47,6 +47,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/add_cardholder", {
         templateUrl : "/pages/addCardholder.html",
         controller : "addCardholderController"
+     }).when("/list_news", {
+        templateUrl : "/pages/listNews.html",
+        controller : "showNewsController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -163,7 +166,9 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Add Area'){
                 $location.path('/add_area');
             }
-
+            else if(val == 'Show News') {
+                $location.path('/list_news');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -231,6 +236,9 @@ function menuController($scope, $http, $window, $location){
 			}
 			else if(val == 'Add Area'){
                 $location.path('/add_area');
+            }
+            else if(val == 'Show News') {
+                $location.path('/list_news');
             }
 		}
 		$scope.testType = function(){
@@ -418,7 +426,6 @@ app.controller('getUsersController', getUsersController);
 //dependency injection
 getUsersController.$inject=['$scope', '$http', '$window','$location'];
 function getUsersController($scope, $http, $window, $location){
-	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.users = [];
 
@@ -1202,4 +1209,70 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 
 	}
 	else $location.path('/error');
+}
+
+
+//////////////////////////////////////////////////// ************** Show News Controller
+app.controller('showNewsController', showNewsController);
+//dependency injection
+showNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showNewsController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.users = [];
+
+		$scope.getNews = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_news',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.news = response.data.result;
+				console.log($scope.news);
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+		$scope.deleteNews = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_news',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "News deleted";
+                    console.log("here before update");
+                    $scope.getUsers();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "News not deleted yet";
+		        }
+		    });
+		}
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
 }
