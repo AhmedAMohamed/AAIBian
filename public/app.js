@@ -1271,6 +1271,11 @@ function showNewsController($scope, $http, $window, $location, Upload){
 		    });
 		}
 
+        $scope.editNews = function(id) {
+            console.log("Here in edit");
+            console.log(id);
+        }
+
 		$scope.getStatus = function() {
             return $scope.created;
 		}
