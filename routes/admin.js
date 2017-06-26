@@ -925,6 +925,7 @@ router.post('/remove_media', function(req, res, next) {
                 res.json(messeges.not_valid_operation());
             }
             else {
+                console.log(n);
                 n.media_path = "";
                 n.save(function(err, o){
                     if(err) {
