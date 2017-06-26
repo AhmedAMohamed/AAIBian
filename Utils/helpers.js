@@ -126,6 +126,7 @@ var notification_schedules_helpers = {
         fcm.send(message, function(err, response){
             if (err) {
                 console.log("Error in fcm");
+                console.log(err);
                 callback(false);
             } else {
                 console.log("Send msg");
