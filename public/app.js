@@ -1295,6 +1295,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
     $scope.showEdit = false;
     $scope.showRemove = false;
     $scope.newsData = {};
+    $scope.removed = true;
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getNewsDate = function(){
 		  	var reqObject = {
@@ -1363,6 +1364,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "Media deleted";
+                    $scope.removed = false;
 		        }
 		        else {
                     $scope.created = false;

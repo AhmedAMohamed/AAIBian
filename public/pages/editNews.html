@@ -30,7 +30,7 @@
                                               rows="3" ng-init="newsData.body=news.Body"></textarea>
                                 </div>
                             </div>
-                            <div class="panel-body" >
+                            <div class="panel-body" ng-show="removed">
                                 <a href= "{{ news.media_path }}"  download="{{news.media_path}}" target="_blank">Attachment </a>
                                 <br>
                                 <icon align="middle"><a ng-click="editImage(news._id)" ng-mouseover="showEdit=true"
@@ -43,18 +43,6 @@
                                     <i class="glyphicon glyphicon-remove"></i></a></icon>
                                 <label ng-show="showRemove" class="panel-options">Remove uploaded file</label>
                             </div>
-
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-md-2 control-label">Media File</label>-->
-                                <!--<div class="col-md-10">-->
-                                    <!--<input class="btn btn-default" id="exampleInputFile1" name = "file"-->
-                                           <!--type="file" ng-file-select="addNews($files)" ngf-select ng-model = "file">-->
-                                    <!--<p class="help-block">-->
-                                        <!--Upload-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="submit" class="btn btn-primary">Save</button>
