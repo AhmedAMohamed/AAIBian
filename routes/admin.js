@@ -920,13 +920,20 @@ router.get('/get_newsData/:id', function(req, res, next) {
 router.post('/remove_media', function(req, res, next) {
     console.log(req.body);
     if(req.body.model == "news") {
-        var obj = {media_path : ""};
-        News.findByIdAndUpdate(req.body.id, obj, function(err, ob) {
+        News.findById(req.body.id, function(err, n) {
             if (err) {
                 res.json(messeges.not_valid_operation());
             }
             else {
-                res.json(messeges.valid_operation());
+                n.media_path = "";
+                n.save(function(err, o){
+                    if(err) {
+                        res.json(messeges.not_valid_operation());
+                    }
+                    else {
+                        res.json(messeges.valid_operation());
+                    }
+                });
             }
         });
     }
