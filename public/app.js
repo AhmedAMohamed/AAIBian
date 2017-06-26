@@ -1371,8 +1371,12 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 		    });
 		}
 
+        $scope.editLogo = function(id) {
+            console.log("edit logo");
+        };
+
 		$scope.getStatus = function() {
             return $scope.created;
-		}
+		};
 	}
 }
