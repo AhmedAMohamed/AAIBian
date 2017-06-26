@@ -1295,7 +1295,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
     $scope.showEdit = false;
     $scope.showRemove = false;
     $scope.newsData = {};
-    $scope.removed = true;
+    $scope.removed = false;
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getNewsDate = function(){
 		  	var reqObject = {
@@ -1353,6 +1353,15 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
             return !$scope.removed;
         };
 
+        $scope.showAttachment = function() {
+            if ($scope.removed || $scope.news.media_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
+
         $scope.uploadMediaFile = function() {
             console.log("here in upload media file");
         };
@@ -1371,7 +1380,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "Media deleted";
-                    $scope.removed = false;
+                    $scope.removed = true;
 		        }
 		        else {
                     $scope.created = false;
