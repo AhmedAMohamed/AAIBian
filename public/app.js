@@ -1350,7 +1350,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
             });
         };
         $scope.uploadMedia = function() {
-            if ($scope.removed || $scope.news.media_path == "") {
+            if ($scope.removed) {
                 $scope.removed = false;
                 return true;
             }
@@ -1358,6 +1358,10 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
                 $scope.removed = true;
                 return false;
             }
+        };
+
+        $scope.uploadMediaFile = function() {
+            console.log("here in upload media file");
         };
 		$scope.removeMedia = function(id) {
 		    var request = {
