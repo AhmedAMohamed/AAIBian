@@ -1321,7 +1321,6 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 		};
 
         $scope.editNews = function() {
-            console.log($scope.newsData);
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
@@ -1349,36 +1348,30 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
                 }
             });
         };
-		$scope.deleteNews = function(id) {
+		$scope.removeMedia = function(id) {
 		    var request = {
-		        "to_delete_id": id
+		        "to_delete_id": id,
+		        "model" : "news"
 		    };
 		    $http({
 		        method: 'POST',
-		        url: '/aaibian/admin/delete_news',
+		        url: '/aaibian/admin/remove_media',
 		        data: JSON.stringify(request),
 		        headers: {'Content-Type' : 'application/JSON'}
 		    })
 		    .then(function(response) {
-		        console.log("in delete");
-		        console.log(response.data);
 		        if (response.data.valid) {
                     $scope.created = true;
-                    $scope.msg = "News deleted";
-                    $scope.getNews();
+                    $scope.msg = "Media deleted";
 		        }
 		        else {
                     $scope.created = false;
-                    $scope.msg = "News not deleted yet";
+                    $scope.msg = "Media not deleted yet";
 		        }
 		    });
 		}
 
 		$scope.getStatus = function() {
-
-
-
-
             return $scope.created;
 		}
 	}

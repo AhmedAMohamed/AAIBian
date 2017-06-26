@@ -917,6 +917,19 @@ router.get('/get_newsData/:id', function(req, res, next) {
     });
 });
 
+router.post('/remove_media', function(req, res, next) {
+    if(req.body.request.model == "news") {
+        var obj = {media_path : ""};
+        News.findByIdAndUpdate(id, obj, function(err, ob) {
+            if (err) {
+                res.json(messeges.not_valid_operation());
+            }
+            else {
+                res.json(messeges.valid_operation());
+            }
+        });
+    }
+});
 
 router.post('/edit_news/:id', function(req, res, next) {
     var news_id = req.params.id;
