@@ -920,7 +920,7 @@ router.get('/get_newsData/:id', function(req, res, next) {
 router.post('/remove_media', function(req, res, next) {
     console.log(req.body);
     if(req.body.model == "news") {
-        News.findById(req.body.id, function(err, n) {
+        News.findById(req.body.to_delete_id, function(err, n) {
             if (err) {
                 res.json(messeges.not_valid_operation());
             }
