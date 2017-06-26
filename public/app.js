@@ -1349,6 +1349,16 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
                 }
             });
         };
+        $scope.uploadMedia = function() {
+            if ($scope.removed || $scope.news.media_path == "") {
+                $scope.removed = false;
+                return true;
+            }
+            else {
+                $scope.removed = true;
+                return false;
+            }
+        };
 		$scope.removeMedia = function(id) {
 		    var request = {
 		        "to_delete_id": id,
