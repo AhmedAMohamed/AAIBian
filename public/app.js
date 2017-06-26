@@ -1350,14 +1350,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
             });
         };
         $scope.uploadMedia = function() {
-            if ($scope.removed) {
-                $scope.removed = false;
-                return true;
-            }
-            else {
-                $scope.removed = true;
-                return false;
-            }
+            return !removed;
         };
 
         $scope.uploadMediaFile = function() {
