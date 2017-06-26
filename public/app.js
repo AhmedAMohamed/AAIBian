@@ -50,6 +50,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/list_news", {
         templateUrl : "/pages/listNews.html",
         controller : "showNewsController"
+     }).when("/edit_news", {
+        templateUrl : "/pages/editNews.html",
+        controller : "editNewsController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -1235,7 +1238,6 @@ function showNewsController($scope, $http, $window, $location, Upload){
 			})
 			.then(function(response) {
         		$scope.news = response.data.result;
-				console.log($scope.news);
 				if(response.data.valid){
 					return true;
 				}
@@ -1258,11 +1260,12 @@ function showNewsController($scope, $http, $window, $location, Upload){
 		        headers: {'Content-Type' : 'application/JSON'}
 		    })
 		    .then(function(response) {
+		        console.log("in delete");
+		        console.log(response.data);
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "News deleted";
-                    console.log("here before update");
-                    $scope.getUsers();
+                    $scope.getNews();
 		        }
 		        else {
                     $scope.created = false;
@@ -1272,11 +1275,110 @@ function showNewsController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editNews = function(id) {
-            console.log("Here in edit");
-            console.log(id);
+            $location.path('/edit_news/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////// ************** Edit News Controller
+app.controller('editNewsController', editNewsController);
+//dependency injection
+editNewsController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editNewsController($scope, $http, $window, $location, Upload, $routeParams){
+
+    $scope.news_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.newsData = {};
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getNewsDate = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_newsData/' + $scope.news_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.news = response.data.result;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		};
+
+        $scope.editNews = function() {
+            console.log($scope.newsData);
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "news_data" : {
+                    "title" : $scope.newsData.title,
+                    "Body" : $scope.newsData.body
+                }
+            };
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_news/' + $scope.news_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_news');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        };
+		$scope.deleteNews = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_news',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log("in delete");
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "News deleted";
+                    $scope.getNews();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "News not deleted yet";
+		        }
+		    });
+		}
+
+		$scope.getStatus = function() {
+
+
+
+
             return $scope.created;
 		}
 	}

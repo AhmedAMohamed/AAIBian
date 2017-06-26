@@ -67,11 +67,72 @@ var auth = {
         });
     },
     check_admin: function (user_id, privilege, function_name, callback) {
-        console.log("here");
-
         var p_find_obj = {};
-        if (privilege == validation_tokens.privilege.GM) {
-
+        if(function_name.indexOf("Edit") == -1) {
+            if (privilege == validation_tokens.privilege.GM) {
+                User.findOne({"_id": user_id, "privilege": privilege}, function (err, user) {
+                   if (err) {
+                       console.log("Error");
+                       callback(null);
+                   }
+                   else {
+                       callback(user);
+                   }
+                });
+            }
+            else if (privilege == validation_tokens.privilege.root) {
+                p_find_obj['root'] = { $in : [function_name]};
+                Privileges.find(p_find_obj, function(err, validations) {
+                    if (err) {
+                        callback(null);
+                    }
+                    else {
+                        if (validations.length == 1) {
+                            User.findById(user_id, function (err, users) {
+                               if (err) {
+                                   console.log("Error");
+                                   callback(null);
+                               }
+                               else {
+                                   callback(users);
+                               }
+                            });
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+            else if (privilege == validation_tokens.privilege.admin) {
+                p_find_obj['admin'] = { $in : [function_name]};
+                Privileges.find(p_find_obj, function(err, validations) {
+                    if (err) {
+                        callback(null);
+                    }
+                    else {
+                        if (validations.length == 1) {
+                            User.findById(user_id, function (err, users) {
+                               if (err) {
+                                   console.log("Error");
+                                   callback(null);
+                               }
+                               else {
+                                   callback(users);
+                               }
+                            });
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+            else {
+                callback(null);
+            }
+        }
+        else {
             User.findOne({"_id": user_id, "privilege": privilege}, function (err, user) {
                if (err) {
                    console.log("Error");
@@ -81,57 +142,6 @@ var auth = {
                    callback(user);
                }
             });
-        }
-        else if (privilege == validation_tokens.privilege.root) {
-            p_find_obj['root'] = { $in : [function_name]};
-            Privileges.find(p_find_obj, function(err, validations) {
-                if (err) {
-                    callback(null);
-                }
-                else {
-                    if (validations.length == 1) {
-                        User.findById(user_id, function (err, users) {
-                           if (err) {
-                               console.log("Error");
-                               callback(null);
-                           }
-                           else {
-                               callback(users);
-                           }
-                        });
-                    }
-                    else {
-                        callback(null);
-                    }
-                }
-            });
-        }
-        else if (privilege == validation_tokens.privilege.admin) {
-            p_find_obj['admin'] = { $in : [function_name]};
-            Privileges.find(p_find_obj, function(err, validations) {
-                if (err) {
-                    callback(null);
-                }
-                else {
-                    if (validations.length == 1) {
-                        User.findById(user_id, function (err, users) {
-                           if (err) {
-                               console.log("Error");
-                               callback(null);
-                           }
-                           else {
-                               callback(users);
-                           }
-                        });
-                    }
-                    else {
-                        callback(null);
-                    }
-                }
-            });
-        }
-        else {
-            callback(null);
         }
     }
 };

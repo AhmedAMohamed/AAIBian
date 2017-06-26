@@ -17,19 +17,18 @@
                             <div ng-click="editNews(x._id)">
                                 <div class="head">
                                     <h3 class="headline hl1">{{ x.title }} </h3>
-                                    <icon align="middle"><a ng-click="deleteNews(x._id)"><i
-                                            class="glyphicon glyphicon-remove"></i></a></icon>
-
                                 </div>
                                 <br>
 
                                 <p>{{ x.Body }}</p>
                                 <br>
                                 <p>{{ x.creation_date }}</p>
-
+                            </div>
+                            <div>
                                 <a href= "{{ x.media_path }}"  download="{{x.media_path}}" target="_blank">Attachment </a>
                                 <br>
-
+                                <icon align="middle"><a ng-click="deleteNews(x._id)"><i
+                                        class="glyphicon glyphicon-remove"></i></a></icon>
                                 <hr>
                             </div>
                         </div>

@@ -524,7 +524,7 @@ router.post('/delete_medical', function(req, res, next) {
     });
 });
 
-router.post('delete_area', function(req, res, next) {
+router.post('/delete_area', function(req, res, next) {
     var id = req.body.to_delete_id;
     Areas.findByIdAndRemove(id, function(err) {
         if (err) {
@@ -537,7 +537,7 @@ router.post('delete_area', function(req, res, next) {
     });
 });
 
-router.post('delete_category', function(req, res, next) {
+router.post('/delete_category', function(req, res, next) {
     var id = req.body.to_delete_id;
     Categories.findByIdAndRemove(id, function(err) {
         if (err) {
@@ -550,11 +550,10 @@ router.post('delete_category', function(req, res, next) {
     });
 });
 
-router.post('delete_news', function(req, res, next) {
+router.post('/delete_news', function(req, res, next) {
     var id = req.body.to_delete_id;
     News.findByIdAndRemove(id, function(err) {
         if (err) {
-
             res.json(messeges.not_valid_operation());
         }
         else {
@@ -901,4 +900,52 @@ router.post('/get_categories', function(req, res, next) {
         });
     }
 });
+
+router.get('/get_newsData/:id', function(req, res, next) {
+    var id = req.params.id;
+    News.findById(id, function(err, news) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: news
+            });
+        }
+    });
+});
+
+
+router.post('/edit_news/:id', function(req, res, next) {
+    var news_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
+                if (user) {
+                    var updated_news = {
+                        "title" : req.body.news_data.title,
+                        "Body" : req.body.news_data.Body
+                    };
+                    News.findByIdAndUpdate(news_id, updated_news, function(err, obj) {
+                        if(err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+
+                }
+            });
+        }
+        else {
+
+        }
+    });
+});
+
 module.exports = router;
