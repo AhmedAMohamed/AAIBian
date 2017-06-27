@@ -1222,7 +1222,6 @@ showNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function showNewsController($scope, $http, $window, $location, Upload){
 
     if($window.sessionStorage.getItem("logged") == "true"){
-		$scope.users = [];
 
 		$scope.getNews = function(){
 		  	var reqObject = {
@@ -1248,6 +1247,15 @@ function showNewsController($scope, $http, $window, $location, Upload){
 		    });
 
 		}
+
+        $scope.attachmentShow = function(news) {
+            if (news.media_path == "" || typeof news.media_path == 'undefined') {
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
 
 		$scope.deleteNews = function(id) {
 		    var request = {
