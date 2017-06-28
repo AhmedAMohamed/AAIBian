@@ -1437,6 +1437,7 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
             .then(function(response) {
                 if(response.data.valid){
                     $scope.mediaUploaded = true;
+                    $location.path('list_news');
                 }
                 else {
                     $scope.mediaUploaded = false;
