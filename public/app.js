@@ -1304,6 +1304,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
     $scope.showRemove = false;
     $scope.newsData = {};
     $scope.removed = false;
+    $scope.uploadDivView = false;
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getNewsDate = function(){
 		  	var reqObject = {
@@ -1372,7 +1373,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 
         $scope.uploadMediaFile = function() {
             console.log("here in upload media file");
-            return true
+            $scope.uploadDivView = true;
         };
 
         $scope.showUploadMedia = function() {
