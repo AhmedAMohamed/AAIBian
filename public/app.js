@@ -1303,6 +1303,7 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
     $scope.showEdit = false;
     $scope.showRemove = false;
     $scope.newsData = {};
+    $scope.news = {};
     $scope.removed = false;
     $scope.uploadDivView = false;
     $scope.mediaUploaded = false;
@@ -1330,7 +1331,7 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
 					return false;
 				}
 		    });
-		};
+		}
 
         $scope.editNews = function() {
             var reqObject = {
@@ -1338,8 +1339,8 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "news_data" : {
-                    "title" : $scope.newsData.title,
-                    "Body" : $scope.newsData.body
+                    "title" : $scope.newsData.title == null ? $scope.news.title : $scope.newsData.title,
+                    "Body" : $scope.newsData.body == null ? $scope.news.Body : $scope.newsData.body
                 }
             };
             $http({
@@ -1359,12 +1360,12 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
                     return false;
                 }
             });
-        };
+        }
 
         $scope.uploadMedia = function() {
 
             return !$scope.removed;
-        };
+        }
 
         $scope.showAttachment = function() {
             if ($scope.removed || $scope.news.media_path == "") {
@@ -1441,15 +1442,15 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
                     $scope.mediaUploaded = false;
                 }
             });
-        };
+        }
 
         $scope.editLogo = function(id) {
 
             console.log("edit logo");
-        };
+        }
 
 		$scope.getStatus = function() {
             return $scope.created;
-		};
+		}
 	}
 }
