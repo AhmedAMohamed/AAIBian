@@ -1449,6 +1449,10 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
             console.log("edit logo");
         }
 
+        $scope.editMedia = function(id) {
+            $scope.uploadDivView = true;
+        }
+
 		$scope.getStatus = function() {
             return $scope.created;
 		}

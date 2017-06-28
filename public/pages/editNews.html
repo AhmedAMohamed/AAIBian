@@ -33,7 +33,7 @@
                             <div class="panel-body" ng-show="showAttachment()">
                                 <a href= "{{ news.media_path }}"  download="{{news.media_path}}" target="_blank">Attachment </a>
                                 <br>
-                                <icon align="middle"><a ng-click="editImage(news._id)" ng-mouseover="showEdit=true"
+                                <icon align="middle"><a ng-click="editMedia(news._id)" ng-mouseover="showEdit=true"
                                                         ng-mouseleave="showEdit=false">
                                     <i class="glyphicon glyphicon-edit"></i></a></icon>
                                 <label ng-show="showEdit" class="panel-options">Change uploaded file</label>
