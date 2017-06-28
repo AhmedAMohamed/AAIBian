@@ -1297,7 +1297,7 @@ function showNewsController($scope, $http, $window, $location, Upload){
 app.controller('editNewsController', editNewsController);
 //dependency injection
 editNewsController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
-function editNewsController($scope, $http, $window, $location, Upload, $routeParams){
+function editNewsController($scope, $http, $window, $location, $routeParams, Upload){
 
     $scope.news_id = $location.search().id;
     $scope.showEdit = false;
@@ -1432,16 +1432,15 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
                 method: 'POST',
                 data: benefitObject,
                 headers: {'Content-Type': 'application/JSON'}
-              })
+            })
             .then(function(response) {
-                    if(response.data.valid){
-                        $scope.mediaUploaded = true;
-                    }
-                    else
-                    {
-                        $scope.mediaUploaded = false;
-                    }
-              });
+                if(response.data.valid){
+                    $scope.mediaUploaded = true;
+                }
+                else {
+                    $scope.mediaUploaded = false;
+                }
+            });
         };
 
         $scope.editLogo = function(id) {
