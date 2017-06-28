@@ -971,7 +971,7 @@ router.post('/edit_news/:id', function(req, res, next) {
     });
 });
 
-router.post('/upload_media/:id', function(req, res, next) {
+router.post('/upload_media/:id', multiparty(), function(req, res, next) {
     var news_id = req.params.id;
     if (req.body.request.model == "news") {
         var file_temp_path = req.files.file.path;
