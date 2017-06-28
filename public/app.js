@@ -1305,6 +1305,8 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
     $scope.newsData = {};
     $scope.removed = false;
     $scope.uploadDivView = false;
+    $scope.mediaUploaded = false;
+
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getNewsDate = function(){
 		  	var reqObject = {
@@ -1358,7 +1360,9 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
                 }
             });
         };
+
         $scope.uploadMedia = function() {
+
             return !$scope.removed;
         };
 
@@ -1369,12 +1373,11 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
             else {
                 return true;
             }
-        };
+        }
 
         $scope.uploadMediaFile = function() {
             console.log("here in upload media file");
             $scope.uploadDivView = true;
-//            return true;
         }
 
         $scope.showUploadMedia = function() {
@@ -1384,7 +1387,7 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
             else {
                 return false;
             }
-        };
+        }
 
 		$scope.removeMedia = function(id) {
 		    var request = {
@@ -1410,7 +1413,39 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
 		    });
 		}
 
+        $scope.addMedia = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file,
+                "request" : {
+                    "model" : "news"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_media/' + $scope.news_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                    if(response.data.valid){
+                        $scope.mediaUploaded = true;
+                    }
+                    else
+                    {
+                        $scope.mediaUploaded = false;
+                    }
+              });
+        };
+
         $scope.editLogo = function(id) {
+
             console.log("edit logo");
         };
 
