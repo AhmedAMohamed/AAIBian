@@ -1374,8 +1374,8 @@ function editNewsController($scope, $http, $window, $location, Upload, $routePar
         $scope.uploadMediaFile = function() {
             console.log("here in upload media file");
             $scope.uploadDivView = true;
-            return true;
-        };
+//            return true;
+        }
 
         $scope.showUploadMedia = function() {
             if ($scope.removed || $scope.news.media_path == "") {
