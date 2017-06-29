@@ -1307,6 +1307,8 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
     $scope.removed = false;
     $scope.uploadDivView = false;
     $scope.mediaUploaded = false;
+    $scope.uploadLogoDivView = false;
+
 
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getNewsDate = function(){
@@ -1446,8 +1448,39 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
         }
 
         $scope.editLogo = function(id) {
-
+            $scope.uploadLogoDivView = true;
             console.log("edit logo");
+        }
+
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "news"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.news_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    $location.path('/list_news');
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            });
         }
 
         $scope.editMedia = function(id) {
