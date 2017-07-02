@@ -1004,4 +1004,38 @@ router.post('/upload_media/:id', multiparty(), function(req, res, next) {
         res.json(messeges.not_valid_operation());
     }
 });
+
+router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
+    var news_id = req.params.id;
+    if (req.body.request.model == "news") {
+        var file_temp_path = req.files.file.path;
+        var file_name = req.files.file.originalFilename;
+        var file_new_name = randomstring.generate(7) + file_name;
+        var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
+        fs.readFile(file_temp_path, function(err, data) {
+            fs.writeFile(file_upload_path, data, function(err) {
+                if (err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    News.findById(news_id, function(err, current_news) {
+                        fs.unlink(file_temp_path);
+                        current_news.img_path = "data/uploads/" + file_new_name;
+                        current_news.save(function(err, s) {
+                            if(err) {
+                                res.json(messeges,not_valid_operation());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
+    else {
+        res.json(messeges.not_valid_operation());
+    }
+});
 module.exports = router;
