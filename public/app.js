@@ -1329,7 +1329,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 				headers: {'Content-Type': 'application/JSON'}
 			})
 			.then(function(response) {
-        		$scope.news = response.data.result;
+        		$scope.ATMs = response.data.result;
 				if(response.data.valid){
 					return true;
 				}
