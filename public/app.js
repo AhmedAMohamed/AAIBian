@@ -190,6 +190,9 @@ function homeController($scope, $http, $window, $location){
             else if (val == 'Show Areas') {
                 $location.path('/list_areas');
             }
+            else if (val == 'Show Categories') {
+                $location.path('/list_categories');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -266,6 +269,9 @@ function menuController($scope, $http, $window, $location){
             }
             else if (val == 'Show Areas') {
                 $location.path('/list_areas');
+            }
+            else if (val == 'Show Categories') {
+                $location.path('/list_categories');
             }
 		}
 		$scope.testType = function(){
