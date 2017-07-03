@@ -950,7 +950,8 @@ router.post('/edit_news/:id', function(req, res, next) {
                 if (user) {
                     var updated_news = {
                         "title" : req.body.news_data.title,
-                        "Body" : req.body.news_data.Body
+                        "Body" : req.body.news_data.Body,
+                        "_id" : mongoose.Types.ObjectId()
                     };
                     News.findByIdAndUpdate(news_id, updated_news, function(err, obj) {
                         if(err) {
@@ -1069,7 +1070,7 @@ router.post('/edit_user/:id', function(req, res, next) {
                         "name" : req.body.user_data.name,
                         "email" : req.body.user_data.email,
                         "password" : req.body.user_data.password,
-                        "_id" : mongoose.Types.ObjectId();
+                        "_id" : mongoose.Types.ObjectId()
                     };
                     User.findByIdAndUpdate(user_id, updated_user, function(err, obj) {
                         if(err) {
