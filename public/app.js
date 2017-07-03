@@ -1440,7 +1440,7 @@ function showAreaController($scope, $http, $window, $location, Upload){
 		    };
 		    $http({
 		        method: 'POST',
-		        url: '/aaibian/admin/delete_atm',
+		        url: '/aaibian/admin/delete_area',
 		        data: JSON.stringify(request),
 		        headers: {'Content-Type' : 'application/JSON'}
 		    })
