@@ -436,7 +436,6 @@ function getUsersController($scope, $http, $window, $location){
 		$scope.users = [];
 
 		$scope.getUsers = function(){
-			console.log("here");
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
@@ -491,7 +490,6 @@ function getUsersController($scope, $http, $window, $location){
 
         $scope.editUser(id) {
             $location.path('/edit_user/').search({"id" : id});
-
         }
 
 		$scope.getStatus = function() {
@@ -1508,7 +1506,7 @@ app.controller('editUserController', editUserController);
 editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
 function editUserController($scope, $http, $window, $location, $routeParams, Upload){
 
-    $scope.news_id = $location.search().id;
+    $scope.user_id = $location.search().id;
     $scope.showEdit = false;
     $scope.showRemove = false;
     $scope.newsData = {};
