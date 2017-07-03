@@ -1548,7 +1548,7 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "user_data" : {
-                    "name" : $scope.usersData.name == null ? $scope.user.name : $scope.usersData.name,
+                    "name" : $scope.userData.name == null ? $scope.user.name : $scope.usersData.name,
                     "email" : $scope.userData.email == null ? $scope.user.email : $scope.userData.email,
                     "password" : $scope.userData.password == null ? $scope.user.password : $scope.userData.password
                 }
