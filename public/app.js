@@ -178,7 +178,7 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Show News') {
                 $location.path('/list_news');
             }
-            else if(vall == 'Show ATMs') {
+            else if(val == 'Show ATMs') {
                 $location.path('/list_atms');
             }
 		}
@@ -252,7 +252,7 @@ function menuController($scope, $http, $window, $location){
             else if(val == 'Show News') {
                 $location.path('/list_news');
             }
-            else if(vall == 'Show ATMs') {
+            else if(val == 'Show ATMs') {
                 $location.path('/list_atms');
             }
 		}
