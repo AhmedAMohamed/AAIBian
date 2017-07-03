@@ -41,6 +41,7 @@ router.post('/login', function (req, res, next) {
                             mhelper['users'].update_user_login_status(u._id, u.login_status, function(user) {
                                 if (user) {
                                     response.result.user_data.login_status = user.login_status;
+                                    response.result.login_status = user.login_status;
                                     res.json(response);
                                 }
                                 else {
