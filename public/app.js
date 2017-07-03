@@ -1515,6 +1515,10 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
     $scope.uploadDivView = false;
     $scope.mediaUploaded = false;
     $scope.uploadLogoDivView = false;
+    $scope.showPasswordDiv = false;
+    $scope.showPasswordMsg = "Show Password";
+
+
 
 
     if($window.sessionStorage.getItem("logged") == "true"){
@@ -1570,6 +1574,11 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
                     return false;
                 }
             });
+        }
+
+        $scope.showPasswordDivUpdate = function() {
+            $scope.showPasswordMsg = "Hide Password";
+            $scope.showPasswordDiv = ! scope.showPasswordDiv;
         }
 
 		$scope.getStatus = function() {
