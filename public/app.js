@@ -1509,8 +1509,8 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
     $scope.user_id = $location.search().id;
     $scope.showEdit = false;
     $scope.showRemove = false;
-    $scope.newsData = {};
-    $scope.news = {};
+    $scope.userData = {};
+    $scope.user = {};
     $scope.removed = false;
     $scope.uploadDivView = false;
     $scope.mediaUploaded = false;
@@ -1518,7 +1518,7 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
 
 
     if($window.sessionStorage.getItem("logged") == "true"){
-		$scope.getNewsDate = function(){
+		$scope.getUserDate = function(id){
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
@@ -1526,13 +1526,13 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
 			};
 			$http({
 			method: 'GET',
-				url:'/aaibian/admin/get_newsData/' + $scope.news_id,
+				url:'/aaibian/admin/get_userData/' + $scope.user_id,
 				data:JSON.stringify(reqObject),
 				headers: {'Content-Type': 'application/JSON'}
 			})
 			.then(function(response) {
 				if(response.data.valid){
-				    $scope.news = response.data.result;
+				    $scope.user = response.data.result;
 					return true;
 				}
 				else
@@ -1571,131 +1571,28 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
             });
         }
 
-        $scope.uploadMedia = function() {
-
-            return !$scope.removed;
-        }
-
-        $scope.showAttachment = function() {
-            if ($scope.removed || $scope.news.media_path == "") {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-
-        $scope.uploadMediaFile = function() {
-            console.log("here in upload media file");
-            $scope.uploadDivView = true;
-        }
-
-        $scope.showUploadMedia = function() {
-            if ($scope.removed || $scope.news.media_path == "") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-		$scope.removeMedia = function(id) {
-		    var request = {
-		        "to_delete_id": id,
-		        "model" : "news"
-		    };
-		    $http({
-		        method: 'POST',
-		        url: '/aaibian/admin/remove_media',
-		        data: JSON.stringify(request),
-		        headers: {'Content-Type' : 'application/JSON'}
-		    })
-		    .then(function(response) {
-		        if (response.data.valid) {
-                    $scope.created = true;
-                    $scope.msg = "Media deleted";
-                    $scope.removed = true;
-		        }
-		        else {
-                    $scope.created = false;
-                    $scope.msg = "Media not deleted yet";
-		        }
-		    });
-		}
-
-        $scope.addMedia = function(){
-            $scope.uploadFile = function(files){
-                if (files && files.length)
-                $scope.file = files[0];
-            }
-            var benefitObject = {
-                "api_key" : $window.sessionStorage.getItem("api_key"),
-                "user_id" : $window.sessionStorage.getItem("id"),
-                "privilege" : $window.sessionStorage.getItem("type"),
-                "file" : $scope.file,
-                "request" : {
-                    "model" : "news"
-                }
-            };
-            Upload.upload({
-                url:'/aaibian/admin/upload_media/' + $scope.news_id,
-                method: 'POST',
-                data: benefitObject,
-                headers: {'Content-Type': 'application/JSON'}
-            })
-            .then(function(response) {
-                if(response.data.valid){
-                    $scope.mediaUploaded = true;
-                    $location.path('list_news');
-                }
-                else {
-                    $scope.mediaUploaded = false;
-                }
-            });
-        }
-
-        $scope.editLogo = function(id) {
-            $scope.uploadLogoDivView = true;
-            console.log("edit logo");
-        }
-
-        $scope.addLogo = function(){
-            $scope.uploadFile = function(files){
-                if (files && files.length)
-                $scope.file = files[0];
-            }
-            var benefitObject = {
-                "api_key" : $window.sessionStorage.getItem("api_key"),
-                "user_id" : $window.sessionStorage.getItem("id"),
-                "privilege" : $window.sessionStorage.getItem("type"),
-                "file" : $scope.file2,
-                "request" : {
-                    "model" : "news"
-                }
-            };
-            Upload.upload({
-                url:'/aaibian/admin/upload_logo/' + $scope.news_id,
-                method: 'POST',
-                data: benefitObject,
-                headers: {'Content-Type': 'application/JSON'}
-            })
-            .then(function(response) {
-                if(response.data.valid){
-                    $scope.logoUploaded = true;
-                    $location.path('/list_news');
-                }
-                else {
-                    $scope.logoUploaded = false;
-                }
-            });
-        }
-
-        $scope.editMedia = function(id) {
-            $scope.uploadDivView = true;
-        }
-
 		$scope.getStatus = function() {
             return $scope.created;
 		}
 	}
+}
+
+
+
+paginate = {
+
+    result: DATA , // Data is a list
+    view: [],
+    _start: 0,
+    page_size: 10,
+    next : function() {
+        for(var i = _start; i < _start + page_size; i++) {
+            if (_start >= DATA.length) {
+                return view;
+            }
+            view.push(result[i]);
+        }
+        _start += page_size;
+    }
+
 }

@@ -972,6 +972,7 @@ router.post('/edit_news/:id', function(req, res, next) {
 });
 
 router.post('/upload_media/:id', multiparty(), function(req, res, next) {
+
     var news_id = req.params.id;
     if (req.body.request.model == "news") {
         var file_temp_path = req.files.file.path;
@@ -1006,6 +1007,7 @@ router.post('/upload_media/:id', multiparty(), function(req, res, next) {
 });
 
 router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
+
     var news_id = req.params.id;
     if (req.body.request.model == "news") {
         var file_temp_path = req.files.file.path;
@@ -1038,4 +1040,21 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
         res.json(messeges.not_valid_operation());
     }
 });
+
+router.get('/get_userData/:id', function(req, res, next) {
+    var id = req.params.id;
+    User.findById(id, function(err, users) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: users
+            });
+        }
+    });
+});
+
 module.exports = router;
