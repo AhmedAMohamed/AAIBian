@@ -18,21 +18,22 @@
                                 <div class="head">
                                     <h3 class="headline hl1">{{ x.address }} </h3>
                                 </div>
-                                <br>
-                                <p class="col-sm-2 control-label">Area</p>
-                                <br>
-                                <p class="form-control">{{ x.loc_name }}</p>
-                                <hr>
 
-                                <p class="col-sm-2 control-label">Government</p>
-                                <br>
-                                <p class="form-control">{{ x.zone }}</p>
-                                <hr>
+                                <div class="form-group">
+                                    <label>Area</label>
+                                    <label class="form-control"> {{ x.loc_name }} </label>
+                                </div>
 
-                                <p class="col-sm-2 control-label">Location</p>
-                                <br>
-                                <p class="form-control">{{ x.location[0] }}</p>
-                                <p class="form-control">{{ x.location[1] }}</p>
+                                <div class="form-group">
+                                    <label>Government</label>
+                                    <label class="form-control"> {{ x.zone }} </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <label class="form-control"> {{ x.location[0] }} </label>
+                                    <label class="form-control"> {{ x.location[1] }} </label>
+                                </div>
 
                             </div>
                             <div>
