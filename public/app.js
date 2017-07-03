@@ -56,6 +56,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/edit_user", {
         templateUrl : "/pages/editUser.html",
         controller : "editUserController"
+     }).when("/list_atms", {
+        templateUrl : "/pages/listATM.html",
+        controller : "showATMController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -175,6 +178,9 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Show News') {
                 $location.path('/list_news');
             }
+            else if(vall == 'Show ATMs') {
+                $location.path('/list_atms');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -246,7 +252,9 @@ function menuController($scope, $http, $window, $location){
             else if(val == 'Show News') {
                 $location.path('/list_news');
             }
-            else if(vall == 'Show ATMs')
+            else if(vall == 'Show ATMs') {
+                $location.path('/list_atms');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
