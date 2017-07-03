@@ -943,7 +943,7 @@ router.post('/edit_news/:id', function(req, res, next) {
     var news_id = req.params.id;
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
-            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_news, function(user) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
                 if (user) {
                     var updated_news = {
                         "title" : req.body.news_data.title,
@@ -1061,7 +1061,7 @@ router.post('/edit_user/:id', function(req, res, next) {
     var user_id = req.params.id;
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
-            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_users, function(user) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
                 if (user) {
                     var updated_user = {
                         "name" : req.body.user_data.name,
