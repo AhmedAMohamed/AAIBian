@@ -122,7 +122,7 @@ var notification_schedules_helpers = {
             "notification": {
                 title: news.title,
                 body: news.Body,
-                sound: " "
+                sound: "default"
             },
             "data": news,
             "priority": "high",
