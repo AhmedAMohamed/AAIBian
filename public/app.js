@@ -1418,6 +1418,21 @@ function showAreaController($scope, $http, $window, $location, Upload){
 
 		}
 
+		$scope.getSectorVal = function(val) {
+		    if (val == 'ben') {
+		        return "Staff Benefits";
+		    }
+		    else if (val == 'atm') {
+		        return "ATMs";
+		    }
+		    else if (val == 'card') {
+		        return "Cardholder's Benefits";
+		    }
+		    else if (val == 'med') {
+		        return "Medical Benefits";
+		    }
+		}
+
 
 		$scope.deleteArea = function(id) {
 		    var request = {
