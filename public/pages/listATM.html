@@ -14,7 +14,7 @@
                     <div class="panel-heading" ng-init="getATMs()">
 
                         <div ng-repeat="x in ATMs" class="collumn">
-                            <div ng-click="editNews(x._id)">
+                            <div ng-click="editATM(x._id)">
                                 <div class="head">
                                     <h3 class="headline hl1">{{ x.address }} </h3>
                                 </div>
@@ -38,7 +38,7 @@
                             </div>
                             <div>
                                 <div class="form-group">
-                                    <icon align="middle"><a ng-click="deleteNews(x._id)"><i
+                                    <icon align="middle"><a ng-click="deleteATM(x._id)"><i
                                             class="glyphicon glyphicon-remove"></i></a></icon>
                                     <hr>
                                 </div>

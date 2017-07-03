@@ -474,9 +474,6 @@ router.post('/delete_feedback', function(req, res, next) {
 
 router.post('/delete_atm', function(req, res, next) {
     var id = req.body.to_delete_id;
-    console.log(req.body);
-    console.log("this is the ID");
-    console.log(id);
     ATMs.findByIdAndRemove(id, function(err) {
         if (err) {
             res.json(messeges.not_valid_operation());

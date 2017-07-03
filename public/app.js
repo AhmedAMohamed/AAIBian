@@ -1342,27 +1342,26 @@ function showATMController($scope, $http, $window, $location, Upload){
 		}
 
 
-		$scope.deleteNews = function(id) {
+		$scope.deleteATM = function(id) {
 		    var request = {
 		        "to_delete_id": id
 		    };
 		    $http({
 		        method: 'POST',
-		        url: '/aaibian/admin/delete_news',
+		        url: '/aaibian/admin/delete_atm',
 		        data: JSON.stringify(request),
 		        headers: {'Content-Type' : 'application/JSON'}
 		    })
 		    .then(function(response) {
-		        console.log("in delete");
 		        console.log(response.data);
 		        if (response.data.valid) {
                     $scope.created = true;
-                    $scope.msg = "News deleted";
+                    $scope.msg = "ATM deleted";
                     $scope.getNews();
 		        }
 		        else {
                     $scope.created = false;
-                    $scope.msg = "News not deleted yet";
+                    $scope.msg = "ATM not deleted yet";
 		        }
 		    });
 		}
