@@ -489,6 +489,11 @@ function getUsersController($scope, $http, $window, $location){
 		    });
 		}
 
+        $scope.editUser(id) {
+            $location.path('/edit_user/').search({"id" : id});
+
+        }
+
 		$scope.getStatus = function() {
             return $scope.created;
 		}
