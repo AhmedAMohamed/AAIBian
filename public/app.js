@@ -488,7 +488,7 @@ function getUsersController($scope, $http, $window, $location){
 		    });
 		}
 
-        $scope.editUser(id) {
+        $scope.editUser = function (id) {
             $location.path('/edit_user/').search({"id" : id});
         }
 
