@@ -27,6 +27,9 @@ var medical_schema = mongoose.Schema(
         pdf_path: {
             type: String,
             default: "/data/uploads/logo.jpg"
+        },
+        sector: {
+            type
         }
     }
 );

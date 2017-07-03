@@ -59,7 +59,9 @@ var users_helpers = {
         });
     },
     update_user_login_status: function (user_id, current_status, callback) {
-        var updated_value = current_status == reserved_tokens.logout ? reserved_tokens.first_login : reserved_tokens.old_login;
+        console.log(current_status);
+        var updated_value = ((current_status == reserved_tokens.logout) ?
+                                                    reserved_tokens.first_login : reserved_tokens.old_login);
         User.findByIdAndUpdate(user_id, {login_status: updated_value}, {new : true}, function (err, user) {
             if (err) {
                 callback(null);

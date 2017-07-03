@@ -32,8 +32,6 @@ router.post('/login', function (req, res, next) {
                               privilege:users[0].privilege,
                               user_data: users[0],
                               api_key: api.api_key,
-                              login_status: users[0].login_status,
-
                           },
                           msg: messeges.operation_valid_msg()
                     };
