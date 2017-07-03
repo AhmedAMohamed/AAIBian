@@ -38,9 +38,9 @@ router.post('/login', function (req, res, next) {
                     mhelper['users'].update_user_time(users[0]._id, function(u) {
                         if (u != null) {
                             response.result.user_id = u._id;
-                            mhelper['users'].update_user_login_status(u._id, u._id.login_status, function(user) {
+                            mhelper['users'].update_user_login_status(u._id, u.login_status, function(user) {
                                 if (user) {
-                                    response.result.login_status = user.login_status;
+                                    response.result.user_data.login_status = user.login_status;
                                     res.json(response);
                                 }
                                 else {
