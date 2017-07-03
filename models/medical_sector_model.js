@@ -29,7 +29,8 @@ var medical_schema = mongoose.Schema(
             default: "/data/uploads/logo.jpg"
         },
         sector: {
-            type
+            type: String,
+            default: "med"
         }
     }
 );
