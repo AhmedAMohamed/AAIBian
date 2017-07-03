@@ -33,7 +33,11 @@ var benefit_schema = mongoose.Schema(
             type: String,
             default: "/data/uploads/logo.jpg"
         },
-        offer: String
+        offer: String,
+        sector: {
+            type: String,
+            default: "ben"
+        }
     }
 );
 var benefit = mongoose.model('Benefits', benefit_schema);

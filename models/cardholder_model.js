@@ -9,6 +9,10 @@ var cardHolder_schema = mongoose.Schema(
         name: String,
         offer: String,
         type: String,
+        sector: {
+            type: String,
+            default: "card"
+        }
         creation_date: Date
     }
 );

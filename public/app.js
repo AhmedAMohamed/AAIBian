@@ -246,6 +246,7 @@ function menuController($scope, $http, $window, $location){
             else if(val == 'Show News') {
                 $location.path('/list_news');
             }
+            else if(vall == 'Show ATMs')
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -1297,6 +1298,77 @@ function showNewsController($scope, $http, $window, $location, Upload){
 		}
 	}
 }
+
+
+//////////////////////////////////////////////////// ************** Show News Controller
+app.controller('showATMController', showATMController);
+//dependency injection
+showATMController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showATMController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getATMs = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_news',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.news = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+
+		$scope.deleteNews = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_news',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log("in delete");
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "News deleted";
+                    $scope.getNews();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "News not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editNews = function(id) {
+            $location.path('/edit_news/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
 
 
 //////////////////////////////////////////////////// ************** Edit News Controller

@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 var ATM_schema = mongoose.Schema(
     {
-        loc_name: {
+        loc_name: { // area
             type: String,
             required: true
         },
@@ -18,9 +18,13 @@ var ATM_schema = mongoose.Schema(
             type: Date
         },
         address: String,
-        zone: {
+        zone: { // government (Category)
             type: String,
             default: "cairo"
+        },
+        sector: {
+            type: String,
+            default: "atm"
         }
     }
 );

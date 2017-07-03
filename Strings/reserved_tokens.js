@@ -32,8 +32,6 @@ var tokens = {
         add_news: "Add News",
         add_area: "Add Area",
 
-        change_password: "Change Staff Password",
-
         set_privilege: "Edit Roles",
 
         show_feedbacks: "Show Feedback",
@@ -45,15 +43,6 @@ var tokens = {
         show_medicals: "Show Medical Benefits",
         show_areas: "Show Areas",
         show_cat: "Show Categories",
-
-        edit_atm: "Edit ATM",
-        edit_card: "Edit Cardholder Benefits",
-        edit_ben: "Edit Staff Benefits",
-        edit_med: "Edit Medical Benefits",
-        edit_news: "Edit news",
-        edit_users: "Edit Users",
-        edit_category: "Edit Category",
-        edit_area: "Edit Area"
     },
     radius: (15 / 3963.2),
     upload_dir:  /*"/Users/ahmedalaa/Desktop", */ process.env.OPENSHIFT_DATA_DIR + "/uploads/",

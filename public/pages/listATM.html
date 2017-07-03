@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-2">
+        <ng-include src="'pages/menu.html'"></ng-include>
+    </div>
+
+
+    <div ng-controller="showNewsController" class="sidebar content-box" style="display: block;">
+        <div class="raw">
+            <div class="col-xs-6 col-xs-offset-2">
+                <img src="images/image001.jpg" width="100%" height="200px">
+                <h1> News </h1>
+
+                <div class="content-box-large">
+                    <div class="panel-heading" ng-init="getATMs()">
+
+                        <div ng-repeat="x in ATMs" class="collumn">
+                            <div ng-click="editNews(x._id)">
+                                <div class="head">
+                                    <h3 class="headline hl1">{{ x.address }} </h3>
+                                </div>
+                                <br>
+                                <p>Area</p>
+                                <p>{{ x.loc_name }}</p>
+                                <br>
+                                <p>Government</p>
+                                <p>{{ x.zone }}</p>
+                                <br>
+                                <p>Location</p>
+                                <p>{{ x.location[0] }}</p>
+                                <p>{{ x.location[1] }}</p>
+
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <icon align="middle"><a ng-click="deleteNews(x._id)"><i
+                                            class="glyphicon glyphicon-remove"></i></a></icon>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
