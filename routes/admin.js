@@ -1070,12 +1070,11 @@ router.post('/edit_user/:id', function(req, res, next) {
                         "name" : req.body.user_data.name,
                         "email" : req.body.user_data.email,
                         "password" : req.body.user_data.password,
-                        "_id" : mongoose.Types.ObjectId()
+                        "login_status" : reserved_tokens.logout
                     };
                     User.findByIdAndUpdate(user_id, updated_user, function(err, obj) {
 
                         if(err) {
-                            console.log(err);
                             res.json(messeges.not_valid_operation());
                         }
                         else {

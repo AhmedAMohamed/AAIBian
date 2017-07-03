@@ -9,6 +9,7 @@ var tokens = {
     card_selected: "card",
     first_login: "new_login",
     old_login: "current_user",
+    logout: "logout",
     default_password: "AhmedAlaa",
     all_categories: "SUBSCRIBED_IN_ALL",
     medical_sector: "SUBSCRIBED_IN_MEDICAL_ALL",

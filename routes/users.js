@@ -40,7 +40,15 @@ router.post('/login', function (req, res, next) {
                     mhelper['users'].update_user_time(users[0]._id, function(u) {
                         if (u != null) {
                             response.result.user_id = u._id;
-                            res.json(response);
+                            mhelper['users'].update_user_login_status(u._id, u._id.login_status, function(user) {
+                                if (user) {
+                                    response.result.login_status = user.login_status;
+                                    res.json(response);
+                                }
+                                else {
+                                    res.json(messeges.not_valid_operation());
+                                }
+                            });
                         }
                         else {
                           res.json(messeges.not_valid_operation());

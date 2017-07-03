@@ -58,25 +58,29 @@ var users_helpers = {
            }
         });
     },
-    update_user_login_status: function (user_id) {
-        User.findByIdAndUpdate(user_id, {login_status: reserved_tokens.old_login}, {new : true}, function (err, user) {
+    update_user_login_status: function (user_id, current_status, callback) {
+        var updated_value = current_status == reserved_tokens.logout ? reserved_tokens.first_login : reserved_tokens.old_login;
+        User.findByIdAndUpdate(user_id, {login_status: updated_value}, {new : true}, function (err, user) {
             if (err) {
-                return null;
+                callback(null);
             }
             else {
-                return user;
+                callback(user);
             }
         });
     },
     get_user_data: function(user_id, callback) {
         User.findById(user_id, function(err, user) {
             if(err) {
-                console.log(err);
                 callback(null);
             }
             else {
-                console.log(user);
-                callback(user);
+                if (user.login_status != reserved_tokens.logout) {
+                    callback(user);
+                }
+                else {
+                    callback(null);
+                }
             }
         });
     }
