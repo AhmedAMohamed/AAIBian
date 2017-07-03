@@ -945,7 +945,7 @@ router.post('/edit_news/:id', function(req, res, next) {
     var news_id = req.params.id;
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
-            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_news, function(user) {
                 if (user) {
                     var updated_news = {
                         "title" : req.body.news_data.title,
@@ -1056,5 +1056,38 @@ router.get('/get_userData/:id', function(req, res, next) {
         }
     });
 });
+
+router.post('/edit_user/:id', function(req, res, next) {
+
+    var user_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_user, function(user) {
+                if (user) {
+                    var updated_user = {
+                        "name" : req.body.user_data.name,
+                        "email" : req.body.user_data.email,
+                        "password" : req.body.user_data.password,
+                    };
+                    User.findByIdAndUpdate(news_id, updated_news, function(err, obj) {
+                        if(err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+
+                }
+            });
+        }
+        else {
+
+        }
+    });
+});
+
 
 module.exports = router;

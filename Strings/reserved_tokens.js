@@ -50,6 +50,7 @@ var tokens = {
         edit_ben: "Edit Staff Benefits",
         edit_med: "Edit Medical Benefits",
         edit_news: "Edit news",
+        edit_users: "Edit Users",
         edit_category: "Edit Category",
         edit_area: "Edit Area"
     },
