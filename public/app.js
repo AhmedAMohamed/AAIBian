@@ -1324,7 +1324,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 			};
 			$http({
 			method: 'POST',
-				url:'/aaibian/admin/show_news',
+				url:'/aaibian/admin/show_atms',
 				data:JSON.stringify(reqObject),
 				headers: {'Content-Type': 'application/JSON'}
 			})
