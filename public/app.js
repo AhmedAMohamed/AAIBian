@@ -65,6 +65,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/list_categories', {
         templateUrl : "/pages/listCategory.html",
         controller : "showCategoryController"
+     }).when('/edit_area', {
+        templateUrl : '/pages/editArea.html',
+        controller : 'editAreaController'
      }).otherwise({
         redirectTo: '/error'
      });
@@ -488,7 +491,7 @@ function getUsersController($scope, $http, $window, $location){
 					return false;
 				}
 		    });
-		 
+
 		}
 
 		$scope.deleteUser = function(id) {
@@ -538,7 +541,7 @@ function addNewsController($scope, $http, $window, $location, Upload){
 	      	$scope.created = false;
 	      	angular.copy({},form);
     	}
-    	// function to get the files from the form 
+    	// function to get the files from the form
     	//var formdata = new FormData();
 
         //function to add the news, calls the api
@@ -750,7 +753,7 @@ function addATMController($scope, $http, $window, $location){
                             }
             });
         }
-		
+
 		$scope.getStatus = function(){
 			//console.log($scope.created);
 			if($scope.created){
@@ -761,7 +764,7 @@ function addATMController($scope, $http, $window, $location){
 	}
 	else $location.path('/error');
 }
-//////////////////////////////////////////////////// ************** Add Benefit Controller 
+//////////////////////////////////////////////////// ************** Add Benefit Controller
 
 app.controller('addBenefitController', addBenefitController);
 //dependency injection
@@ -779,6 +782,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		    })
 		    .then(function(response) {
 		        if (response.data.valid) {
+		            console.log(response.data.results);
 		            $scope.zones = response.data.results;
 		        }
 		        else {
@@ -795,6 +799,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		    })
 		    .then(function(response) {
 		        if (response.data.valid) {
+		            console.log(response.data.results);
 		            $scope.industries = response.data.results;
 		        }
 		        else {
@@ -810,7 +815,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 	      	angular.copy({},form);
     	}
     	$scope.fileUploadValue = true;
-    	// function to get the files from the form 
+    	// function to get the files from the form
     	//var formdata = new FormData();
         $scope.msg = "";
         //function to add the news, calls the api
@@ -1468,7 +1473,7 @@ function showAreaController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editArea = function(id) {
-        //    $location.path('/edit_atm/').search({"id" : id});
+            $location.path('/edit_area/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
@@ -1541,7 +1546,7 @@ function showCategoryController($scope, $http, $window, $location, Upload){
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "Area deleted";
-                    $scope.getAreas();
+                    $scope.getCategories();
 		        }
 		        else {
                     $scope.created = false;
@@ -1818,6 +1823,83 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
                     "name" : $scope.userData.name == null ? $scope.user.name : $scope.userData.name,
                     "email" : $scope.userData.email == null ? $scope.user.email : $scope.userData.email,
                     "password" : $scope.userData.password == null ? $scope.user.password : $scope.userData.password
+                }
+            };
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_user/' + $scope.user_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_users');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+        $scope.showPasswordDivUpdate = function() {
+            $scope.showPasswordMsg = "Hide Password";
+            $scope.showPasswordDiv = ! $scope.showPasswordDiv;
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Area Controller
+app.controller('editUserController', editUserController);
+//dependency injection
+editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editUserController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.area_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.areaData = {};
+    $scope.area = {};
+
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getAreaData = function(id){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_areaData/' + $scope.area_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.area = response.data.result;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		}
+
+        $scope.editArea = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "area_data" : {
+                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
                 }
             };
             $http({
