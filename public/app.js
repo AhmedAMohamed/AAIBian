@@ -1401,12 +1401,12 @@ function showAreaController($scope, $http, $window, $location, Upload){
 			};
 			$http({
 			method: 'POST',
-				url:'/aaibian/admin/show_atms',
+				url:'/aaibian/admin/show_areas',
 				data:JSON.stringify(reqObject),
 				headers: {'Content-Type': 'application/JSON'}
 			})
 			.then(function(response) {
-        		$scope.ATMs = response.data.result;
+        		$scope.areas = response.data.result;
 				if(response.data.valid){
 					return true;
 				}
