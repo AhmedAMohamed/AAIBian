@@ -1593,6 +1593,7 @@ paginate = {
             view.push(result[i]);
         }
         _start += page_size;
+        return view;
     }
 
 }
