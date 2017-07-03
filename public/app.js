@@ -62,6 +62,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/list_areas', {
         templateUrl : "/pages/listArea.html",
         controller : "showAreaController"
+     }).when('/list_categories', {
+        templateUrl : "/pages/listCategory.html",
+        controller : "showCategoryController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -1467,6 +1470,90 @@ function showAreaController($scope, $http, $window, $location, Upload){
 		}
 	}
 }
+
+//////////////////////////////////////////////////// ************** Show Category Controller
+app.controller('showCategoryController', showCategoryController);
+//dependency injection
+showCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showCategoryController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getCategories = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_categories',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.cats = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+		$scope.getSectorVal = function(val) {
+		    if (val == 'ben') {
+		        return "Staff Benefits";
+		    }
+		    else if (val == 'atm') {
+		        return "ATMs";
+		    }
+		    else if (val == 'card') {
+		        return "Cardholder's Benefits";
+		    }
+		    else if (val == 'med') {
+		        return "Medical Benefits";
+		    }
+		}
+
+
+		$scope.deleteCategory = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_category',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Area deleted";
+                    $scope.getAreas();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Area not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editCategory = function(id) {
+        //    $location.path('/edit_atm/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
 
 
 //////////////////////////////////////////////////// ************** Edit News Controller
