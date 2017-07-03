@@ -12,7 +12,7 @@ var cardHolder_schema = mongoose.Schema(
         sector: {
             type: String,
             default: "card"
-        }
+        },
         creation_date: Date
     }
 );
