@@ -1542,25 +1542,26 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
 		    });
 		}
 
-        $scope.editNews = function() {
+        $scope.editUser = function() {
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "news_data" : {
-                    "title" : $scope.newsData.title == null ? $scope.news.title : $scope.newsData.title,
-                    "Body" : $scope.newsData.body == null ? $scope.news.Body : $scope.newsData.body
+                    "name" : $scope.usersData.name == null ? $scope.user.name : $scope.usersData.name,
+                    "email" : $scope.userData.email == null ? $scope.user.email : $scope.userData.email
+                    "password" : $scope.userData.password == null ? $scope.user.password : $scope.userData.password
                 }
             };
             $http({
             method: 'POST',
-                url:'/aaibian/admin/edit_news/' + $scope.news_id,
+                url:'/aaibian/admin/edit_user/' + $scope.user_id,
                 data:JSON.stringify(reqObject),
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
                 if(response.data.valid){
-                    $location.path('/list_news');
+                    $location.path('/list_users');
                     return true;
                 }
                 else
@@ -1575,25 +1576,4 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
             return $scope.created;
 		}
 	}
-}
-
-
-
-paginate = {
-
-    result: DATA , // Data is a list
-    view: [],
-    _start: 0,
-    page_size: 10,
-    next : function() {
-        for(var i = _start; i < _start + page_size; i++) {
-            if (_start >= DATA.length) {
-                return view;
-            }
-            view.push(result[i]);
-        }
-        _start += page_size;
-        return view;
-    }
-
 }
