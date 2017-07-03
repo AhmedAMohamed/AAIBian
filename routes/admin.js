@@ -1073,7 +1073,9 @@ router.post('/edit_user/:id', function(req, res, next) {
                         "_id" : mongoose.Types.ObjectId()
                     };
                     User.findByIdAndUpdate(user_id, updated_user, function(err, obj) {
+
                         if(err) {
+                            console.log(err);
                             res.json(messeges.not_valid_operation());
                         }
                         else {
