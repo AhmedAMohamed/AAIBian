@@ -803,6 +803,8 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		            $scope.industries = response.data.results;
 		        }
 		        else {
+
+
 		            $scope.industries = [];
 		        }
 		    })
