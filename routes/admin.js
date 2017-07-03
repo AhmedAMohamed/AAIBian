@@ -1062,7 +1062,7 @@ router.post('/edit_user/:id', function(req, res, next) {
     var user_id = req.params.id;
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
-            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_user, function(user) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.edit_users, function(user) {
                 if (user) {
                     var updated_user = {
                         "name" : req.body.user_data.name,
