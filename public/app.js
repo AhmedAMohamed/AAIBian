@@ -1357,7 +1357,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "ATM deleted";
-                    $scope.getNews();
+                    $scope.getATMs();
 		        }
 		        else {
                     $scope.created = false;
