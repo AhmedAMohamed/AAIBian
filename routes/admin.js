@@ -4,6 +4,7 @@ var util = require('util')
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
+var mongoose = require('mongoose');
 
 var Auth = require('../Utils/auth_layer');
 var User = require('../models/user_model');
@@ -1068,6 +1069,7 @@ router.post('/edit_user/:id', function(req, res, next) {
                         "name" : req.body.user_data.name,
                         "email" : req.body.user_data.email,
                         "password" : req.body.user_data.password,
+                        "_id" : mongoose.Types.ObjectId();
                     };
                     User.findByIdAndUpdate(user_id, updated_user, function(err, obj) {
                         if(err) {
