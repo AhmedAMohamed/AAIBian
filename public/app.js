@@ -59,6 +59,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when("/list_atms", {
         templateUrl : "/pages/listATM.html",
         controller : "showATMController"
+     }).when('/list_areas', {
+        templateUrl : "/pages/listArea.html",
+        controller : "showAreaController"
      }).otherwise({
         redirectTo: '/error'
      });
@@ -181,6 +184,9 @@ function homeController($scope, $http, $window, $location){
             else if(val == 'Show ATMs') {
                 $location.path('/list_atms');
             }
+            else if (val == 'Show Areas') {
+                $location.path('/list_areas');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -254,6 +260,9 @@ function menuController($scope, $http, $window, $location){
             }
             else if(val == 'Show ATMs') {
                 $location.path('/list_atms');
+            }
+            else if (val == 'Show Areas') {
+                $location.path('/list_areas');
             }
 		}
 		$scope.testType = function(){
@@ -1308,7 +1317,7 @@ function showNewsController($scope, $http, $window, $location, Upload){
 }
 
 
-//////////////////////////////////////////////////// ************** Show News Controller
+//////////////////////////////////////////////////// ************** Show ATM Controller
 app.controller('showATMController', showATMController);
 //dependency injection
 showATMController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
@@ -1367,7 +1376,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editNews = function(id) {
-            $location.path('/edit_news/').search({"id" : id});
+        //    $location.path('/edit_atm/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
@@ -1376,6 +1385,73 @@ function showATMController($scope, $http, $window, $location, Upload){
 	}
 }
 
+//////////////////////////////////////////////////// ************** Show Area Controller
+app.controller('showAreaController', showAreaController);
+//dependency injection
+showAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showAreaController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getAreas = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_atms',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.ATMs = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+
+		$scope.deleteArea = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_atm',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Area deleted";
+                    $scope.getAreas();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Area not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editArea = function(id) {
+        //    $location.path('/edit_atm/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
 
 
 //////////////////////////////////////////////////// ************** Edit News Controller
