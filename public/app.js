@@ -774,43 +774,50 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		$scope.benefitData = {};
 		$scope.created = false;
 		$scope.file ={};
+
 		$scope.getZones = function() {
-		    $http({
-		        method: 'POST',
-		        url: 'aaibian/admin/get_areas',
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
                 headers: {'Content-Type': 'application/JSON'}
-		    })
-		    .then(function(response) {
-		        if (response.data.valid) {
-		            console.log(response.data.results);
-		            $scope.zones = response.data.results;
-		        }
-		        else {
-		            $scope.zones = [];
-		        }
-		    });
-		};
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
 
-		$scope.getCategories = function() {
-		    $http({
-		        method: 'POST',
-		        url: 'aaibian/admin/get_categories',
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
                 headers: {'Content-Type': 'application/JSON'}
-		    })
-		    .then(function(response) {
-		        if (response.data.valid) {
-		            console.log(response.data.results);
-		            $scope.industries = response.data.results;
-		        }
-		        else {
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.industries = response.data.results;
+                }
+                else {
+                    $scope.industries = [];
+                }
+            });
+        };
 
+        $scope.getZones();
+        $scope.getCategories();
 
-		            $scope.industries = [];
-		        }
-		    })
-		};
-		$scope.getZones();
-		$scope.getCategories();
 		// function to reset the form
 		$scope.resetForm = function(form) {
 	      	$scope.created = false;
