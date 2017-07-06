@@ -13,7 +13,29 @@ var cardHolder_schema = mongoose.Schema(
             type: String,
             default: "card"
         },
+        address: String,
+        location: {
+            type: [Number],
+            index: '2d'
+        },
+        zone: String,
+        contacts: [String],
+        notification_date: Date,
+        deleteDate: Date,
+        notified: {
+            type: Boolean,
+            default: false
+        },
+        img_path: {
+            type: String,
+            default: "/data/uploads/logo.jpg"
+        },
+        pdf_path: {
+            type: String,
+            default: ""
+        },
         creation_date: Date
+
     }
 );
 var cardModel = mongoose.model('CardHolder', cardHolder_schema);
