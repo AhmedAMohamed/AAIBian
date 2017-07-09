@@ -241,7 +241,7 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                 notify_date.setMinutes(notify_date.getMinutes() + 1);
                                 notify_date.setFullYear(notify_date.getFullYear() + 1);
 
-                                var to_delete_date = new req.body.new_benefit.delete_date;
+                                var to_delete_date = req.body.new_benefit.delete_date;
 
                                 counter += 30;
                                 var d = {
