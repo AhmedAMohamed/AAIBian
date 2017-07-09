@@ -73,9 +73,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      });
      $locationProvider.html5Mode(true);
  }]);
+
 ////////////////////////****************************   LOGIN Controller
 app.controller('loginController', loginController);
-//dependency injection
 loginController.$inject=['$scope', '$http', '$window','$location'];
 function loginController($scope, $http, $window, $location){
 	$scope.loginData = {};
@@ -134,7 +134,6 @@ function loginController($scope, $http, $window, $location){
 
 //////////////////////////*************************** Home Controller
 app.controller('homeController', homeController);
-//dependency injection
 homeController.$inject=['$scope', '$http', '$window', '$location'];
 function homeController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -210,7 +209,6 @@ function homeController($scope, $http, $window, $location){
 }
 ////////////////////////***************************** Menu Controller
 app.controller('menuController', menuController);
-//dependency injection
 menuController.$inject=['$scope', '$http', '$window', '$location'];
 function menuController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -286,9 +284,9 @@ function menuController($scope, $http, $window, $location){
 	}
 	else $location.path('/error');
 }
+
 ///////////////////////////////////////////////////// ***** Edit Roles Controller
 app.controller('editRolesController', editRolesController);
-//dependency injection
 editRolesController.$inject=['$scope', '$http', '$window','$location'];
 function editRolesController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -395,9 +393,9 @@ function editRolesController($scope, $http, $window, $location){
 		}
 	}
 }
+
 ////////////////////////****************************  Add User Controller
 app.controller('addUserController', addUserController);
-//dependency injection
 addUserController.$inject=['$scope', '$http', '$window','$location'];
 function addUserController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -456,10 +454,8 @@ function addUserController($scope, $http, $window, $location){
 	else $location.path('/error');
 }
 
-
 ///////////////////////////////////////////////////// ***** VIEW USERS
 app.controller('getUsersController', getUsersController);
-//dependency injection
 getUsersController.$inject=['$scope', '$http', '$window','$location'];
 function getUsersController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -528,8 +524,8 @@ function getUsersController($scope, $http, $window, $location){
 	}
 }
 
+///////////////////////////////////////////////////// ***** ADD NEWS
 app.controller('addNewsController', addNewsController);
-//dependency injection
 addNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addNewsController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -593,9 +589,8 @@ function addNewsController($scope, $http, $window, $location, Upload){
 	else $location.path('/error');
 }
 
-//////////////////////////////////************************* feedback controller
+//////////////////////////////////************************* VIEW FEEDBACK
 app.controller('feedbackController', feedbackController);
-
 feedbackController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function feedbackController($scope, $http, $window,$location, Upload) {
     if($window.sessionStorage.getItem("logged") == "true"){
@@ -652,9 +647,9 @@ function feedbackController($scope, $http, $window,$location, Upload) {
         $location.path('/error');
     }
 }
+
 ////////////////////////****************************  Add ATM Controller
 app.controller('addATMController', addATMController);
-//dependency injection
 addATMController.$inject=['$scope', '$http', '$window','$location'];
 function addATMController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -764,10 +759,9 @@ function addATMController($scope, $http, $window, $location){
 	}
 	else $location.path('/error');
 }
-//////////////////////////////////////////////////// ************** Add Benefit Controller
 
+//////////////////////////////////////////////////// ************** Add Benefit Controller
 app.controller('addBenefitController', addBenefitController);
-//dependency injection
 addBenefitController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addBenefitController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -848,9 +842,10 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				    },
 				    "zone": $scope.benefitData.zone.name,
 				    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
-				    $scope.benefitData.contact3],
+				        $scope.benefitData.contact3],
 				    "industry": $scope.benefitData.industry.name,
-				    "offer": $scope.benefitData.offer
+				    "offer": $scope.benefitData.offer,
+				    "delete_date": $scope.benefitData.delete_date
 				}
 			};
 
@@ -887,9 +882,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 }
 
 //////////////////////////////////////////////////// ************** Add Area Controller
-
 app.controller('addAreaController', addAreaController);
-//dependency injection
 addAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addAreaController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -961,7 +954,6 @@ function addAreaController($scope, $http, $window, $location, Upload){
 
 //////////////////////////////////////////////////// ************** Add Category Controller
 app.controller('addCategoryController', addCategoryController);
-//dependency injection
 addCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addCategoryController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -1051,10 +1043,8 @@ function addCategoryController($scope, $http, $window, $location, Upload){
 	else $location.path('/error');
 }
 
-
 //////////////////////////////////////////////////// ************** Add Medical benefit Controller
 app.controller('addMedicalController', addMedicalController);
-//dependency injection
 addMedicalController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addMedicalController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -1082,25 +1072,24 @@ function addMedicalController($scope, $http, $window, $location, Upload){
             });
         };
         $scope.getCategories = function() {
-
-                    var reqObject = {
-                        "sector" : "med"
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'aaibian/admin/get_categories',
-                        data: reqObject,
-                        headers: {'Content-Type': 'application/JSON'}
-                    })
-                    .then(function(response) {
-                        if (response.data.valid) {
-                            $scope.types = response.data.results;
-                        }
-                        else {
-                            $scope.types = [];
-                        }
-                    });
-                };
+            var reqObject = {
+                "sector" : "med"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.types = response.data.results;
+                }
+                else {
+                    $scope.types = [];
+                }
+            });
+        };
 
         $scope.getZones();
         $scope.getCategories();
@@ -1134,11 +1123,12 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 				    },
 				    "zone" : $scope.medData.zone,
 				    "type" : $scope.medData.type,
-				    "phone" : $scope.medData.phone
+				    "phone_numbers": [$scope.medData.contact1, $scope.medData.contact2,
+                    				        $scope.medData.contact3],
+                    "offer": $scope.medData.offer,
+                    "delete_data": $scope.medData.delete_date
 				}
 			};
-
-			console.log(medObject);
 
             Upload.upload({
                 url:'/aaibian/admin/add_medical',
@@ -1173,10 +1163,8 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 	else $location.path('/error');
 }
 
-
 //////////////////////////////////////////////////// ************** Add Cardholder benefit Controller
 app.controller('addCardholderController', addCardholderController);
-//dependency injection
 addCardholderController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addCardholderController($scope, $http, $window, $location, Upload){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -1184,27 +1172,48 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 		$scope.created = false;
 		$scope.file ={};
 
+        $scope.getZones = function() {
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+
 		$scope.getCategories = function() {
-                    var reqObject = {
-                        "sector" : "card"
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'aaibian/admin/get_categories',
-                        data: reqObject,
-                        headers: {'Content-Type': 'application/JSON'}
-                    })
-                    .then(function(response) {
-                        if (response.data.valid) {
-                            $scope.types = response.data.results;
-                        }
-                        else {
-                            $scope.types = [];
-                        }
-                    });
-                };
+            var reqObject = {
+                "sector" : "card"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.types = response.data.results;
+                }
+                else {
+                    $scope.types = [];
+                }
+            });
+        };
 
         $scope.getCategories();
+        $scope.getZones();
 
 		$scope.resetForm = function(form) {
 	      	$scope.created = false;
@@ -1216,18 +1225,30 @@ function addCardholderController($scope, $http, $window, $location, Upload){
         $scope.msg = "";
 
         $scope.addCardholder = function(){
-
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                    $scope.file = files[0];
+            }
             var cardObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
 				"privilege" : $window.sessionStorage.getItem("type"),
+				"file" : $scope.file,
 				"new_cardholder" : {
 				    "name" : $scope.cardData.name,
 				    "offer" : $scope.cardData.offer,
-				    "type" : $scope.cardData.type
+				    "type" : $scope.cardData.type,
+				    "location" : {
+                        "lat": $scope.cardData.lat,
+                        "lng": $scope.cardData.lng
+                    },
+                    "address": $scope.cardData.address,
+                    "zone": $scope.cardData.zone.name,
+                    "contacts": [$scope.cardData.contact1, $scope.cardData.contact2,
+                        $scope.cardData.contact3],
+                    "delete_date": $scope.cardData.delete_date,
 				}
 			};
-
             $http({
                 url:'/aaibian/admin/add_cardholder',
                 method: 'POST',
@@ -1261,10 +1282,8 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 	else $location.path('/error');
 }
 
-
 //////////////////////////////////////////////////// ************** Show News Controller
 app.controller('showNewsController', showNewsController);
-//dependency injection
 showNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function showNewsController($scope, $http, $window, $location, Upload){
 
@@ -1342,7 +1361,6 @@ function showNewsController($scope, $http, $window, $location, Upload){
 
 //////////////////////////////////////////////////// ************** Show ATM Controller
 app.controller('showATMController', showATMController);
-//dependency injection
 showATMController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function showATMController($scope, $http, $window, $location, Upload){
 
@@ -1410,7 +1428,6 @@ function showATMController($scope, $http, $window, $location, Upload){
 
 //////////////////////////////////////////////////// ************** Show Area Controller
 app.controller('showAreaController', showAreaController);
-//dependency injection
 showAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function showAreaController($scope, $http, $window, $location, Upload){
 
@@ -1493,7 +1510,6 @@ function showAreaController($scope, $http, $window, $location, Upload){
 
 //////////////////////////////////////////////////// ************** Show Category Controller
 app.controller('showCategoryController', showCategoryController);
-//dependency injection
 showCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function showCategoryController($scope, $http, $window, $location, Upload){
 
@@ -1574,11 +1590,8 @@ function showCategoryController($scope, $http, $window, $location, Upload){
 	}
 }
 
-
-
 //////////////////////////////////////////////////// ************** Edit News Controller
 app.controller('editNewsController', editNewsController);
-//dependency injection
 editNewsController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
 function editNewsController($scope, $http, $window, $location, $routeParams, Upload){
 
@@ -1776,10 +1789,8 @@ function editNewsController($scope, $http, $window, $location, $routeParams, Upl
 	}
 }
 
-
 //////////////////////////////////////////////////// ************** Edit User Controller
 app.controller('editUserController', editUserController);
-//dependency injection
 editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
 function editUserController($scope, $http, $window, $location, $routeParams, Upload){
 
@@ -1866,7 +1877,6 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
 
 //////////////////////////////////////////////////// ************** Edit Area Controller
 app.controller('editUserController', editUserController);
-//dependency injection
 editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
 function editUserController($scope, $http, $window, $location, $routeParams, Upload){
 
