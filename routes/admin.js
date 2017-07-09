@@ -437,6 +437,8 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                                         creation_date: new Date(Date.now()),
                                         pdf_path: "/data/uploads/" + file_new_name
                                     };
+
+
                                     var card = new Cardholder(d);
                                     card.save(function(err, nCard) {
                                         if (err) {
