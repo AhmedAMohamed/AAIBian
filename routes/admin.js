@@ -241,11 +241,8 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                 notify_date.setMinutes(notify_date.getMinutes() + 1);
                                 notify_date.setFullYear(notify_date.getFullYear() + 1);
 
-                                var to_delete_date = new Date(Date.now());
-                                to_delete_date.setMinutes(to_delete_date.getMinutes() + 2);
-                                to_delete_date.setSeconds(to_delete_date.getSeconds() + 2 * counter);
-                                to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
-                                to_delete_date.setHours(to_delete_date.getHours());
+                                var to_delete_date = new req.body.new_benefit.delete_date;
+
                                 counter += 30;
                                 var d = {
                                     name: req.body.new_benefit.name,
@@ -368,16 +365,17 @@ router.post('/add_medical', multiparty(), function(req, res, next) {
                                     ],
                                     zone: req.body.new_medical.zone.name,
                                     type: req.body.new_medical.type.name,
-                                    phone_number: req.body.new_medical.phone,
+                                    phone_number: req.body.new_medical.phone_numbers,
                                     id: new Date(Date.now()).getTime(),
-                                    pdf_path: "/data/uploads/" + file_new_name
+                                    pdf_path: "/data/uploads/" + file_new_name,
+                                    creation_date: new Date(Date.now()),
+                                    notification_date: new Date(Date.now()),
+                                    deleteDate: req.body.new_medical.delete_date,
+                                    offer: req.body.new_medical.offer
                                 };
                                 var medical = new Medical(d);
-                                console.log("here valid");
                                 medical.save(function (err, da) {
                                     if (err) {
-                                        console.log(err);
-                                        console.log("NNNNNN");
                                         res.json(messeges.not_valid_operation());
                                     }
                                     else {
@@ -388,7 +386,6 @@ router.post('/add_medical', multiparty(), function(req, res, next) {
                         })
                     });
                 }
-
             }
             else {
                 res.json(messeges.not_valid_operation());
@@ -401,28 +398,59 @@ router.post('/add_medical', multiparty(), function(req, res, next) {
     });
 });
 
-router.post('/add_cardholder', function(req, res, next) {
+router.post('/add_cardholder', multiparty(), function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
                 if (user) {
-
-                    var d = {
-                        name: req.body.new_cardholder.name,
-                        type: req.body.new_cardholder.type.name,
-                        offer: req.body.new_cardholder.offer,
-                        creation_date: new Date(Date.now())
-                    };
-                    var card = new Cardholder(d);
-                    card.save(function(err, nCard) {
-                        if (err) {
-                            console.log(err);
-                            res.json(messeges.interna_error());
-                        }
-                        else {
-                            res.json(messeges.valid_operation());
-                        }
-                    });
+                    var file_temp_path = req.files.file.path;
+                    var file_name = req.files.file.originalFilename;
+                    if (req.files.file.type.indexOf('pdf') == -1) {
+                        console.log("NOt valid");
+                        res.json({
+                            valid: false,
+                            msg: "Can not upload this type of files",
+                        });
+                    }
+                    else {
+                        var file_new_name =  randomstring.generate(7) + file_name;
+                        var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
+                        fs.readFile(file_temp_path, function(err, data) {
+                            fs.writeFile(file_upload_path, data, function(err) {
+                                if (err) {
+                                    res.json(messeges.interna_error());
+                                }
+                                else {
+                                    var d = {
+                                        name: req.body.new_cardholder.name,
+                                        type: req.body.new_cardholder.type.name,
+                                        offer: req.body.new_cardholder.offer,
+                                        address: req.body.new_cardholder.address,
+                                        location: [
+                                            parseFloat(req.body.new_cardholder.location.lat),
+                                            parseFloat(req.body.new_cardholder.location.lng)
+                                        ],
+                                        zone:  req.body.new_cardholder.zone,
+                                        contacts:  req.body.new_cardholder.contacts,
+                                        notification_date: new Date(Date.now()),
+                                        deleteDate: req.body.new_cardholder.deleteDate,
+                                        creation_date: new Date(Date.now())
+                                        pdf_path: "/data/uploads/" + file_new_name
+                                    };
+                                    var card = new Cardholder(d);
+                                    card.save(function(err, nCard) {
+                                        if (err) {
+                                            console.log(err);
+                                            res.json(messeges.interna_error());
+                                        }
+                                        else {
+                                            res.json(messeges.valid_operation());
+                                        }
+                                    });
+                                }
+                            })
+                        });
+                    }
                 }
                 else {
                     res.json(messeges.not_valid_operation());
