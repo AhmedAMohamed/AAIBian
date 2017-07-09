@@ -823,6 +823,8 @@ function addBenefitController($scope, $http, $window, $location, Upload){
         $scope.msg = "";
         //function to add the news, calls the api
         $scope.addBenefit = function(){
+			console.log($scope.benefitData.delete_date);
+
 			$scope.uploadFile = function(files){
 				if (files && files.length)
 				$scope.file = files[0];
