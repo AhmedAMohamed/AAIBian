@@ -77,9 +77,13 @@ var users_helpers = {
                 callback(null);
             }
             else {
-
-                if (us.login_status != reserved_tokens.logout) {
-                    callback(us);
+                if(us) {
+                    if (us.login_status != reserved_tokens.logout) {
+                        callback(us);
+                    }
+                    else {
+                        callback(null);
+                    }
                 }
                 else {
                     callback(null);
