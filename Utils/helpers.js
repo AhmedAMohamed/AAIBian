@@ -72,13 +72,13 @@ var users_helpers = {
         });
     },
     get_user_data: function(user_id, callback) {
-        User.findById(user_id, function(err, user) {
+        User.findById(user_id, function(err, us) {
             if(err) {
                 callback(null);
             }
             else {
-                if (user.login_status != reserved_tokens.logout) {
-                    callback(user);
+                if (us.login_status != reserved_tokens.logout) {
+                    callback(us);
                 }
                 else {
                     callback(null);
