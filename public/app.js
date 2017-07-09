@@ -768,7 +768,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 		$scope.benefitData = {};
 		$scope.created = false;
 		$scope.file ={};
-
+        $scope.minDate = new Date(Date.now());
 		$scope.getZones = function() {
             var reqObject = {
                 "sector" : "ben"
