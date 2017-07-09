@@ -187,6 +187,7 @@ router.post('/get_benefits', function(req, res, next) {
 							   if (typeof req.body.request.category != 'undefined') {
 								   obj.industry = req.body.request.category;
 							   }
+                               obj.deleteDate = {"$gte": new Date(Date.now())};
 							   Benefits.find(obj,function(err, bens) {
 								   if (err) {
 									   res.json(messeges.interna_error());
@@ -265,6 +266,7 @@ router.post('/get_cardholder', function(req, res, next) {
                                if (typeof req.body.request.category != 'undefined') {
                                    obj.industry = req.body.request.category;
                                }
+                               obj.deleteDate = {"$gte": new Date(Date.now())};
                                CardHolder.find(obj,function(err, cards) {
                                    if (err) {
                                        res.json(messeges.interna_error());
@@ -421,7 +423,7 @@ router.post('/get_medical', function(req, res, next) {
                                if (typeof req.body.request.area != 'undefined') {
                                    obj.zone = req.body.request.area;
                                }
-
+                               obj.deleteDate = {"$gte": new Date(Date.now())};
                                Medical.find(obj, function(err, meds) {
                                   if (err) {
                                       res.json(messeges.interna_error);
