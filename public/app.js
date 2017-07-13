@@ -1181,7 +1181,6 @@ function addCardholderController($scope, $http, $window, $location, Upload){
             $http({
                 method: 'POST',
                 url: 'aaibian/admin/get_areas',
-                file:
                 data: reqObject,
                 headers: {'Content-Type': 'application/JSON'}
             })
