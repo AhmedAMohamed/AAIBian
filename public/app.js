@@ -1152,11 +1152,11 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 
 		$scope.getStatus = function(){
 			if($scope.created){
-				$scope.message = "Category Added Successfully"
+				$scope.message = "Medical Benefit  Added Successfully"
 				return true;
 			}
 			else {
-                $scope.message = "Category not added correctly try again"
+                $scope.message = "Medical Benefit not added correctly try again"
                 return false;
 			}
 		}
@@ -1181,6 +1181,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
             $http({
                 method: 'POST',
                 url: 'aaibian/admin/get_areas',
+                file:
                 data: reqObject,
                 headers: {'Content-Type': 'application/JSON'}
             })
