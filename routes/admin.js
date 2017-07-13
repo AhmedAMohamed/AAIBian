@@ -23,7 +23,6 @@ var News = require('../models/news_model');
 var FeedBack = require('../models/feedback_model');
 var Privilege = require('../models/privileges_model');
 var helpers = require('../Utils/helpers');
-
 var schedule = require('node-schedule');
 var sha1 = require('sha1');
 var randomstring = require("randomstring");
