@@ -1255,7 +1255,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
                     "delete_date": $scope.cardData.delete_date,
 				}
 			};
-            Upload.upload(({
+            Upload.upload({
                 url:'/aaibian/admin/add_cardholder',
                 method: 'POST',
                 data: cardObject,
