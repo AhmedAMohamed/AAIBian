@@ -1176,7 +1176,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 
         $scope.getZones = function() {
             var reqObject = {
-                "sector" : "ben"
+                "sector" : "card"
             };
             $http({
                 method: 'POST',
