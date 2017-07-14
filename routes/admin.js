@@ -402,7 +402,7 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
         if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
                 if (user) {
-                    console.log(req.files);
+                    console.log(req);
                     var file_temp_path = req.files.file.path;
                     var file_name = req.files.file.originalFilename;
                     if (req.files.file.type.indexOf('pdf') == -1) {
