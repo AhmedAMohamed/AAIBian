@@ -1234,6 +1234,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
                 if (files && files.length)
                     $scope.file = files[0];
             }
+            console.log($scope.file);
             var cardObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
