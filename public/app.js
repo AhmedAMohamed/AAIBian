@@ -1173,6 +1173,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 		$scope.cardData = {};
 		$scope.created = false;
 		$scope.file ={};
+		$scope.zones = [];
 
         $scope.getZones = function() {
             var reqObject = {
@@ -1187,6 +1188,8 @@ function addCardholderController($scope, $http, $window, $location, Upload){
             .then(function(response) {
                 if (response.data.valid) {
                     $scope.zones = response.data.results;
+                    console.log(response.data.results);
+                    console.log("Printed results");
                 }
                 else {
                     $scope.zones = [];
