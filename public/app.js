@@ -1280,11 +1280,11 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 
 		$scope.getStatus = function(){
 			if($scope.created){
-				$scope.message = "Category Added Successfully"
+				$scope.message = "Cardholder benefit Added Successfully"
 				return true;
 			}
 			else {
-                $scope.message = "Category not added correctly try again"
+                $scope.message = "Cardholder benefit not added correctly try again"
                 return false;
 			}
 		}
