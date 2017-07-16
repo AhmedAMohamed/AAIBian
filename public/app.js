@@ -1248,7 +1248,7 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 				"new_cardholder" : {
 				    "name" : $scope.cardData.name,
 				    "offer" : $scope.cardData.offer,
-				    "type" : $scope.cardData.type,
+				    "type" : $scope.cardData.type.name,
 				    "location" : {
                         "lat": $scope.cardData.lat,
                         "lng": $scope.cardData.lng
