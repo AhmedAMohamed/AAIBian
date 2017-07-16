@@ -1135,6 +1135,8 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 				}
 			};
 
+			console.log(JSON.stringify(medObject));
+
             Upload.upload({
                 url:'/aaibian/admin/add_medical',
                 method: 'POST',
