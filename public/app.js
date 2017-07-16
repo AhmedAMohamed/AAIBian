@@ -1131,7 +1131,7 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 				    "phone_numbers": [$scope.medData.contact1, $scope.medData.contact2,
                     				        $scope.medData.contact3],
                     "offer": $scope.medData.offer,
-                    "delete_data": $scope.medData.delete_date
+                    "delete_date": $scope.medData.delete_date
 				}
 			};
 
