@@ -192,6 +192,9 @@ function homeController($scope, $http, $window, $location){
             else if (val == 'Show Areas') {
                 $location.path('/list_areas');
             }
+            else if (val == "Show Users"){
+                $location.path('/list_users');
+            }
             else if (val == 'Show Categories') {
                 $location.path('/list_categories');
             }
