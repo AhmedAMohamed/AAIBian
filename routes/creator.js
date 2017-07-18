@@ -125,7 +125,7 @@ router.post('/addATM', function(req, res, next) {
 });
 
 router.post('/addMedical', function (req, res, next) {
-
+    console.log("in add medical");
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,
             req.body.token, req.body.privilege, req.body.task) || true) {
         var dat = [];
