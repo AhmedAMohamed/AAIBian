@@ -1250,13 +1250,13 @@ function addCardholderController($scope, $http, $window, $location, Upload){
 				"new_cardholder" : {
 				    "name" : $scope.cardData.name,
 				    "offer" : $scope.cardData.offer,
-				    "type" : $scope.cardData.type.name,
+				    "type" : typeof $scope.cardData.type != 'undefiled' ?  $scope.cardData.type.name : "other",
 				    "location" : {
                         "lat": $scope.cardData.lat,
                         "lng": $scope.cardData.lng
                     },
                     "address": $scope.cardData.address,
-                    "zone": $scope.cardData.zone.name,
+                    "zone": typeof $scope.cardData.zone != 'undefined' ? $scope.cardData.zone.name : "other",
                     "contacts": [$scope.cardData.contact1, $scope.cardData.contact2,
                         $scope.cardData.contact3],
                     "delete_date": $scope.cardData.delete_date,
