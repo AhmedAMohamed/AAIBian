@@ -1858,6 +1858,8 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
                     "password" : $scope.userData.password == null ? $scope.user.password : $scope.userData.password
                 }
             };
+
+            console.log(reqObject);
             $http({
             method: 'POST',
                 url:'/aaibian/admin/edit_user/' + $scope.user_id,
