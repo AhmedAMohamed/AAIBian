@@ -143,10 +143,10 @@ router.post('/addMedical', function (req, res, next) {
                         address: data[2],
                         zone: data[3],
                         phone_number: data[4],
-//                        location: [
-//                            parseFloat(data[6]),
-//                            parseFloat(data[5])
-//                        ]
+                        location: [
+                            parseFloat(data[6]),
+                            parseFloat(data[5])
+                        ]
                     }
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {
