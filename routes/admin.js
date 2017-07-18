@@ -421,6 +421,7 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                                     res.json(messeges.interna_error());
                                 }
                                 else {
+                                    console.log(req.body.new_cardholder)
                                     var d = {
                                         name: req.body.new_cardholder.name,
                                         type: req.body.new_cardholder.type.name,
@@ -433,7 +434,7 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                                         zone:  req.body.new_cardholder.zone,
                                         contacts:  req.body.new_cardholder.contacts,
                                         notification_date: new Date(Date.now()),
-                                        deleteDate: req.body.new_cardholder.deleteDate,
+                                        deleteDate: req.body.new_cardholder.delete_date,
                                         creation_date: new Date(Date.now()),
                                         pdf_path: "/data/uploads/" + file_new_name
                                     };
