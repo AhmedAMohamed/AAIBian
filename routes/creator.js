@@ -134,9 +134,10 @@ router.post('/addMedical', function (req, res, next) {
             fs.createReadStream((process.env.OPENSHIFT_DATA_DIR + "CSVs/" || '../../../CSVs/') + types[key] + ".csv" ).pipe(csv()).
             on('data', function (data) {
                 dat.push(data);
+
                 var to_delete_date = new Date(Date.now());
                 to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
-                deleteDate.set
+
                 if (types[key] == "معامل اشعة") {
                     var row = {
                         type : types[key],
