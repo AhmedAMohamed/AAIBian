@@ -847,10 +847,10 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				    	"lat": $scope.benefitData.lat,
 			      		"lng": $scope.benefitData.lng
 				    },
-				    "zone": $scope.benefitData.zone.name,
+				    "zone": typeof $scope.benefitData.zone != 'undefined' ? $scope.benefitData.zone.name : "other",
 				    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
 				        $scope.benefitData.contact3],
-				    "industry": $scope.benefitData.industry.name,
+				    "industry": typeof $scope.benefitData.industry != 'undefined' ? $scope.benefitData.industry.name : "other",
 				    "offer": $scope.benefitData.offer,
 				    "delete_date": $scope.benefitData.delete_date
 				}
