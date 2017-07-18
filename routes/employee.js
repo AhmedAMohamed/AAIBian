@@ -264,7 +264,7 @@ router.post('/get_cardholder', function(req, res, next) {
                                    obj.zone = req.body.request.zone;
                                }
                                if (typeof req.body.request.category != 'undefined') {
-                                   obj.industry = req.body.request.category;
+                                   obj.type = req.body.request.category;
                                }
                                obj.deleteDate = {"$gte": new Date(Date.now())};
                                CardHolder.find(obj,function(err, cards) {
