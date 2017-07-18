@@ -1888,12 +1888,15 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
             return $scope.created;
 		}
 	}
+	else {
+	    console.log("Not valid");
+	}
 }
 
 //////////////////////////////////////////////////// ************** Edit Area Controller
-app.controller('editUserController', editUserController);
+app.controller('editAreaController', editAreaController);
 editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
-function editUserController($scope, $http, $window, $location, $routeParams, Upload){
+function editAreaController($scope, $http, $window, $location, $routeParams, Upload){
 
     $scope.area_id = $location.search().id;
     $scope.showEdit = false;
