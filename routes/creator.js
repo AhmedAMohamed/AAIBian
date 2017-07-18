@@ -131,7 +131,7 @@ router.post('/addMedical', function (req, res, next) {
         var dat = [];
         var keys = Object.keys(types);
         keys.forEach(function (key) {
-            fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + types[key] + ".csv" ).pipe(csv()).
+            fs.createReadStream((process.env.OPENSHIFT_DATA_DIR + "/CSVs" || '../../../CSVs/') + types[key] + ".csv" ).pipe(csv()).
             on('data', function (data) {
                 dat.push(data);
                 var to_delete_date = new Date(Date.now());
