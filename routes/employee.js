@@ -455,6 +455,7 @@ router.post('/get_medical', function(req, res, next) {
                                              });
                                          }
                                          else {
+                                             console.log(meds);
                                              res.json({
                                                  valid: true,
                                                  msg: "Done",
