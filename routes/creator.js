@@ -134,7 +134,9 @@ router.post('/addMedical', function (req, res, next) {
             fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '../../../CSVs/') + types[key] + ".csv" ).pipe(csv()).
             on('data', function (data) {
                 dat.push(data);
-                console.log(types[key]);
+                var to_delete_date = new Date(Date.now());
+                to_delete_date.setFullYear(to_delete_date.getFullYear() + 1);
+                deleteDate.set
                 if (types[key] == "معامل اشعة") {
                     var row = {
                         type : types[key],
@@ -142,11 +144,12 @@ router.post('/addMedical', function (req, res, next) {
                         name: data[1],
                         address: data[2],
                         zone: data[3],
-                        phone_number: data[4],
+                        phone_number: [data[4]],
                         location: [
-                            parseFloat(data[6]),
-                            parseFloat(data[5])
-                        ]
+                            parseFloat(0),
+                            parseFloat(0)
+                        ],
+                        deleteDate: to_delete_date
                     }
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {
@@ -170,7 +173,8 @@ router.post('/addMedical', function (req, res, next) {
                         location: [
                             parseFloat(data[6]),
                             parseFloat(data[5])
-                        ]
+                        ],
+                        deleteDate: to_delete_date
                     }
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {
