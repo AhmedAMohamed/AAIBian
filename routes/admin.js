@@ -424,7 +424,7 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                                     console.log(req.body.new_cardholder)
                                     var d = {
                                         name: req.body.new_cardholder.name,
-                                        type: req.body.new_cardholder.type.name,
+                                        type: req.body.new_cardholder.type,
                                         offer: req.body.new_cardholder.offer,
                                         address: req.body.new_cardholder.address,
                                         location: [
