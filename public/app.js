@@ -1819,7 +1819,7 @@ function editUserController($scope, $http, $window, $location, $routeParams, Upl
     $scope.showPasswordDiv = false;
     $scope.showPasswordMsg = "Show Password";
 
-
+    console.log("HREHREHRJER");
 
 
     if($window.sessionStorage.getItem("logged") == "true"){
