@@ -423,7 +423,7 @@ router.post('/get_medical', function(req, res, next) {
                                if (typeof req.body.request.area != 'undefined') {
                                    obj.zone = req.body.request.area;
                                }
-                               obj.deleteDate = {"$gte": new Date(Date.now())};
+                               //obj.deleteDate = {"$gte": new Date(Date.now())};
                                Medical.find(obj, function(err, meds) {
                                   if (err) {
                                       res.json(messeges.interna_error);
