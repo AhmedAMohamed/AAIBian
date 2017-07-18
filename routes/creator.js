@@ -150,7 +150,8 @@ router.post('/addMedical', function (req, res, next) {
                             parseFloat(0),
                             parseFloat(0)
                         ],
-                        deleteDate: to_delete_date
+                        deleteDate: to_delete_date,
+                        creation_date: new Date(Date.now())
                     }
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {
@@ -175,7 +176,8 @@ router.post('/addMedical', function (req, res, next) {
                             parseFloat(data[6]),
                             parseFloat(data[5])
                         ],
-                        deleteDate: to_delete_date
+                        deleteDate: to_delete_date,
+                        creation_date: new Date(Date.now())
                     }
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {

@@ -1958,11 +1958,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
             });
         }
 
-        $scope.showPasswordDivUpdate = function() {
-            $scope.showPasswordMsg = "Hide Password";
-            $scope.showPasswordDiv = ! $scope.showPasswordDiv;
-        }
-
 		$scope.getStatus = function() {
             return $scope.created;
 		}
