@@ -833,7 +833,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				$scope.file = files[0];
 			}
 
-			console.log(JSON.stringfy($scope.benefitData))
+			console.log(JSON.stringify($scope.benefitData))
 
             var benefitObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
