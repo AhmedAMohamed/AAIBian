@@ -252,7 +252,7 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
                                     ],
                                     zone: req.body.new_benefit.zone,
                                     contacts: req.body.new_benefit.contacts,
-                                    industry: req.body.new_benefit.category,
+                                    industry: req.body.new_benefit.industry,
                                     creation_date: new Date(Date.now()),
                                     notification_date: notify_date,
                                     deleteDate: to_delete_date,
