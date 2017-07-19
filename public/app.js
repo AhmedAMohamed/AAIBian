@@ -1908,7 +1908,9 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getAreaData = function(id){
-		    console.log("In get area data");
+
+		  	$scope.getSectors();
+
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
@@ -1923,6 +1925,11 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.area = response.data.result;
+				    $scope.areaData.sector = $scope.sectors.filter(function(item) {
+				        if(item.key == $scope.area) {
+				            return item;
+				        }
+				    })[0];
 				    $scope.areaData.sector = $scope.sectors[0];
 					return true;
 				}
@@ -1955,8 +1962,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 
             $scope.sectors = sectors;
         };
-
-        $scope.getSectors();
 
         $scope.editArea = function() {
             var reqObject = {
