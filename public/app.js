@@ -68,6 +68,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/edit_area', {
         templateUrl : '/pages/editArea.html',
         controller : 'editAreaController'
+     }).when('/edit_category', {
+        templateUrl : '/pages/editCategory.html',
+        controller : 'editCategoryController'
      }).otherwise({
         redirectTo: '/error'
      });
@@ -1594,7 +1597,7 @@ function showCategoryController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editCategory = function(id) {
-        //    $location.path('/edit_atm/').search({"id" : id});
+            $location.path('/edit_category/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
@@ -1983,6 +1986,108 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
             .then(function(response) {
                 if(response.data.valid){
                     $location.path('/list_areas');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Category Controller
+app.controller('editCategoryController', editCategoryController);
+editCategoryController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editCategoryController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.category_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.areaData = {};
+    $scope.category = {};
+    $scope.sectors = [];
+
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getCategoryData = function(id){
+		  	$scope.getSectors();
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_categoryData/' + $scope.category_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.category = response.data.result;
+				    $scope.selected = $scope.sectors.filter(function(item) {
+                        if(item.key == $scope.area.sector) {
+                            return item;
+                        }
+                    });
+                    $scope.categoryData.sector = $scope.selected[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+        $scope.getSectors = function() {
+            var sectors = [
+                {
+                    "key": "atm",
+                    "value": "ATMs"
+                },
+                {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+            ];
+            $scope.sectors = sectors;
+        };
+
+        $scope.editCategory = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "area_data" : {
+                    "name" : $scope.categoryData.name == null ? $scope.category.name : $scope.categoryData.name,
+                    "sector" : $scope.categoryData.sector != 'undefined' ? $scope.categoryData.sector.key : $scope.category.sector
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_category/' + $scope.category_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_categories');
                     return true;
                 }
                 else

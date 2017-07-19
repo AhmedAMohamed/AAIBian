@@ -926,6 +926,7 @@ router.post('/get_categories', function(req, res, next) {
     }
 });
 
+
 router.get('/get_newsData/:id', function(req, res, next) {
     var id = req.params.id;
     News.findById(id, function(err, news) {
@@ -1067,6 +1068,7 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
     }
 });
 
+
 router.get('/get_userData/:id', function(req, res, next) {
     var id = req.params.id;
     User.findById(id, function(err, users) {
@@ -1117,6 +1119,7 @@ router.post('/edit_user/:id', function(req, res, next) {
     });
 });
 
+
 router.get('/get_areaData/:id', function(req, res, next) {
     var id = req.params.id;
     Areas.findById(id, function(err, areas) {
@@ -1165,5 +1168,7 @@ router.post('/edit_area/:id', function(req, res, next) {
         }
     });
 });
+
+
 
 module.exports = router;
