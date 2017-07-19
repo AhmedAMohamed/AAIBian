@@ -1933,11 +1933,9 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                         }
                     });
                     $scope.areaData.sector = $scope.selected[0];
-
                     return true;
 				}
-				else
-				{
+				else {
 					return false;
 				}
 		    });
@@ -1970,26 +1968,30 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "area_data" : {
-                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
+                    "name" : $scope.areaData.name != 'undefined' ? $scope.areaData.name : $scope.area.name,
+                    "sector" : $scope.areaData.sector != 'undefined' ? $scope.areaData.sector.name : $scope.area.sector.name
                 }
             };
-            $http({
-            method: 'POST',
-                url:'/aaibian/admin/edit_user/' + $scope.user_id,
-                data:JSON.stringify(reqObject),
-                headers: {'Content-Type': 'application/JSON'}
-            })
-            .then(function(response) {
-                if(response.data.valid){
-                    $location.path('/list_users');
-                    return true;
-                }
-                else
-                {
-                    $location.path("/error");
-                    return false;
-                }
-            });
+
+            console.log(JSON.stringify(reqObject));
+//
+//            $http({
+//            method: 'POST',
+//                url:'/aaibian/admin/edit_user/' + $scope.user_id,
+//                data:JSON.stringify(reqObject),
+//                headers: {'Content-Type': 'application/JSON'}
+//            })
+//            .then(function(response) {
+//                if(response.data.valid){
+//                    $location.path('/list_users');
+//                    return true;
+//                }
+//                else
+//                {
+//                    $location.path("/error");
+//                    return false;
+//                }
+//            });
         }
 
 		$scope.getStatus = function() {
