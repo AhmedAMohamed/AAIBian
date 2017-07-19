@@ -1907,6 +1907,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getAreaData = function(id){
+		    console.log("In get area data");
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
@@ -1920,6 +1921,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 			})
 			.then(function(response) {
 				if(response.data.valid){
+                    console.log("after get area data");
 				    $scope.area = response.data.result;
 					return true;
 				}

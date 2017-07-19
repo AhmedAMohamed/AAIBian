@@ -1124,6 +1124,7 @@ router.get('/get_areaData/:id', function(req, res, next) {
             res.json(messeges.not_valid_operation());
         }
         else {
+            console.log("In server in get area data")
             res.json({
                 valid: true,
                 msg: "Done",
