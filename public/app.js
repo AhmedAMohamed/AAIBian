@@ -1927,6 +1927,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				    $scope.area = response.data.result;
 				    $scope.selected = $scope.sectors.filter(function(item) {
                         if(item.key == $scope.area.sector) {
+                            console.log(item)
                             return item;
                         }
                     });
@@ -1939,8 +1940,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 		    });
 		}
 
-
-        console.log($scope.selected);
         $scope.areaData.sector = $scope.selected[0];
 
         $scope.getSectors = function() {
@@ -1962,7 +1961,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                     "value": "Cardholder's Benefits"
                 }
             ];
-
             $scope.sectors = sectors;
         };
 
