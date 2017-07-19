@@ -1932,6 +1932,8 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                             return item;
                         }
                     });
+                    $scope.areaData.sector = $scope.selected[0];
+
                     return true;
 				}
 				else
@@ -1940,9 +1942,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				}
 		    });
 		}
-
-        $scope.areaData.sector = $scope.selected[0];
-
         $scope.getSectors = function() {
             var sectors = [
                 {
