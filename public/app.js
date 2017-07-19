@@ -1926,7 +1926,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				if(response.data.valid){
 				    $scope.area = response.data.result;
 				    $scope.selected = $scope.sectors.filter(function(item) {
-                        if(item.key == $scope.area) {
+                        if(item.key == $scope.area.sector) {
                             return item;
                         }
                     });
