@@ -1923,6 +1923,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.area = response.data.result;
+				    $scope.areaData = $scope.area.sector;
 					return true;
 				}
 				else
