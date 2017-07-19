@@ -1930,7 +1930,6 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				            return item;
 				        }
 				    })[0];
-				    $scope.areaData.sector = $scope.sectors[0];
 					return true;
 				}
 				else
