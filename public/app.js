@@ -1968,7 +1968,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "area_data" : {
-                    "name" : $scope.areaData.name != 'undefined' ? $scope.areaData.name : $scope.area.name,
+                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
                     "sector" : $scope.areaData.sector != 'undefined' ? $scope.areaData.sector.key : $scope.area.sector
                 }
             };
