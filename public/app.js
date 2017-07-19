@@ -1925,12 +1925,12 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.area = response.data.result;
-				    $scope.areaData.sector = $scope.sectors.filter(function(item) {
-				        if(item.key == $scope.area) {
-				            return item;
-				        }
-				    });
-					return true;
+				    $scope.selected = $scope.sectors.filter(function(item) {
+                        if(item.key == $scope.area) {
+                            return item;
+                        }
+                    });
+                    return true;
 				}
 				else
 				{
@@ -1938,6 +1938,10 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				}
 		    });
 		}
+
+
+        console.log($scope.selected);
+        $scope.areaData.sector = $scope.selected[0];
 
         $scope.getSectors = function() {
             var sectors = [
