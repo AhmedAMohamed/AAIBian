@@ -2013,7 +2013,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
     $scope.areaData = {};
     $scope.category = {};
     $scope.sectors = [];
-
+    $scope.uploadLogoDivView = false;
 
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getCategoryData = function(id){
@@ -2065,7 +2065,11 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 }
             ];
             $scope.sectors = sectors;
-        };
+        }
+
+        $scope.editLogo = function() {
+            $scope.uploadLogoDivView = true;
+        }
 
         $scope.editCategory = function() {
             var reqObject = {
