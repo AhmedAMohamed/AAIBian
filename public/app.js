@@ -2033,7 +2033,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
 				if(response.data.valid){
 				    $scope.category = response.data.result;
 				    $scope.selected = $scope.sectors.filter(function(item) {
-                        if(item.key == $scope.area.sector) {
+                        if(item.key == $scope.category.sector) {
                             return item;
                         }
                     });
