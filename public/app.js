@@ -1973,25 +1973,24 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                 }
             };
 
-            console.log(JSON.stringify(reqObject));
-//
-//            $http({
-//            method: 'POST',
-//                url:'/aaibian/admin/edit_user/' + $scope.user_id,
-//                data:JSON.stringify(reqObject),
-//                headers: {'Content-Type': 'application/JSON'}
-//            })
-//            .then(function(response) {
-//                if(response.data.valid){
-//                    $location.path('/list_users');
-//                    return true;
-//                }
-//                else
-//                {
-//                    $location.path("/error");
-//                    return false;
-//                }
-//            });
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_area/' + $scope.area_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_areas');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
         }
 
 		$scope.getStatus = function() {

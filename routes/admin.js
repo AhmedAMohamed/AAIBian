@@ -1134,4 +1134,36 @@ router.get('/get_areaData/:id', function(req, res, next) {
     });
 });
 
+router.post('/edit_area/:id', function(req, res, next) {
+
+    var area_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
+                if (user) {
+                    var updated_area = {
+                        "name" : req.body.area_data.name,
+                        "sector" : req.body.area_data.sector,
+                    };
+                    Areas.findByIdAndUpdate(area_id, updated_user, function(err, obj) {
+
+                        if(err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+
+                }
+            });
+        }
+        else {
+
+        }
+    });
+});
+
 module.exports = router;
