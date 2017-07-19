@@ -1145,7 +1145,7 @@ router.post('/edit_area/:id', function(req, res, next) {
                         "name" : req.body.area_data.name,
                         "sector" : req.body.area_data.sector,
                     };
-                    Areas.findByIdAndUpdate(area_id, updated_user, function(err, obj) {
+                    Areas.findByIdAndUpdate(area_id, updated_area, function(err, obj) {
 
                         if(err) {
                             res.json(messeges.not_valid_operation());
