@@ -2072,7 +2072,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
-                "area_data" : {
+                "category_data" : {
                     "name" : $scope.categoryData.name == null ? $scope.category.name : $scope.categoryData.name,
                     "sector" : $scope.categoryData.sector != 'undefined' ? $scope.categoryData.sector.key : $scope.category.sector
                 }

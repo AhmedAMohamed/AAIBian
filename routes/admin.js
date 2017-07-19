@@ -1109,12 +1109,12 @@ router.post('/edit_user/:id', function(req, res, next) {
                     });
                 }
                 else {
-
+                    res.json(messeges.valid_operation());
                 }
             });
         }
         else {
-
+            res.json(messeges.valid_operation());
         }
     });
 });
@@ -1159,16 +1159,64 @@ router.post('/edit_area/:id', function(req, res, next) {
                     });
                 }
                 else {
-
+                    res.json(messeges.valid_operation());
                 }
             });
         }
         else {
-
+            res.json(messeges.valid_operation());
         }
     });
 });
 
+
+router.get('/get_categoryData/:id', function(req, res, next) {
+    var id = req.params.id;
+    Categories.findById(id, function(err, cats) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: cats
+            });
+        }
+    });
+});
+
+router.post('/edit_category/:id', function(req, res, next) {
+
+    var category_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
+                if (user) {
+                    var updated_category = {
+                        "name" : req.body.category_data.name,
+                        "sector" : req.body.category_data.sector,
+                    };
+                    Areas.findByIdAndUpdate(area_id, updated_category, function(err, obj) {
+
+                        if(err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+                    res.json(messeges.valid_operation());
+                }
+            });
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
 
 
 module.exports = router;
