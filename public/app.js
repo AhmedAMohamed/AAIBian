@@ -1929,7 +1929,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				        if(item.key == $scope.area) {
 				            return item;
 				        }
-				    })[0];
+				    });
 					return true;
 				}
 				else
