@@ -1197,7 +1197,7 @@ router.post('/edit_category/:id', function(req, res, next) {
                         "name" : req.body.category_data.name,
                         "sector" : req.body.category_data.sector,
                     };
-                    Areas.findByIdAndUpdate(area_id, updated_category, function(err, obj) {
+                    Categories.findByIdAndUpdate(category_id, updated_category, function(err, obj) {
 
                         if(err) {
                             res.json(messeges.not_valid_operation());
