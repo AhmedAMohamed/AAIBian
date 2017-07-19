@@ -1955,6 +1955,8 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
             $scope.sectors = sectors;
         };
 
+        $scope.getSectors();
+
         $scope.editArea = function() {
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
