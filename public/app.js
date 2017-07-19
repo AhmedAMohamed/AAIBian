@@ -69,7 +69,7 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
         templateUrl : '/pages/editArea.html',
         controller : 'editAreaController'
      }).otherwise({
-        redirectTo: '/home'
+        redirectTo: '/error'
      });
      $locationProvider.html5Mode(true);
  }]);

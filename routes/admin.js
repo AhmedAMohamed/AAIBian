@@ -1117,5 +1117,20 @@ router.post('/edit_user/:id', function(req, res, next) {
     });
 });
 
+router.get('/get_areaData/:id', function(req, res, next) {
+    var id = req.params.id;
+    Areas.findById(id, function(err, areas) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: areas
+            });
+        }
+    });
+});
 
 module.exports = router;
