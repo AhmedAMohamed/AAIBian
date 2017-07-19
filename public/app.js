@@ -1924,7 +1924,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
                     console.log("after get area data");
 
 				    $scope.area = response.data.result;
-					console.log($scope.area);
+					console.log($scope.area.sector);
 					return true;
 				}
 				else
