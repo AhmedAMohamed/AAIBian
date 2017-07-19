@@ -1903,6 +1903,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
     $scope.showRemove = false;
     $scope.areaData = {};
     $scope.area = {};
+    $scope.sectors = [];
 
 
     if($window.sessionStorage.getItem("logged") == "true"){
@@ -1921,10 +1922,7 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 			})
 			.then(function(response) {
 				if(response.data.valid){
-                    console.log("after get area data");
-
 				    $scope.area = response.data.result;
-					console.log($scope.area.sector);
 					return true;
 				}
 				else
@@ -1933,6 +1931,29 @@ function editAreaController($scope, $http, $window, $location, $routeParams, Upl
 				}
 		    });
 		}
+
+        $scope.getSectors = function() {
+            var sectors = [
+                {
+                    "key": "atm",
+                    "value": "ATMs"
+                },
+                {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+            ];
+
+            $scope.sectors = sectors;
+        };
 
         $scope.editArea = function() {
             var reqObject = {
