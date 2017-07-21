@@ -2092,9 +2092,11 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
+                console.log("here");
+                console.log(JSON.stringify(response));
                 if(response.data.valid){
                     $scope.logoUploaded = true;
-                    $location.path('/list_category');
+                    $location.path('/list_category')
                 }
                 else {
                     $scope.logoUploaded = false;
