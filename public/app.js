@@ -2157,7 +2157,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
     $scope.atm_id = $location.search().id;
     $scope.showEdit = false;
     $scope.showRemove = false;
-    $scope.areaData = {};
+    $scope.atmData = {};
     $scope.atm = {};
     $scope.loc_names = [];
     $scope.types = [];
