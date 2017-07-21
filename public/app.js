@@ -2086,7 +2086,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 }
             };
             Upload.upload({
-                url:'/aaibian/admin/upload_logo/' + $scope.news_id,
+                url:'/aaibian/admin/upload_logo/' + $scope.category_id,
                 method: 'POST',
                 data: categoryObject,
                 headers: {'Content-Type': 'application/JSON'}
