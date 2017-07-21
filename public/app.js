@@ -2093,7 +2093,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
             })
             .then(function(response) {
                 console.log("here");
-                console.log(JSON.stringify(response));
+                console.log(response);
                 if(response.data.valid){
                     $scope.logoUploaded = true;
                     $location.path('/list_category')
