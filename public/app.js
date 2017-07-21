@@ -742,19 +742,18 @@ function addATMController($scope, $http, $window, $location){
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
-
-                            console.log(response.data);
-                            console.log(response.data.valid);
-                            console.log(response);
-                            if(response.data.valid){
-                                $scope.created = true;
-                                //$location.path('/new_user');
-                            }
-                            else
-                            {
-                                $scope.created = false;
-                                $location.path('/error');
-                            }
+                console.log(response.data);
+                console.log(response.data.valid);
+                console.log(response);
+                if(response.data.valid){
+                    $scope.created = true;
+                    //$location.path('/new_user');
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
             });
         }
 
@@ -2166,7 +2165,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 		$scope.getATMData = function(id){
 
 		  	$scope.getATMLocations();
-
+            $scope.getCategories();
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
@@ -2181,13 +2180,19 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.atm = response.data.result;
-				    $scope.selected = $scope.loc_names.filter(function(item) {
-                        console.log(item)
+				    $scope.selectedArea = $scope.loc_names.filter(function(item) {
                         if(item.name == $scope.atm.loc_name) {
                             return item;
                         }
                     });
-                    $scope.atmData.loc_name = $scope.selected[0];
+                    $scope.atmData.loc_name = $scope.selectedArea[0];
+
+                    $scope.selectedCat = $scope.types.filter(function(item) {
+                        if(item.name == $scope.atm.zone) {
+                            return item;
+                        }
+                    })
+                    $scope.atmData.type = $scope.selectedCat[0];
                     return true;
 				}
 				else {
@@ -2195,6 +2200,29 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 				}
 		    });
 		}
+
+		$scope.getCategories = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_categories',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.results);
+                    $scope.cities = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
         $scope.getATMLocations = function() {
             var reqObject = {
                 "sector": 'atm'
