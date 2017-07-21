@@ -2244,14 +2244,18 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
         }
 
         $scope.editATM = function() {
+
+            console.log($scope.atm);
+            console.log($scope.atmData);
+
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "atm_data" : {
                     "address" : $scope.atmData.address == null ? $scope.atm.address : $scope.atmData.address,
-                    "loc_name" : $scope.atmData.loc_name != 'undefined' ? $scope.atmData.loc_name : $scope.atm.loc_name,
-                    "zone" : $scope.atmData.type != "undefined" ? $scope.atmData.type : $scope.atm.zone,
+                    "loc_name" : $scope.atmData.loc_name != null ? $scope.atmData.loc_name : $scope.atm.loc_name,
+                    "zone" : $scope.atmData.type != null ? $scope.atmData.type : $scope.atm.zone,
                     "location" : {
                         "lat" : $scope.atmData.lat == null ? $scope.atm.location[0] : $scope.atmData.lat,
                         "lng" : $scope.atmData.lng == null ? $scope.atm.location[1] : $scope.atmData.lng
