@@ -2071,7 +2071,39 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
             $scope.uploadLogoDivView = true;
         }
 
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var categoryObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "category"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.news_id,
+                method: 'POST',
+                data: categoryObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    $location.path('/list_category');
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            });
+        }
+
         $scope.editCategory = function() {
+
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
