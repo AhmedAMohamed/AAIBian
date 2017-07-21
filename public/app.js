@@ -2254,8 +2254,8 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "atm_data" : {
                     "address" : typeof $scope.atmData.address == "undefined" ? $scope.atm.address : $scope.atmData.address,
-                    "loc_name" : typeof $scope.atmData.loc_name != "undefined" ? $scope.atmData.loc_name : $scope.atm.loc_name.name,
-                    "zone" : typeof $scope.atmData.type != "undefined" ? $scope.atmData.type : $scope.atm.type.name,
+                    "loc_name" : typeof $scope.atmData.loc_name != "undefined" ? $scope.atmData.loc_name.name : $scope.atm.loc_name.name,
+                    "zone" : typeof $scope.atmData.type != "undefined" ? $scope.atmData.type.name : $scope.atm.type.name,
                     "location" : {
                         "lat" : $scope.atmData.lat == null ? $scope.atm.location[0] : $scope.atmData.lat,
                         "lng" : $scope.atmData.lng == null ? $scope.atm.location[1] : $scope.atmData.lng
