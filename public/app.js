@@ -2183,8 +2183,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 				    $scope.atm = response.data.result;
 				    $scope.selected = $scope.loc_names.filter(function(item) {
                         console.log(item)
-                        $scope.area.sector
-                        if(item.key == $scope.atm.loc_name) {
+                        if(item.name == $scope.atm.loc_name) {
                             return item;
                         }
                     });
