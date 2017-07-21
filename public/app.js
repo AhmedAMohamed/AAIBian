@@ -2201,7 +2201,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
                 "sector": 'atm'
             };
             $http({
-                method: 'GET',
+                method: 'POST',
                 url: '/aaibian/admin/get_areas',
                 data: JSON.stringify(reqObject),
                 headers: {'Content-Type': 'application/JSON'}
