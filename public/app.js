@@ -2163,7 +2163,6 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 
     if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.getATMData = function(id){
-
 		  	$scope.getATMLocations();
             $scope.getCategories();
 		  	var reqObject = {
@@ -2180,6 +2179,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.atm = response.data.result;
+				    console.log($scope.atm);
 				    $scope.selectedArea = $scope.loc_names.filter(function(item) {
                         if(item.name == $scope.atm.loc_name) {
                             return item;
@@ -2213,7 +2213,6 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
             })
             .then(function(response) {
                 if(response.data.valid) {
-                    console.log(response.data.results);
                     $scope.cities = response.data.results;
                     return true;
                 }
@@ -2235,7 +2234,6 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
             })
             .then(function(response) {
                 if(response.data.valid) {
-                    console.log(response.data.results);
                     $scope.loc_names = response.data.results;
                     return true;
                 }
