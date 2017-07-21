@@ -1081,9 +1081,12 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
                             current_category.img_path = "data/uploads/" + file_new_name;
                             current_category.save(function(err, s) {
                                 if(err) {
+                                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                                    console.log(err);
                                     res.json(messeges,not_valid_operation());
                                 }
                                 else {
+                                    console.log("hahahahahhahahahahahahaahahah");
                                     res.json(messeges.valid_operation());
                                 }
                             });
