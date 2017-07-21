@@ -1435,7 +1435,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 		    });
 		}
 
-        $scope.editNews = function(id) {
+        $scope.editATM = function(id) {
             $location.path('/edit_atm/').search({"id" : id});
         }
 
