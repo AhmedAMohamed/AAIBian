@@ -2265,6 +2265,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
             })
             .then(function(response) {
                 if(response.data.valid){
+                    console.log("hereherehrhehrehrherhehrh")
                     $location.path('/list_atms');
                     return true;
                 }
