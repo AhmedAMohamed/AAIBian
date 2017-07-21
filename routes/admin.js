@@ -1250,4 +1250,21 @@ router.post('/edit_category/:id', function(req, res, next) {
     });
 });
 
+
+router.get('/get_atmData/:id', function(req, res, next) {
+    var id = req.params.id;
+    ATMs.findById(id, function(err, atms) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: atms
+            });
+        }
+    });
+});
+
 module.exports = router;

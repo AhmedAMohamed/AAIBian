@@ -71,6 +71,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/edit_category', {
         templateUrl : '/pages/editCategory.html',
         controller : 'editCategoryController'
+     }).when('/edit_atm', {
+        templateUrl : '/pages/editATM.html',
+        controller : 'editATMController'
      }).otherwise({
         redirectTo: '/error'
      });
@@ -1433,7 +1436,7 @@ function showATMController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editNews = function(id) {
-        //    $location.path('/edit_atm/').search({"id" : id});
+            $location.path('/edit_atm/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
@@ -2129,6 +2132,113 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
             .then(function(response) {
                 if(response.data.valid){
                     $location.path('/list_categories');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit ATM Controller
+app.controller('editATMController', editATMController);
+editATMController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editATMController($scope, $http, $window, $location, $routeParams, Upload){
+
+
+    $scope.atm_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.areaData = {};
+    $scope.atm = {};
+    $scope.loc_names = [];
+    $scope.types = [];
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getATMData = function(id){
+
+		  	$scope.getATMLocations();
+
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_atmData/' + $scope.atm_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.atm = response.data.result;
+				    $scope.selected = $scope.loc_names.filter(function(item) {
+                        console.log(item)
+                        $scope.area.sector
+                        if(item.key == $scope.atm.loc_name) {
+                            return item;
+                        }
+                    });
+                    $scope.atmData.loc_name = $scope.selected[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+        $scope.getATMLocations = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'GET',
+                url: '/aaibian/admin/get_areas',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.results);
+                    $scope.loc_names = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.editATM = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "area_data" : {
+                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
+                    "sector" : $scope.areaData.sector != 'undefined' ? $scope.areaData.sector.key : $scope.area.sector
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_area/' + $scope.area_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_areas');
                     return true;
                 }
                 else
