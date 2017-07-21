@@ -2253,8 +2253,8 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
                     "loc_name" : $scope.atmData.loc_name != 'undefined' ? $scope.atmData.loc_name : $scope.atm.loc_name,
                     "zone" : $scope.atmData.type != "undefined" ? $scope.atmData.type : $scope.atm.zone,
                     "location" : {
-                        "lat" : $scope.atmData.lat,
-                        "lng" : $scope.atmData.lng
+                        "lat" : $scope.atmData.lat == null ? $scope.atm.location[0], $scope.atmData.lat,
+                        "lng" : $scope.atmData.lng == null ? $scope.atm.location[1], $scope.atmData.lng
                     }
                 }
             };
