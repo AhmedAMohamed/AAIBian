@@ -1280,7 +1280,7 @@ router.post('/edit_atm/:id', function(req, res, next) {
                         "zone" : req.body.atm_data.zone,
                         "location" : req.body.atm_data.location
                     };
-                    Areas.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
+                    ATMs.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
 
                         if(err) {
                             res.json(messeges.not_valid_operation());
