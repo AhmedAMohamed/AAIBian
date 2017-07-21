@@ -2213,7 +2213,7 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
             })
             .then(function(response) {
                 if(response.data.valid) {
-                    $scope.cities = response.data.results;
+                    $scope.types = response.data.results;
                     return true;
                 }
                 else {
