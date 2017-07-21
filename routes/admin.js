@@ -302,7 +302,7 @@ router.post('/add_atm', function(req, res, next) {
                         creation_date: new Date(Date.now()),
                         location: [
                             parseFloat(req.body.new_atm.location.lat),
-                            parseFloat(req.body.new_atm.location.lng),
+                            parseFloat(req.body.new_atm.location.lng)
                         ],
                         zone: req.body.new_atm.city,
                         id: req.body.new_atm.id
@@ -1279,7 +1279,10 @@ router.post('/edit_atm/:id', function(req, res, next) {
                         "address" : req.body.atm_data.address,
                         "loc_name" : req.body.atm_data.loc_name,
                         "zone" : req.body.atm_data.zone,
-                        "location" : req.body.atm_data.location
+                        "location" : [
+                            parseFloat(req.body.atm_data.location.lat),
+                            parseFloat(req.body.atm_data.location.lng)
+                        ]
                     };
                     ATMs.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
                         if(err) {
