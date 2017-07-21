@@ -1274,6 +1274,7 @@ router.post('/edit_atm/:id', function(req, res, next) {
         if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
                 if (user) {
+                    console.log("here in update")
                     var updated_atm = {
                         "address" : req.body.atm_data.address,
                         "loc_name" : req.body.atm_data.loc_name,
@@ -1281,11 +1282,13 @@ router.post('/edit_atm/:id', function(req, res, next) {
                         "location" : req.body.atm_data.location
                     };
                     ATMs.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
-
                         if(err) {
+                            console.log("here in update 1");
+                            console.log(err);
                             res.json(messeges.not_valid_operation());
                         }
                         else {
+                            console.log("here in update 2")
                             res.json(messeges.valid_operation());
                         }
                     });
