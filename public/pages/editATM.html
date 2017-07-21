@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Government</label>
                                 <div class="col-sm-10">
-                                    <select ng-model="atmData.type" ng-options="x for x in types"
+                                    <select ng-model="atmData.type" ng-options="x.name for x in types"
                                             ng-init="atmData.type" ng-selected="benefit">
                                     </select>
                                 </div>
