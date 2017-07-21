@@ -1531,6 +1531,7 @@ function showCategoryController($scope, $http, $window, $location, Upload){
 
     if($window.sessionStorage.getItem("logged") == "true"){
 
+        console.log("here is show category");
 		$scope.getCategories = function(){
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
@@ -2097,7 +2098,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 if(response.data.valid){
                     $scope.logoUploaded = true;
                     console.log("here in valid");
-                    $location.path('/list_category');
+                    $location.path('/list_categories');
 
                 }
                 else {
