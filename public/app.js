@@ -2096,7 +2096,8 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 console.log(response);
                 if(response.data.valid){
                     $scope.logoUploaded = true;
-                    $location.path('/list_category')
+                    console.log("here in valid");
+                    $location.path('/list_category');
                 }
                 else {
                     $scope.logoUploaded = false;
