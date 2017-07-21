@@ -2248,22 +2248,24 @@ function editATMController($scope, $http, $window, $location, $routeParams, Uplo
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
-                "area_data" : {
-                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
-                    "sector" : $scope.areaData.sector != 'undefined' ? $scope.areaData.sector.key : $scope.area.sector
+                "atm_data" : {
+                    "address" : $scope.atmData.address == null ? $scope.atm.address : $scope.atmData.address,
+                    "loc_name" : $scope.atmData.loc_name != 'undefined' ? $scope.atmData.loc_name : $scope.atm.loc_name,
+                    "zone" : $scope.atmData.type != "undefined" ? $scope.atmData.type : $scope.atm.zone,
+                    "location" : [$scope.atmData.lat, $scope.atmData.lng]
                 }
             };
 
 
             $http({
             method: 'POST',
-                url:'/aaibian/admin/edit_area/' + $scope.area_id,
+                url:'/aaibian/admin/edit_atm/' + $scope.atm_id,
                 data:JSON.stringify(reqObject),
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
                 if(response.data.valid){
-                    $location.path('/list_areas');
+                    $location.path('/list_atms');
                     return true;
                 }
                 else

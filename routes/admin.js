@@ -1267,4 +1267,38 @@ router.get('/get_atmData/:id', function(req, res, next) {
     });
 });
 
+router.post('/edit_atm/:id', function(req, res, next) {
+
+    var atm_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
+                if (user) {
+                    var updated_atm = {
+                        "address" : req.body.atm_data.address,
+                        "loc_name" : req.body.atm_data.loc_name,
+                        "zone" : req.body.atm_data.zone,
+                        "location" : req.body.atm_data.location
+                    };
+                    Areas.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
+
+                        if(err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+                    res.json(messeges.valid_operation());
+                }
+            });
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
 module.exports = router;

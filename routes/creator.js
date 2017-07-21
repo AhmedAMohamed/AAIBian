@@ -156,8 +156,6 @@ router.post('/addMedical', function (req, res, next) {
                     var medical = new Medical(row);
                     medical.save(function (err, dent) {
                         if (err) {
-                            console.log(err);
-                            console.log("Some error");
                         }
                         else {
                             console.log("Done row in " + types[key]);
