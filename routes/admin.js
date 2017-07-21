@@ -1076,6 +1076,8 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
                     else {
                         Categories.findById(_id, function(err, current_category) {
                             fs.unlink(file_temp_path);
+                            console.log("here in changing upload file");
+                            console.log(current_category)
                             current_category.img_path = "data/uploads/" + file_new_name;
                             current_category.save(function(err, s) {
                                 if(err) {
