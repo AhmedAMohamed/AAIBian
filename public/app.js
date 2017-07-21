@@ -2103,7 +2103,7 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
                 else {
                     $scope.logoUploaded = false;
                 }
-            });
+            })
         }
 
         $scope.editCategory = function() {
