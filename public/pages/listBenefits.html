@@ -15,6 +15,10 @@
 
                         <div ng-repeat="x in benefits" class="collumn">
                             <div ng-click="editBenefit(x._id)">
+
+                                <img src="{{ x.img_path }}" width="50%" height="50%">
+
+
                                 <div class="head">
                                     <h3 class="headline hl2">{{ x.name }} </h3>
                                 </div>
