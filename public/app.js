@@ -868,7 +868,7 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
 				        $scope.benefitData.contact3],
 				    "industry": typeof $scope.benefitData.industry != 'undefined' ? $scope.benefitData.industry.name : "other",
-				    "offer": $scope.benefitData.offer,
+				    "offer": $scope.benefitData.body,
 				    "delete_date": $scope.benefitData.delete_date
 				}
 			};
@@ -1489,6 +1489,7 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.attachmentShow = function(ben) {
+            console.log(ben);
             if (ben.media_path == "") {
                 return false;
             }
