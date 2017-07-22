@@ -1284,6 +1284,7 @@ router.post('/edit_atm/:id', function(req, res, next) {
                             parseFloat(req.body.atm_data.location.lng)
                         ]
                     };
+                    console.log(updated_atm)
                     ATMs.findByIdAndUpdate(atm_id, updated_atm, function(err, obj) {
                         if(err) {
                             console.log("here in update 1");
