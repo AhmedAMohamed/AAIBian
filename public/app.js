@@ -65,6 +65,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/list_categories', {
         templateUrl : "/pages/listCategory.html",
         controller : "showCategoryController"
+     }).when('/list_benefit', {
+        templateUrl : "/pages/listBenefits.html",
+        controller : "showBenefitController"
      }).when('/edit_area', {
         templateUrl : '/pages/editArea.html',
         controller : 'editAreaController'
@@ -1436,6 +1439,73 @@ function showATMController($scope, $http, $window, $location, Upload){
 
         $scope.editATM = function(id) {
             $location.path('/edit_atm/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Show Benefit Controller
+app.controller('showBenefitController', showBenefitController);
+showBenefitController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showBenefitController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getBenefits = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_benefits',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.benefits = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+
+		$scope.deleteBenefit = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_benefit',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Benefit deleted";
+                    $scope.getBenefits();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Benefit not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editBenefit = function(id) {
+            $location.path('/edit_ben/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {

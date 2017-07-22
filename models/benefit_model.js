@@ -27,11 +27,11 @@ var benefit_schema = mongoose.Schema(
         industry: String,
         img_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
         pdf_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
         offer: String,
         sector: {
