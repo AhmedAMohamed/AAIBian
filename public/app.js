@@ -1490,7 +1490,7 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 
         $scope.attachmentShow = function(ben) {
             console.log(ben);
-            if (ben.media_path == "") {
+            if (ben.pdf_path == "") {
                 return false;
             }
             else {
