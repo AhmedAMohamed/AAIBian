@@ -77,6 +77,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/edit_atm', {
         templateUrl : '/pages/editATM.html',
         controller : 'editATMController'
+     }).when('/edit_benefit', {
+        templateUrl : '/pages/editBenefit.html',
+        controller : 'editBenefitController'
      }).otherwise({
         redirectTo: '/error'
      });
@@ -1485,6 +1488,14 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 
 		}
 
+        $scope.attachmentShow = function(ben) {
+            if (ben.media_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
 
 		$scope.deleteBenefit = function(id) {
 		    var request = {
@@ -1511,7 +1522,7 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.editBenefit = function(id) {
-            $location.path('/edit_ben/').search({"id" : id});
+            $location.path('/edit_benefit/').search({"id" : id});
         }
 
 		$scope.getStatus = function() {
@@ -2224,6 +2235,149 @@ function editCategoryController($scope, $http, $window, $location, $routeParams,
 }
 
 //////////////////////////////////////////////////// ************** Edit ATM Controller
+app.controller('editATMController', editATMController);
+editATMController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editATMController($scope, $http, $window, $location, $routeParams, Upload){
+
+
+    $scope.atm_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.atmData = {};
+    $scope.atm = {};
+    $scope.loc_names = [];
+    $scope.types = [];
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getATMData = function(id){
+		  	$scope.getATMLocations();
+            $scope.getCategories();
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_atmData/' + $scope.atm_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.atm = response.data.result;
+				    console.log($scope.atm);
+				    $scope.selectedArea = $scope.loc_names.filter(function(item) {
+                        if(item.name == $scope.atm.loc_name) {
+                            return item;
+                        }
+                    });
+                    $scope.atmData.loc_name = $scope.selectedArea[0];
+
+                    $scope.selectedCat = $scope.types.filter(function(item) {
+                        if(item.name == $scope.atm.zone) {
+                            return item;
+                        }
+                    })
+                    $scope.atmData.type = $scope.selectedCat[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+
+		$scope.getCategories = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_categories',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    $scope.types = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.getATMLocations = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_areas',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    $scope.loc_names = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.editATM = function() {
+
+            console.log($scope.atm);
+            console.log($scope.atmData);
+
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "atm_data" : {
+                    "address" : typeof $scope.atmData.address == "undefined" ? $scope.atm.address : $scope.atmData.address,
+                    "loc_name" : typeof $scope.atmData.loc_name != "undefined" ? $scope.atmData.loc_name.name : $scope.atm.loc_name.name,
+                    "zone" : typeof $scope.atmData.type != "undefined" ? $scope.atmData.type.name : $scope.atm.type.name,
+                    "location" : {
+                        "lat" : $scope.atmData.lat == null ? $scope.atm.location[0] : $scope.atmData.lat,
+                        "lng" : $scope.atmData.lng == null ? $scope.atm.location[1] : $scope.atmData.lng
+                    }
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_atm/' + $scope.atm_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    console.log("hereherehrhehrehrherhehrh")
+                    $location.path('/list_atms');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Benefit Controller
 app.controller('editATMController', editATMController);
 editATMController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
 function editATMController($scope, $http, $window, $location, $routeParams, Upload){
