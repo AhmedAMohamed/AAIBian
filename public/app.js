@@ -207,6 +207,9 @@ function homeController($scope, $http, $window, $location){
             else if (val == 'Show Categories') {
                 $location.path('/list_categories');
             }
+            else if(val == 'Show Staff Benefits') {
+                $location.path('/list_benefit');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -285,6 +288,9 @@ function menuController($scope, $http, $window, $location){
             }
             else if (val == 'Show Categories') {
                 $location.path('/list_categories');
+            }
+            else if(val == 'Show Staff Benefits') {
+                $location.path('/list_benefit');
             }
 		}
 		$scope.testType = function(){
