@@ -1530,6 +1530,82 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 	}
 }
 
+
+//////////////////////////////////////////////////// ************** Show Cardholder's Controller
+app.controller('showCardController', showCardController);
+showCardController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showCardController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getCards = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_cards',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.cards = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+        $scope.attachmentShow = function(ben) {
+            if (ben.pdf_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+		$scope.deleteCard = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_cards',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Cardholder benefit deleted";
+                    $scope.getBenefits();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Cardholder benefit not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editBenefit = function(id) {
+            $location.path('/edit_card/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+
 //////////////////////////////////////////////////// ************** Show Area Controller
 app.controller('showAreaController', showAreaController);
 showAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
