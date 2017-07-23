@@ -1060,7 +1060,7 @@ router.post('/upload_media/:id', multiparty(), function(req, res, next) {
                 else {
                     Benefit.findById(_id, function(err, current_benefit) {
                         fs.unlink(file_temp_path);
-                        current_benefit.media_path = "data/uploads/" + file_new_name;
+                        current_benefit.pdf_path = "data/uploads/" + file_new_name;
                         current_benefit.save(function(err, s) {
                             if(err) {
                                 res.json(messeges,not_valid_operation());

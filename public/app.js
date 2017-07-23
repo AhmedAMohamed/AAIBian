@@ -2437,7 +2437,6 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
         $scope.getZones();
         $scope.getCategories();
 
-
 		$scope.getBenefitDate = function(){
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
