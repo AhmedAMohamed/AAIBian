@@ -2394,6 +2394,52 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
     $scope.uploadLogoDivView = false;
 
     if($window.sessionStorage.getItem("logged") == "true"){
+
+
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.categories = response.data.results;
+                }
+                else {
+                    $scope.categories = [];
+                }
+            });
+        };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+
 		$scope.getBenefitDate = function(){
 		  	var reqObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
@@ -2418,6 +2464,9 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 		    });
 		}
 
+        $scope.getZones = function() {
+
+        }
         $scope.editBenefit = function() {
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
