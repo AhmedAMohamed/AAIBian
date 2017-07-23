@@ -28,7 +28,7 @@ var cardHolder_schema = mongoose.Schema(
         },
         img_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
         pdf_path: {
             type: String,
