@@ -2,8 +2,8 @@
     <div class="col-md-2">
         <ng-include src="'pages/menu.html'"></ng-include>
     </div>
-    <div class="col-md-10" ng-controller = "editBenefitController">
-        <div class="row" ng-init="getCardDate(benefit_id)">
+    <div class="col-md-10" ng-controller = "editCardController">
+        <div class="row" ng-init="getCardDate(card_id)">
             <div class="col-xs-6 col-xs-offset-2">
                 <img src="images/image001.jpg" width="100%" height="200px">
                 <div class="content-box-large">
@@ -33,17 +33,17 @@
                             </form>
                         </div>
 
-                        <form class="form-horizontal" role="form" ng-submit="editBenefit()">
-                            <div class="form-group" ng-click="editLogo(benefit._id)">
+                        <form class="form-horizontal" role="form" ng-submit="editCard()">
+                            <div class="form-group" ng-click="editLogo(card._id)">
                                 <label for="title" class="col-sm-2 control-label">Logo</label>
-                                <img src="{{ benefit.img_path }}" width="50%" height="50%">
+                                <img src="{{ card.img_path }}" width="50%" height="50%">
 
                             </div>
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">Name</label>
                                 <div class="col-sm-10">
-                                    <input ng-model="benefitData.name" type="text" class="form-control" id="title"
-                                           placeholder="{{benefit.name}}" ng-init="benefitData.name = benefit.name">
+                                    <input ng-model="cardData.name" type="text" class="form-control" id="title"
+                                           placeholder="{{card.name}}" ng-init="benefitData.name = card.name">
                                 </div>
                             </div>
 
@@ -51,8 +51,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Area</label>
                                 <div class="col-sm-10">
-                                    <select ng-model="benefitData.zone" ng-options="x.name for x in zones"
-                                            ng-init="benefitData.zone" ng-selected="benefit">
+                                    <select ng-model="cardData.zone" ng-options="x.name for x in zones"
+                                            ng-init="cardData.zone" ng-selected="benefit">
                                     </select>
                                 </div>
                             </div>
@@ -61,8 +61,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select ng-model="benefitData.category" ng-options="x.name for x in categories"
-                                            ng-init="benefitData.category" ng-selected="benefit">
+                                    <select ng-model="cardData.category" ng-options="x.name for x in categories"
+                                            ng-init="cardData.category" ng-selected="benefit">
                                     </select>
                                 </div>
                             </div>
@@ -72,11 +72,11 @@
                                 <legend> Location</legend>
                                 <div class="form-group">
                                     <label>Latitude</label>
-                                    <input class="form-control" ng-model="benefitData.lat" placeholder="{{benefit.location[0]}}" type="text">
+                                    <input class="form-control" ng-model="cardData.lat" placeholder="{{card.location[0]}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Longitude</label>
-                                    <input class="form-control" ng-model="benefitData.lng" placeholder="{{benefit.location[1]}}" type="text">
+                                    <input class="form-control" ng-model="cardData.lng" placeholder="{{card.location[1]}}" type="text">
                                 </div>
                             </fieldset>
 
@@ -84,34 +84,34 @@
                                 <legend> Contacts</legend>
                                 <div class="form-group">
                                     <label>Contact 1</label>
-                                    <input class="form-control" ng-model="benefitData.contact1" placeholder="{{ benefit.contacts[0] }}" type="text">
+                                    <input class="form-control" ng-model="cardData.contact1" placeholder="{{ card.contacts[0] }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact 2</label>
-                                    <input class="form-control" ng-model="benefitData.contact2" placeholder="{{ benefit.contacts[1] }}" type="text">
+                                    <input class="form-control" ng-model="cardData.contact2" placeholder="{{ card.contacts[1] }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact 3</label>
-                                    <input class="form-control" ng-model="benefitData.contact3" placeholder="{{ benefit.contacts[2] }}" type="text">
+                                    <input class="form-control" ng-model="cardData.contact3" placeholder="{{ card.contacts[2] }}" type="text">
                                 </div>
                             </fieldset>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Offer</label>
                                 <div class="col-sm-10">
-                                    <textarea ng-model="benefitData.offer" class="form-control" placeholder="{{ benefit.offer }}" rows="3" required></textarea>
+                                    <textarea ng-model="cardData.offer" class="form-control" placeholder="{{ card.offer }}" rows="3" ></textarea>
                                 </div>
                             </div>
 
                             <div class="panel-body" ng-show="showAttachment()">
-                                <a href= "{{ benefit.pdf_path }}"  download="{{benefit.pdf_path}}" target="_blank">Attachment </a>
+                                <a href= "{{ card.pdf_path }}"  download="{{benefit.pdf_path}}" target="_blank">Attachment </a>
                                 <br>
-                                <icon align="middle"><a ng-click="editMedia(benefit._id)" ng-mouseover="showEdit=true"
+                                <icon align="middle"><a ng-click="editMedia(card._id)" ng-mouseover="showEdit=true"
                                                         ng-mouseleave="showEdit=false">
                                     <i class="glyphicon glyphicon-edit"></i></a></icon>
                                 <label ng-show="showEdit" class="panel-options">Change uploaded file</label>
                                 <br>
-                                <icon align="middle"><a ng-click="removeMedia(benefit._id)" ng-mouseover="showRemove=true"
+                                <icon align="middle"><a ng-click="removeMedia(card._id)" ng-mouseover="showRemove=true"
                                                         ng-mouseleave="showRemove=false">
                                     <i class="glyphicon glyphicon-remove"></i></a></icon>
                                 <label ng-show="showRemove" class="panel-options">Remove uploaded file</label>
