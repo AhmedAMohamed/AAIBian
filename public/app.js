@@ -2869,7 +2869,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
         }
 
         $scope.showAttachment = function() {
-            if ($scope.removed || $scope.benefit.pdf_path == "") {
+            if ($scope.removed || $scope.card.pdf_path == "") {
                 return false;
             }
             else {
@@ -2882,7 +2882,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
         }
 
         $scope.showUploadMedia = function() {
-            if ($scope.removed || $scope.benefit.pdf_path == "") {
+            if ($scope.removed || $scope.card.pdf_path == "") {
                 return true;
             }
             else {
