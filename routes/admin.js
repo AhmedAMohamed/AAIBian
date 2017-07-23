@@ -1064,37 +1064,59 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
         });
     }
     else if (req.body.request.model == "category") {
-            var file_temp_path = req.files.file.path;
-            var file_name = req.files.file.originalFilename;
-            var file_new_name = randomstring.generate(7) + file_name;
-            var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
-            fs.readFile(file_temp_path, function(err, data) {
-                fs.writeFile(file_upload_path, data, function(err) {
-                    if (err) {
-                        res.json(messeges.interna_error());
-                    }
-                    else {
-                        Categories.findById(_id, function(err, current_category) {
-                            fs.unlink(file_temp_path);
-                            console.log("here in changing upload file");
-                            console.log(current_category)
-                            current_category.img_path = "data/uploads/" + file_new_name;
-                            current_category.save(function(err, s) {
-                                if(err) {
-                                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-                                    console.log(err);
-                                    res.json(messeges,not_valid_operation());
-                                }
-                                else {
-                                    console.log("hahahahahhahahahahahahaahahah");
-                                    res.json(messeges.valid_operation());
-                                }
-                            });
+        var file_temp_path = req.files.file.path;
+        var file_name = req.files.file.originalFilename;
+        var file_new_name = randomstring.generate(7) + file_name;
+        var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
+        fs.readFile(file_temp_path, function(err, data) {
+            fs.writeFile(file_upload_path, data, function(err) {
+                if (err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    Categories.findById(_id, function(err, current_category) {
+                        fs.unlink(file_temp_path);
+                        current_category.img_path = "data/uploads/" + file_new_name;
+                        current_category.save(function(err, s) {
+                            if(err) {
+                                res.json(messeges,not_valid_operation());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
                         });
-                    }
-                });
+                    });
+                }
             });
-        }
+        });
+    }
+    else if (req.body.request.model == "benefit") {
+        var file_temp_path = req.files.file.path;
+        var file_name = req.files.file.originalFilename;
+        var file_new_name = randomstring.generate(7) + file_name;
+        var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
+        fs.readFile(file_temp_path, function(err, data) {
+            fs.writeFile(file_upload_path, data, function(err) {
+                if (err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    Benefit.findById(_id, function(err, current_benefit) {
+                        fs.unlink(file_temp_path);
+                        current_benefit.img_path = "data/uploads/" + file_new_name;
+                        current_benefit.save(function(err, s) {
+                            if(err) {
+                                res.json(messeges,not_valid_operation());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
     else {
         res.json(messeges.not_valid_operation());
     }
