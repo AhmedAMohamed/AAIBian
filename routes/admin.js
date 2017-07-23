@@ -1334,8 +1334,8 @@ router.post('/edit_benefit/:id', function(req, res, next) {
             Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
                 if (user) {
                     var updated_benefit = {
-                        "name" : req.body.benefit_data.address,
-                        "address" : req.body.benefit_data.loc_name,
+                        "name" : req.body.benefit_data.name,
+                        "address" : req.body.benefit_data.address,
                         "zone" : req.body.benefit_data.zone,
                         "location" : [
                             parseFloat(req.body.benefit_data.lat),
