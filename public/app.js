@@ -2455,6 +2455,19 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 			.then(function(response) {
 				if(response.data.valid){
 				    $scope.benefit = response.data.result;
+				    var selected_area =  $scope.zones.filter(function(item) {
+				        if(item.name == $scope.benefit.zone) {
+				            return item;
+				        }
+				    });
+				    $scope.benefitData.zone = selected_area[0];
+
+				    var selected_cat = $scope.categories.filter(function(item) {
+				        if(item.name == $scope.benefit.category) {
+				            return item;
+				        }
+				    });
+				    $scope.benefitData.category = selected_cat[0];
 					return true;
 				}
 				else
