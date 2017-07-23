@@ -2463,6 +2463,7 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 				    $scope.benefitData.zone = selected_area[0];
 
 				    var selected_cat = $scope.categories.filter(function(item) {
+                        console.log("here in category 2")
 				        if(item.name == $scope.benefit.category) {
 				            console.log("here in category")
 				            return item;
