@@ -1594,7 +1594,7 @@ function showCardController($scope, $http, $window, $location, Upload){
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "Cardholder benefit deleted";
-                    $scope.getBenefits();
+                    $scope.getCards();
 		        }
 		        else {
                     $scope.created = false;
