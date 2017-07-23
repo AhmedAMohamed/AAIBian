@@ -65,6 +65,9 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      }).when('/list_categories', {
         templateUrl : "/pages/listCategory.html",
         controller : "showCategoryController"
+     }).when('/list_cards', {
+        templateUrl : "/pages/listCards.html",
+        controller : "showCardController"
      }).when('/list_benefit', {
         templateUrl : "/pages/listBenefits.html",
         controller : "showBenefitController"
@@ -154,7 +157,6 @@ function homeController($scope, $http, $window, $location){
         for (var x in res){
             res.hasOwnProperty(x) && $scope.functions.push(res[x])
         }
-        console.log($scope.functions);
 		$scope.opt = function(val){
 			console.log(val);
 			if(val == "Show Feedback"){
@@ -212,6 +214,9 @@ function homeController($scope, $http, $window, $location){
             }
             else if(val == 'Show Staff Benefits') {
                 $location.path('/list_benefit');
+            }
+            else if(val == 'Show Cardholders Benefits') {
+                $location.path('/list_cards');
             }
 		}
 		$scope.testType = function(){
@@ -294,6 +299,9 @@ function menuController($scope, $http, $window, $location){
             }
             else if(val == 'Show Staff Benefits') {
                 $location.path('/list_benefit');
+            }
+            else if(val == 'Show Cardholders Benefits') {
+                $location.path('/list_cards');
             }
 		}
 		$scope.testType = function(){
@@ -1595,7 +1603,7 @@ function showCardController($scope, $http, $window, $location, Upload){
 		    });
 		}
 
-        $scope.editBenefit = function(id) {
+        $scope.editCard = function(id) {
             $location.path('/edit_card/').search({"id" : id});
         }
 
