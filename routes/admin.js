@@ -1308,4 +1308,23 @@ router.post('/edit_atm/:id', function(req, res, next) {
     });
 });
 
+
+router.get('/get_benefitData/:id', function(req, res, next) {
+    var id = req.params.id;
+    Benefit.findById(id, function(err, benefits) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            console.log("In server in get area data")
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: benefits
+            });
+        }
+    });
+});
+
+
 module.exports = router;
