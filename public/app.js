@@ -2557,12 +2557,10 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 		    .then(function(response) {
 		        if (response.data.valid) {
                     $scope.created = true;
-                    $scope.msg = "Media deleted";
                     $scope.removed = true;
 		        }
 		        else {
                     $scope.created = false;
-                    $scope.msg = "Media not deleted yet";
 		        }
 		    });
 		}
