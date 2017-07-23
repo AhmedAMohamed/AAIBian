@@ -964,6 +964,25 @@ router.post('/remove_media', function(req, res, next) {
             }
         });
     }
+    else if (req.body.model == "benefit") {
+        Benefit.findById(req.body.to_delete_id, function(err, n) {
+            if (err) {
+                res.json(messeges.not_valid_operation());
+            }
+            else {
+                console.log(n);
+                n.pdf_path = "";
+                n.save(function(err, o){
+                    if(err) {
+                        res.json(messeges.not_valid_operation());
+                    }
+                    else {
+                        res.json(messeges.valid_operation());
+                    }
+                });
+            }
+        });
+    }
 });
 
 router.post('/edit_news/:id', function(req, res, next) {
