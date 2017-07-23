@@ -2735,7 +2735,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
     $scope.card_id = $location.search().id;
     $scope.showEdit = false;
     $scope.showRemove = false;
-    $scope.cardtData = {};
+    $scope.cardData = {};
     $scope.card = {};
     $scope.removed = false;
     $scope.uploadDivView = false;
