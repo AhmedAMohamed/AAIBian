@@ -2811,6 +2811,8 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 				    $scope.cardData.zone = selected_area[0];
 
 				    var selected_cat = $scope.categories.filter(function(item) {
+				        console.log(item);
+				        console.log($scope.card.type);
 				        if(item.name == $scope.card.type) {
 				            return item;
 				        }
