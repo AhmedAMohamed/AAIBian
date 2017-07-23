@@ -2464,6 +2464,7 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 
 				    var selected_cat = $scope.categories.filter(function(item) {
 				        if(item.name == $scope.benefit.category) {
+				            console.log("here in category")
 				            return item;
 				        }
 				    });
