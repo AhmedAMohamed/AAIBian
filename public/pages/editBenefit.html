@@ -92,7 +92,7 @@
                                 <legend> Contacts</legend>
                                 <div class="form-group">
                                     <label>Contact 1</label>
-                                    <input class="form-control" ng-model="benefitData.contact1" placeholder="{{ benefit.contacts[0] }}" type="text" required>
+                                    <input class="form-control" ng-model="benefitData.contact1" placeholder="{{ benefit.contacts[0] }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact 2</label>
@@ -104,7 +104,12 @@
                                 </div>
                             </fieldset>
 
-
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Offer</label>
+                                <div class="col-sm-10">
+                                    <textarea ng-model="benefitData.offer" class="form-control" placeholder="{{ benefit.offer }}" rows="3" required></textarea>
+                                </div>
+                            </div>
 
                             <div class="panel-body" ng-show="showAttachment()">
                                 <a href= "{{ benefit.pdf_path }}"  download="{{benefit.pdf_path}}" target="_blank">Attachment </a>

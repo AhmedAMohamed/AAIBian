@@ -1342,7 +1342,8 @@ router.post('/edit_benefit/:id', function(req, res, next) {
                             parseFloat(req.body.benefit_data.lng)
                         ],
                         "contacts" : req.body.benefit_data.contacts,
-                        "industry" : req.body.benefit_data.category
+                        "industry" : req.body.benefit_data.category,
+                        "offer" : req.body.benefit_data.offer
                     };
                     Benefit.findByIdAndUpdate(benefit_id, updated_benefit, function(err, obj) {
                         if(err) {

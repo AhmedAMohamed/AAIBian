@@ -2494,6 +2494,7 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
                     "contacts" : contacts,
                     "zone" : $scope.benefitData.zone == null ? $scope.benefit.zone : $scope.benefitData.zone.name,
                     "category" : $scope.benefitData.category == null ? $scope.benefit.industry : $scope.benefitData.category.name,
+                    "offer" : $scope.benefitData.offer == null ? $scope.benefit.offer : $scope.benefitData.offer
                 }
             };
             $http({
