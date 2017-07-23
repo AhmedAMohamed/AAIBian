@@ -28,7 +28,6 @@ var sha1 = require('sha1');
 var randomstring = require("randomstring");
 var FCM = require('fcm-node');
 
-
 router.post('/add_user', function (req, res) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
       if (key) {
@@ -65,7 +64,6 @@ router.post('/add_user', function (req, res) {
       }
     });
 });
-
 router.post('/add_news', multiparty() , function (req, res) {
     var user_id = req.body.user_id;
     var api_key = req.body.api_key;
@@ -128,7 +126,6 @@ router.post('/add_news', multiparty() , function (req, res) {
         }
     });
 });
-
 router.post('/add_category', multiparty(), function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
        if (key) {
@@ -176,7 +173,6 @@ router.post('/add_category', multiparty(), function(req, res, next) {
        }
     });
 });
-
 router.post('/add_area', function(req, res, next) {
   Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
     if (key) {
@@ -209,7 +205,6 @@ router.post('/add_area', function(req, res, next) {
     }
   });
 });
-
 router.post('/add_benefit', multiparty(), function(req, res, next) {
 
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
@@ -290,7 +285,6 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         }
     });
 });
-
 router.post('/add_atm', function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
           if (key) {
@@ -327,7 +321,6 @@ router.post('/add_atm', function(req, res, next) {
           }
     });
 });
-
 router.post('/add_medical', multiparty(), function(req, res, next) {
 
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
@@ -396,7 +389,6 @@ router.post('/add_medical', multiparty(), function(req, res, next) {
         }
     });
 });
-
 router.post('/add_cardholder', multiparty(), function(req, res, next) {
     Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
         if (key) {
@@ -481,7 +473,6 @@ router.post('/delete_user', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_feedback', function(req, res, next) {
     var id = req.body.to_delete_id;
     console.log(req.body);
@@ -498,7 +489,6 @@ router.post('/delete_feedback', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_atm', function(req, res, next) {
     var id = req.body.to_delete_id;
     ATMs.findByIdAndRemove(id, function(err) {
@@ -510,7 +500,6 @@ router.post('/delete_atm', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_cards', function(req, res, next) {
     var id = req.body.to_delete_id;
     Cardholder.findByIdAndRemove(id, function(err) {
@@ -523,7 +512,6 @@ router.post('/delete_cards', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_benefit', function(req, res, next) {
     var id = req.body.to_delete_id;
     Benefit.findByIdAndRemove(id, function(err) {
@@ -535,7 +523,6 @@ router.post('/delete_benefit', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_medical', function(req, res, next) {
     var id = req.body.to_delete_id;
     Medical.findByIdAndRemove(id, function(err) {
@@ -548,7 +535,6 @@ router.post('/delete_medical', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_area', function(req, res, next) {
     var id = req.body.to_delete_id;
     Areas.findByIdAndRemove(id, function(err) {
@@ -561,7 +547,6 @@ router.post('/delete_area', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_category', function(req, res, next) {
     var id = req.body.to_delete_id;
     Categories.findByIdAndRemove(id, function(err) {
@@ -574,7 +559,6 @@ router.post('/delete_category', function(req, res, next) {
         }
     });
 });
-
 router.post('/delete_news', function(req, res, next) {
     var id = req.body.to_delete_id;
     News.findByIdAndRemove(id, function(err) {
@@ -634,7 +618,6 @@ router.get('/get_privilege/:privilege', function(req, res, next) {
         res.json(messeges.not_valid_operation());
     }
 });
-
 router.post('/set_privilege', function(req, res, next) {
     API_Key.find({api_key: req.body.api_key}, function(err, valid) {
         if (err) {
@@ -739,7 +722,6 @@ router.post('/list_users', function(req, res, next) {
     }
   })
 });
-
 router.post('/show_feedbacks', function(req, res, next) {
     FeedBack.find({}, function(err, feedbacks) {
         if(err) {
@@ -755,7 +737,6 @@ router.post('/show_feedbacks', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_news', function(req, res, next) {
     News.find({}, function(err, news) {
         if(err) {
@@ -770,7 +751,6 @@ router.post('/show_news', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_areas', function(req, res, next) {
     Areas.find({}, function(err, areas) {
         if(err) {
@@ -785,7 +765,6 @@ router.post('/show_areas', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_categories', function(req, res, next) {
     Categories.find({}, function(err, cats) {
         if(err) {
@@ -800,7 +779,6 @@ router.post('/show_categories', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_benefits', function(req, res, next) {
     Benefit.find({}, function(err, bens) {
         if(err) {
@@ -815,7 +793,6 @@ router.post('/show_benefits', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_medicals', function(req, res, next) {
     Medical.find({}, function(err, meds) {
         if(err) {
@@ -830,7 +807,6 @@ router.post('/show_medicals', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_cards', function(req, res, next) {
     Cardholder.find({}, function(err, cards) {
         if(err) {
@@ -845,7 +821,6 @@ router.post('/show_cards', function(req, res, next) {
         }
     });
 });
-
 router.post('/show_atms', function(req, res, next) {
 
     ATMs.find({}, function(err, atms) {
@@ -894,7 +869,6 @@ router.post('/get_areas', function(req, res, next) {
         });
     }
 });
-
 router.post('/get_categories', function(req, res, next) {
     if (req.body.sector != 'undefined') {
         Categories.find({sector: req.body.sector}, 'name', function(err, cats) {
@@ -942,7 +916,6 @@ router.get('/get_newsData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/remove_media', function(req, res, next) {
     console.log(req.body);
     if(req.body.model == "news") {
@@ -984,7 +957,6 @@ router.post('/remove_media', function(req, res, next) {
         });
     }
 });
-
 router.post('/edit_news/:id', function(req, res, next) {
 
     var news_id = req.params.id;
@@ -1016,7 +988,6 @@ router.post('/edit_news/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/upload_media/:id', multiparty(), function(req, res, next) {
 
     var _id = req.params.id;
@@ -1078,7 +1049,6 @@ router.post('/upload_media/:id', multiparty(), function(req, res, next) {
         res.json(messeges.not_valid_operation());
     }
 });
-
 router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
 
     var _id = req.params.id;
@@ -1184,7 +1154,6 @@ router.get('/get_userData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/edit_user/:id', function(req, res, next) {
 
     var user_id = req.params.id;
@@ -1236,7 +1205,6 @@ router.get('/get_areaData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/edit_area/:id', function(req, res, next) {
 
     var area_id = req.params.id;
@@ -1285,7 +1253,6 @@ router.get('/get_categoryData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/edit_category/:id', function(req, res, next) {
 
     var category_id = req.params.id;
@@ -1334,7 +1301,6 @@ router.get('/get_atmData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/edit_atm/:id', function(req, res, next) {
 
     var atm_id = req.params.id;
@@ -1393,7 +1359,6 @@ router.get('/get_benefitData/:id', function(req, res, next) {
         }
     });
 });
-
 router.post('/edit_benefit/:id', function(req, res, next) {
 
     var benefit_id = req.params.id;
@@ -1416,6 +1381,60 @@ router.post('/edit_benefit/:id', function(req, res, next) {
                     Benefit.findByIdAndUpdate(benefit_id, updated_benefit, function(err, obj) {
                         if(err) {
                             console.log(err);
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+                    res.json(messeges.valid_operation());
+                }
+            });
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
+
+router.get('/get_cardData/:id', function(req, res, next) {
+    var id = req.params.id;
+    Cardholder.findById(id, function(err, benefits) {
+        if(err) {
+            res.json(messeges.not_valid_operation());
+        }
+        else {
+            console.log("In server in get area data")
+            res.json({
+                valid: true,
+                msg: "Done",
+                result: benefits
+            });
+        }
+    });
+});
+router.post('/edit_card/:id', function(req, res, next) {
+
+    var card_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
+                if (user) {
+                    var updated_card = {
+                        "name" : req.body.card_data.name,
+                        "zone" : req.body.card_data.zone,
+                        "location" : [
+                            parseFloat(req.body.card_data.lat),
+                            parseFloat(req.body.card_data.lng)
+                        ],
+                        "contacts" : req.body.card_data.contacts,
+                        "industry" : req.body.card_data.category,
+                        "offer" : req.body.card_data.offer
+                    };
+                    Benefit.findByIdAndUpdate(card_id, updated_card, function(err, obj) {
+                        if(err) {
                             res.json(messeges.not_valid_operation());
                         }
                         else {

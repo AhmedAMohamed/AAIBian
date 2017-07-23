@@ -2802,7 +2802,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 			})
 			.then(function(response) {
 				if(response.data.valid){
-				    $scope.benefit = response.data.result;
+				    $scope.card = response.data.result;
 				    var selected_area =  $scope.zones.filter(function(item) {
 				        if(item.name == $scope.card.zone) {
 				            return item;
@@ -2815,7 +2815,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 				            return item;
 				        }
 				    });
-				    $scope.benefitData.category = selected_cat[0];
+				    $scope.cardData.category = selected_cat[0];
 					return true;
 				}
 				else
@@ -2825,7 +2825,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 		    });
 		}
 
-        $scope.editBenefit = function() {
+        $scope.editCard = function() {
             var contacts = [];
             contacts[0] = $scope.benefitData.contact1 == null ? $scope.benefit.contacts[0] : $scope.benefitData.contact1;
             contacts[1] = $scope.benefitData.contact2 == null ? $scope.benefit.contacts[1] : $scope.benefitData.contact2;
@@ -2834,9 +2834,8 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
-                "benefit_data" : {
+                "card_data" : {
                     "name" : $scope.benefitData.name == null ? $scope.benefit.name : $scope.benefitData.name,
-                    "address" : $scope.benefitData.address == null ? $scope.benefit.address : $scope.benefitData.address,
                     "lat" : $scope.benefitData.lat == null ? $scope.benefit.location[0] : $scope.benefitData.lat,
                     "lng" : $scope.benefitData.lng == null ? $scope.benefit.location[1] : $scope.benefitData.lng,
                     "contacts" : contacts,
@@ -2847,13 +2846,13 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
             };
             $http({
             method: 'POST',
-                url:'/aaibian/admin/edit_benefit/' + $scope.benefit_id,
+                url:'/aaibian/admin/edit_card/' + $scope.card_id,
                 data:JSON.stringify(reqObject),
                 headers: {'Content-Type': 'application/JSON'}
             })
             .then(function(response) {
                 if(response.data.valid){
-                    $location.path('/list_benefit');
+                    $location.path('/list_cards');
                     return true;
                 }
                 else
@@ -2894,7 +2893,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 		$scope.removeMedia = function(id) {
 		    var request = {
 		        "to_delete_id": id,
-		        "model" : "benefit"
+		        "model" : "card"
 		    };
 		    $http({
 		        method: 'POST',
@@ -2924,7 +2923,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "file" : $scope.file,
                 "request" : {
-                    "model" : "benefit"
+                    "model" : "card"
                 }
             };
             Upload.upload({
@@ -2936,7 +2935,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
             .then(function(response) {
                 if(response.data.valid){
                     $scope.mediaUploaded = true;
-                    $location.path('/list_benefit');
+                    $location.path('/list_cards');
                 }
                 else {
                     $scope.mediaUploaded = false;
