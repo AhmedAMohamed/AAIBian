@@ -1326,5 +1326,43 @@ router.get('/get_benefitData/:id', function(req, res, next) {
     });
 });
 
+router.post('/edit_benefit/:id', function(req, res, next) {
+
+    var benefit_id = req.params.id;
+    Auth.auth_check(req.body.user_id, req.body.api_key, function(key) {
+        if (key) {
+            Auth.check_admin(req.body.user_id, req.body.privilege, "Edit", function(user) {
+                if (user) {
+                    var updated_benefit = {
+                        "name" : req.body.benefit_data.address,
+                        "address" : req.body.benefit_data.loc_name,
+                        "zone" : req.body.benefit_data.zone,
+                        "location" : [
+                            parseFloat(req.body.benefit_data.lat),
+                            parseFloat(req.body.benefit_data.lng)
+                        ],
+                        "contacts" : req.body.benefit_data.contacts,
+                        "industry" : req.body.benefit_data.category
+                    };
+                    Benefit.findByIdAndUpdate(benefit_id, updated_benefit, function(err, obj) {
+                        if(err) {
+                            console.log(err);
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
+                    });
+                }
+                else {
+                    res.json(messeges.valid_operation());
+                }
+            });
+        }
+        else {
+            res.json(messeges.valid_operation());
+        }
+    });
+});
 
 module.exports = router;

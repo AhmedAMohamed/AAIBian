@@ -1489,7 +1489,6 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 		}
 
         $scope.attachmentShow = function(ben) {
-            console.log(ben);
             if (ben.pdf_path == "") {
                 return false;
             }
@@ -1509,7 +1508,6 @@ function showBenefitController($scope, $http, $window, $location, Upload){
 		        headers: {'Content-Type' : 'application/JSON'}
 		    })
 		    .then(function(response) {
-		        console.log(response.data);
 		        if (response.data.valid) {
                     $scope.created = true;
                     $scope.msg = "Benefit deleted";
@@ -2479,17 +2477,23 @@ function editBenefitController($scope, $http, $window, $location, $routeParams, 
 		    });
 		}
 
-        $scope.getZones = function() {
-
-        }
         $scope.editBenefit = function() {
+            var contacts = [];
+            contacts[0] = $scope.benefitData.contact1 == null ? $scope.benefit.contacts[0] : $scope.benefitData.contact1;
+            contacts[1] = $scope.benefitData.contact2 == null ? $scope.benefit.contacts[1] : $scope.benefitData.contact2;
+            contacts[2] = $scope.benefitData.contact3 == null ? $scope.benefit.contacts[2] : $scope.benefitData.contact3;
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "benefit_data" : {
-                    "title" : $scope.newsData.title == null ? $scope.news.title : $scope.newsData.title,
-                    "Body" : $scope.newsData.body == null ? $scope.news.Body : $scope.newsData.body
+                    "name" : $scope.benefitData.name == null ? $scope.benefit.name : $scope.benefitData.name,
+                    "address" : $scope.benefitData.address == null ? $scope.benefit.address : $scope.benefitData.address,
+                    "lat" : $scope.benefitData.lat == null ? $scope.benefit.location[0] : $scope.benefitData.lat,
+                    "lng" : $scope.benefitData.lng == null ? $scope.benefit.location[1] : $scope.benefitData.lng,
+                    "contacts" : contacts,
+                    "zone" : $scope.benefitData.zone == null ? $scope.benefit.zone : $scope.benefitData.zone.name,
+                    "category" : $scope.benefitData.category == null ? $scope.benefit.industry : $scope.benefitData.category.name,
                 }
             };
             $http({
