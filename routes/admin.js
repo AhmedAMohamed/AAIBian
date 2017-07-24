@@ -211,7 +211,7 @@ router.post('/add_benefit', multiparty(), function(req, res, next) {
         if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_benefit, function(user) {
             if (user) {
-                if (req.files.file != 'undefined') {
+                if (req.files.file) {
                     var counter = 7;
                     var file_temp_path = req.files.file.path;
                     var file_name = req.files.file.originalFilename;
