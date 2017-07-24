@@ -73,48 +73,79 @@ router.post('/add_news', multiparty() , function (req, res) {
         if(validations) {
             Auth.check_admin(user_id, privilege, reserved_tokens.function_name.add_news, function(user) {
                 if(user) {
-                    var to_delete_date = new Date(Date.now());
-                    to_delete_date.setDate(to_delete_date.getDate() + 7);
-                    var file_temp_path = req.files.file.path;
-                    var file_name = req.files.file.originalFilename;
-                    var file_name_path = randomstring.generate(7) + file_name;
-                    var newPath = reserved_tokens.upload_dir + '/' + file_name_path;
-                    fs.readFile(file_temp_path, function (err, data) {
-                        if (err) {
-                            res.json(messeges.interna_error());
-                        }
-                        else {
-                            var writeStream = fs.createWriteStream(newPath);
-                            writeStream.write(data);
-                            writeStream.end();
-                            var data = {
-                               title: req.body.news.title,
-                               Body: req.body.news.Body,
-                               creation_date: new Date(Date.now()),
-                               to_delete_date: to_delete_date,
-                               media_path: "/data/uploads/" + file_name_path,
-                               creator: user_id
-                           };
-                           var news = new News(data);
-                           news.save(function(err, sNews) {
-                               if(err) {
-                                   res.json(messeges.interna_error());
-                               }
-                               else {
-                                   fs.unlink(file_temp_path);
-                                   helpers['users'].schedule_news_deletion(sNews._id);
-                                   helpers['notifiers'].notifyNews(sNews, function(valid) {
-                                      if(valid) {
-                                          res.json(messeges.valid_operation());
-                                      }
-                                      else {
-                                          res.json(messeges.not_valid_operation());
-                                      }
-                                   });
-                               }
-                           });
-                        }
-                    });
+                    if(req.files.file) {
+                        var to_delete_date = new Date(Date.now());
+                        to_delete_date.setDate(to_delete_date.getDate() + 7);
+                        var file_temp_path = req.files.file.path;
+                        var file_name = req.files.file.originalFilename;
+                        var file_name_path = randomstring.generate(7) + file_name;
+                        var newPath = reserved_tokens.upload_dir + '/' + file_name_path;
+                        fs.readFile(file_temp_path, function (err, data) {
+                            if (err) {
+                                res.json(messeges.interna_error());
+                            }
+                            else {
+                                var writeStream = fs.createWriteStream(newPath);
+                                writeStream.write(data);
+                                writeStream.end();
+                                var data = {
+                                   title: req.body.news.title,
+                                   Body: req.body.news.Body,
+                                   creation_date: new Date(Date.now()),
+                                   to_delete_date: to_delete_date,
+                                   media_path: "/data/uploads/" + file_name_path,
+                                   creator: user_id
+                               };
+                               var news = new News(data);
+                               news.save(function(err, sNews) {
+                                   if(err) {
+                                       res.json(messeges.interna_error());
+                                   }
+                                   else {
+                                       fs.unlink(file_temp_path);
+                                       helpers['users'].schedule_news_deletion(sNews._id);
+                                       helpers['notifiers'].notifyNews(sNews, function(valid) {
+                                          if(valid) {
+                                              res.json(messeges.valid_operation());
+                                          }
+                                          else {
+                                              res.json(messeges.not_valid_operation());
+                                          }
+                                       });
+                                   }
+                               });
+                            }
+                        });
+                    }
+                    else {
+                        var to_delete_date = new Date(Date.now());
+                        to_delete_date.setDate(to_delete_date.getDate() + 7);
+                        var data = {
+                           title: req.body.news.title,
+                           Body: req.body.news.Body,
+                           creation_date: new Date(Date.now()),
+                           to_delete_date: to_delete_date,
+                           media_path: "",
+                           creator: user_id
+                        };
+                        var news = new News(data);
+                        news.save(function(err, sNews) {
+                           if(err) {
+                               res.json(messeges.interna_error());
+                           }
+                           else {
+                               helpers['users'].schedule_news_deletion(sNews._id);
+                               helpers['notifiers'].notifyNews(sNews, function(valid) {
+                                  if(valid) {
+                                      res.json(messeges.valid_operation());
+                                  }
+                                  else {
+                                      res.json(messeges.not_valid_operation());
+                                  }
+                               });
+                           }
+                       });
+                    }
                 }
                 else {
                     res.json(messeges.not_valid_operation());
@@ -366,55 +397,85 @@ router.post('/add_medical', multiparty(), function(req, res, next) {
         if (key) {
           Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_medical, function(user) {
             if (user) {
-                var file_temp_path = req.files.file.path;
-                var file_name = req.files.file.originalFilename;
-                if (req.files.file.type.indexOf('pdf') == -1) {
-                    console.log("NOt valid");
-                    res.json({
-                        valid: false,
-                        msg: "Can not upload this type of files",
-                    });
+                if (req.files.file) {
+                    var file_temp_path = req.files.file.path;
+                    var file_name = req.files.file.originalFilename;
+                    if (req.files.file.type.indexOf('pdf') == -1) {
+                        console.log("NOt valid");
+                        res.json({
+                            valid: false,
+                            msg: "Can not upload this type of files",
+                        });
+                    }
+                    else {
+                        var file_new_name =  randomstring.generate(7) + file_name;
+                        var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
+                        fs.readFile(file_temp_path, function(err, data) {
+                            fs.writeFile(file_upload_path, data, function(err) {
+                                if (err) {
+                                    console.log(err);
+                                    console.log("not valid");
+                                    res.json(messeges.interna_error());
+                                }
+                                else {
+                                    console.log(req.body);
+                                    var d = {
+                                        name: req.body.new_medical.name,
+                                        address: req.body.new_medical.address,
+                                        location: [
+                                            parseFloat(req.body.new_medical.location.lat),
+                                            parseFloat(req.body.new_medical.location.lng)
+                                        ],
+                                        zone: req.body.new_medical.zone.name,
+                                        type: req.body.new_medical.type.name,
+                                        phone_number: req.body.new_medical.phone_numbers,
+                                        id: new Date(Date.now()).getTime(),
+                                        pdf_path: "/data/uploads/" + file_new_name,
+                                        creation_date: new Date(Date.now()),
+                                        notification_date: new Date(Date.now()),
+                                        deleteDate: req.body.new_medical.delete_date,
+                                        offer: req.body.new_medical.offer
+                                    };
+                                    var medical = new Medical(d);
+                                    medical.save(function (err, da) {
+                                        if (err) {
+                                            res.json(messeges.not_valid_operation());
+                                        }
+                                        else {
+                                            res.json(messeges.valid_operation());
+                                        }
+                                    });
+                                }
+                            })
+                        });
+                    }
                 }
                 else {
-                    var file_new_name =  randomstring.generate(7) + file_name;
-                    var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
-                    fs.readFile(file_temp_path, function(err, data) {
-                        fs.writeFile(file_upload_path, data, function(err) {
-                            if (err) {
-                                console.log(err);
-                                console.log("not valid");
-                                res.json(messeges.interna_error());
-                            }
-                            else {
-                                console.log(req.body);
-                                var d = {
-                                    name: req.body.new_medical.name,
-                                    address: req.body.new_medical.address,
-                                    location: [
-                                        parseFloat(req.body.new_medical.location.lat),
-                                        parseFloat(req.body.new_medical.location.lng)
-                                    ],
-                                    zone: req.body.new_medical.zone.name,
-                                    type: req.body.new_medical.type.name,
-                                    phone_number: req.body.new_medical.phone_numbers,
-                                    id: new Date(Date.now()).getTime(),
-                                    pdf_path: "/data/uploads/" + file_new_name,
-                                    creation_date: new Date(Date.now()),
-                                    notification_date: new Date(Date.now()),
-                                    deleteDate: req.body.new_medical.delete_date,
-                                    offer: req.body.new_medical.offer
-                                };
-                                var medical = new Medical(d);
-                                medical.save(function (err, da) {
-                                    if (err) {
-                                        res.json(messeges.not_valid_operation());
-                                    }
-                                    else {
-                                        res.json(messeges.valid_operation());
-                                    }
-                                });
-                            }
-                        })
+                    var d = {
+                        name: req.body.new_medical.name,
+                        address: req.body.new_medical.address,
+                        location: [
+                            parseFloat(req.body.new_medical.location.lat),
+                            parseFloat(req.body.new_medical.location.lng)
+                        ],
+                        zone: req.body.new_medical.zone.name,
+                        type: req.body.new_medical.type.name,
+                        phone_number: req.body.new_medical.phone_numbers,
+                        id: new Date(Date.now()).getTime(),
+                        pdf_path: "",
+                        creation_date: new Date(Date.now()),
+                        notification_date: new Date(Date.now()),
+                        deleteDate: req.body.new_medical.delete_date,
+                        offer: req.body.new_medical.offer
+                    };
+                    var medical = new Medical(d);
+                    medical.save(function (err, da) {
+                        if (err) {
+                            res.json(messeges.not_valid_operation());
+                        }
+                        else {
+                            res.json(messeges.valid_operation());
+                        }
                     });
                 }
             }

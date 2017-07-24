@@ -578,18 +578,18 @@ function addNewsController($scope, $http, $window, $location, Upload){
 				if (files && files.length)
 				$scope.file = files[0];
 			}
-            console.log("here");
-            console.log($scope.file);
             var newsObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
 				"privilege" : $window.sessionStorage.getItem("type"),
-				"file" : $scope.file,
 				"news" : {
 				    "title" : $scope.newsData.title,
 				    "Body" : $scope.newsData.body
 				}
 			};
+			if ($scope.file != null) {
+			    newsObject.file = $scope.file;
+			}
             Upload.upload({
                 url:'/aaibian/admin/add_news',
                 method: 'POST',
@@ -606,8 +606,6 @@ function addNewsController($scope, $http, $window, $location, Upload){
                         $location.path('/error');
                     }
               });
-            console.log("getsFiles");
-       // };
 		}
 		$scope.getStatus = function(){
 			console.log($scope.created);
@@ -1151,7 +1149,6 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
 				"privilege" : $window.sessionStorage.getItem("type"),
-				"file" : $scope.file,
 				"new_medical" : {
 				    "name" : $scope.medData.name,
 				    "address" : $scope.medData.address,
@@ -1168,7 +1165,9 @@ function addMedicalController($scope, $http, $window, $location, Upload){
 				}
 			};
 
-			console.log(JSON.stringify(medObject));
+            if ($scope.file != null ) {
+                medObject.file = $scope.file;
+            }
 
             Upload.upload({
                 url:'/aaibian/admin/add_medical',
