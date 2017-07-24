@@ -1430,7 +1430,7 @@ router.post('/edit_card/:id', function(req, res, next) {
                             parseFloat(req.body.card_data.lng)
                         ],
                         "contacts" : req.body.card_data.contacts,
-                        "industry" : req.body.card_data.category,
+                        "type" : req.body.card_data.category,
                         "offer" : req.body.card_data.offer
                     };
                     Cardholder.findByIdAndUpdate(card_id, updated_card, function(err, obj) {
