@@ -956,6 +956,25 @@ router.post('/remove_media', function(req, res, next) {
             }
         });
     }
+    else if (req.body.model == "card") {
+        Cardholder.findById(req.body.to_delete_id, function(err, n) {
+            if (err) {
+                res.json(messeges.not_valid_operation());
+            }
+            else {
+                console.log(n);
+                n.pdf_path = "";
+                n.save(function(err, o){
+                    if(err) {
+                        res.json(messeges.not_valid_operation());
+                    }
+                    else {
+                        res.json(messeges.valid_operation());
+                    }
+                });
+            }
+        });
+    }
 });
 router.post('/edit_news/:id', function(req, res, next) {
 
@@ -1030,6 +1049,33 @@ router.post('/upload_media/:id', multiparty(), function(req, res, next) {
                 }
                 else {
                     Benefit.findById(_id, function(err, current_benefit) {
+                        fs.unlink(file_temp_path);
+                        current_benefit.pdf_path = "data/uploads/" + file_new_name;
+                        current_benefit.save(function(err, s) {
+                            if(err) {
+                                res.json(messeges,not_valid_operation());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
+    else if(req.body.request.model == "card") {
+        var file_temp_path = req.files.file.path;
+        var file_name = req.files.file.originalFilename;
+        var file_new_name = randomstring.generate(7) + file_name;
+        var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
+        fs.readFile(file_temp_path, function(err, data) {
+            fs.writeFile(file_upload_path, data, function(err) {
+                if (err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    Cardholder.findById(_id, function(err, current_benefit) {
                         fs.unlink(file_temp_path);
                         current_benefit.pdf_path = "data/uploads/" + file_new_name;
                         current_benefit.save(function(err, s) {
