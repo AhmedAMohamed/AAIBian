@@ -2929,7 +2929,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
                 }
             };
             Upload.upload({
-                url:'/aaibian/admin/upload_media/' + $scope.benefit_id,
+                url:'/aaibian/admin/upload_media/' + $scope.card_id,
                 method: 'POST',
                 data: benefitObject,
                 headers: {'Content-Type': 'application/JSON'}
