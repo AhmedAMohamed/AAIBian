@@ -861,29 +861,32 @@ function addBenefitController($scope, $http, $window, $location, Upload){
 				$scope.file = files[0];
 			}
 
-			console.log(JSON.stringify($scope.benefitData))
-
             var benefitObject = {
-		    	"api_key" : $window.sessionStorage.getItem("api_key"),
-				"user_id" : $window.sessionStorage.getItem("id"),
-				"privilege" : $window.sessionStorage.getItem("type"),
-				"file" : $scope.file,
-				"new_benefit" : {
-				    "name" : $scope.benefitData.name,
-				    "address" : $scope.benefitData.address,
-				    "location" : {
-				    	"lat": $scope.benefitData.lat,
-			      		"lng": $scope.benefitData.lng
-				    },
-				    "zone": typeof $scope.benefitData.zone != 'undefined' ? $scope.benefitData.zone.name : "other",
-				    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
-				        $scope.benefitData.contact3],
-				    "industry": typeof $scope.benefitData.industry != 'undefined' ? $scope.benefitData.industry.name : "other",
-				    "offer": $scope.benefitData.body,
-				    "delete_date": $scope.benefitData.delete_date
-				}
-			};
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "new_benefit" : {
+                    "name" : $scope.benefitData.name,
+                    "address" : $scope.benefitData.address,
+                    "location" : {
+                        "lat": $scope.benefitData.lat,
+                        "lng": $scope.benefitData.lng
+                    },
+                    "zone": typeof $scope.benefitData.zone != 'undefined' ? $scope.benefitData.zone.name : "other",
+                    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
+                        $scope.benefitData.contact3],
+                    "industry": typeof $scope.benefitData.industry != 'undefined' ? $scope.benefitData.industry.name : "other",
+                    "offer": $scope.benefitData.body,
+                    "delete_date": $scope.benefitData.delete_date
+                }
+            };
 
+            if ($scope.file == null) {
+
+            }
+            else {
+                benefitObject.file = $scope.file;
+            }
             Upload.upload({
                 url:'/aaibian/admin/add_benefit',
                 method: 'POST',
@@ -891,15 +894,15 @@ function addBenefitController($scope, $http, $window, $location, Upload){
                 headers: {'Content-Type': 'application/JSON'}
               })
             .then(function(response) {
-                    if(response.data.valid){
-                        $scope.created = true;
-                    }
-                    else
-                    {
-                        $scope.created = false;
-                        $location.path('/error');
-                    }
-              });
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
         };
 		$scope.getStatus = function(){
 			if($scope.created){
