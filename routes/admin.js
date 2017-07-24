@@ -1433,7 +1433,7 @@ router.post('/edit_card/:id', function(req, res, next) {
                         "industry" : req.body.card_data.category,
                         "offer" : req.body.card_data.offer
                     };
-                    Benefit.findByIdAndUpdate(card_id, updated_card, function(err, obj) {
+                    Cardholder.findByIdAndUpdate(card_id, updated_card, function(err, obj) {
                         if(err) {
                             res.json(messeges.not_valid_operation());
                         }

@@ -2829,21 +2829,21 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
 
         $scope.editCard = function() {
             var contacts = [];
-            contacts[0] = $scope.benefitData.contact1 == null ? $scope.benefit.contacts[0] : $scope.benefitData.contact1;
-            contacts[1] = $scope.benefitData.contact2 == null ? $scope.benefit.contacts[1] : $scope.benefitData.contact2;
-            contacts[2] = $scope.benefitData.contact3 == null ? $scope.benefit.contacts[2] : $scope.benefitData.contact3;
+            contacts[0] = $scope.cardData.contact1 == null ? $scope.card.contacts[0] : $scope.cardData.contact1;
+            contacts[1] = $scope.cardData.contact2 == null ? $scope.card.contacts[1] : $scope.cardData.contact2;
+            contacts[2] = $scope.cardData.contact3 == null ? $scope.card.contacts[2] : $scope.cardData.contact3;
             var reqObject = {
                 "api_key" : $window.sessionStorage.getItem("api_key"),
                 "user_id" : $window.sessionStorage.getItem("id"),
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "card_data" : {
-                    "name" : $scope.benefitData.name == null ? $scope.benefit.name : $scope.benefitData.name,
-                    "lat" : $scope.benefitData.lat == null ? $scope.benefit.location[0] : $scope.benefitData.lat,
-                    "lng" : $scope.benefitData.lng == null ? $scope.benefit.location[1] : $scope.benefitData.lng,
+                    "name" : $scope.cardData.name == null ? $scope.card.name : $scope.cardData.name,
+                    "lat" : $scope.cardData.lat == null ? $scope.card.location[0] : $scope.cardData.lat,
+                    "lng" : $scope.cardData.lng == null ? $scope.card.location[1] : $scope.cardData.lng,
                     "contacts" : contacts,
-                    "zone" : $scope.benefitData.zone == null ? $scope.benefit.zone : $scope.benefitData.zone.name,
-                    "category" : $scope.benefitData.category == null ? $scope.benefit.industry : $scope.benefitData.category.name,
-                    "offer" : $scope.benefitData.offer == null ? $scope.benefit.offer : $scope.benefitData.offer
+                    "zone" : $scope.cardData.zone == null ? $scope.benefit.zone : $scope.cardData.zone.name,
+                    "category" : $scope.cardData.category == null ? $scope.card.type : $scope.cardData.category.name,
+                    "offer" : $scope.cardData.offer == null ? $scope.card.offer : $scope.cardData.offer
                 }
             };
             $http({
