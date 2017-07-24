@@ -433,54 +433,82 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
         if (key) {
             Auth.check_admin(req.body.user_id, req.body.privilege, reserved_tokens.function_name.add_cardholder, function(user) {
                 if (user) {
-                    console.log(req);
-                    var file_temp_path = req.files.file.path;
-                    var file_name = req.files.file.originalFilename;
-                    if (req.files.file.type.indexOf('pdf') == -1) {
-                        console.log("NOt valid");
-                        res.json({
-                            valid: false,
-                            msg: "Can not upload this type of files",
-                        });
+                    if (req.files.file) {
+                        var file_temp_path = req.files.file.path;
+                        var file_name = req.files.file.originalFilename;
+                        if (req.files.file.type.indexOf('pdf') == -1) {
+                            console.log("NOt valid");
+                            res.json({
+                                valid: false,
+                                msg: "Can not upload this type of files",
+                            });
+                        }
+                        else {
+                            var file_new_name =  randomstring.generate(7) + file_name;
+                            var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
+                            fs.readFile(file_temp_path, function(err, data) {
+                                fs.writeFile(file_upload_path, data, function(err) {
+                                    if (err) {
+                                        res.json(messeges.interna_error());
+                                    }
+                                    else {
+                                        console.log(req.body.new_cardholder)
+                                        var d = {
+                                            name: req.body.new_cardholder.name,
+                                            type: req.body.new_cardholder.type,
+                                            offer: req.body.new_cardholder.offer,
+                                            address: req.body.new_cardholder.address,
+                                            location: [
+                                                parseFloat(req.body.new_cardholder.location.lat),
+                                                parseFloat(req.body.new_cardholder.location.lng)
+                                            ],
+                                            zone:  req.body.new_cardholder.zone,
+                                            contacts:  req.body.new_cardholder.contacts,
+                                            notification_date: new Date(Date.now()),
+                                            deleteDate: req.body.new_cardholder.delete_date,
+                                            creation_date: new Date(Date.now()),
+                                            pdf_path: "/data/uploads/" + file_new_name
+                                        };
+                                        var card = new Cardholder(d);
+                                        card.save(function(err, nCard) {
+                                            if (err) {
+                                                res.json(messeges.interna_error());
+                                            }
+                                            else {
+                                                res.json(messeges.valid_operation());
+                                            }
+                                        });
+                                    }
+                                })
+                            });
+                        }
                     }
                     else {
-                        var file_new_name =  randomstring.generate(7) + file_name;
-                        var file_upload_path = reserved_tokens.upload_dir + '/' + file_new_name;
-                        fs.readFile(file_temp_path, function(err, data) {
-                            fs.writeFile(file_upload_path, data, function(err) {
-                                if (err) {
-                                    res.json(messeges.interna_error());
-                                }
-                                else {
-                                    console.log(req.body.new_cardholder)
-                                    var d = {
-                                        name: req.body.new_cardholder.name,
-                                        type: req.body.new_cardholder.type,
-                                        offer: req.body.new_cardholder.offer,
-                                        address: req.body.new_cardholder.address,
-                                        location: [
-                                            parseFloat(req.body.new_cardholder.location.lat),
-                                            parseFloat(req.body.new_cardholder.location.lng)
-                                        ],
-                                        zone:  req.body.new_cardholder.zone,
-                                        contacts:  req.body.new_cardholder.contacts,
-                                        notification_date: new Date(Date.now()),
-                                        deleteDate: req.body.new_cardholder.delete_date,
-                                        creation_date: new Date(Date.now()),
-                                        pdf_path: "/data/uploads/" + file_new_name
-                                    };
-                                    var card = new Cardholder(d);
-                                    card.save(function(err, nCard) {
-                                        if (err) {
-                                            console.log(err);
-                                            res.json(messeges.interna_error());
-                                        }
-                                        else {
-                                            res.json(messeges.valid_operation());
-                                        }
-                                    });
-                                }
-                            })
+                        var d = {
+                            name: req.body.new_cardholder.name,
+                            type: req.body.new_cardholder.type,
+                            offer: req.body.new_cardholder.offer,
+                            address: req.body.new_cardholder.address,
+                            location: [
+                                parseFloat(req.body.new_cardholder.location.lat),
+                                parseFloat(req.body.new_cardholder.location.lng)
+                            ],
+                            zone:  req.body.new_cardholder.zone,
+                            contacts:  req.body.new_cardholder.contacts,
+                            notification_date: new Date(Date.now()),
+                            deleteDate: req.body.new_cardholder.delete_date,
+                            creation_date: new Date(Date.now()),
+                            pdf_path: "/data/uploads/" + file_new_name
+                        };
+                        var card = new Cardholder(d);
+                        card.save(function(err, nCard) {
+                            if (err) {
+                                console.log(err);
+                                res.json(messeges.interna_error());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
                         });
                     }
                 }

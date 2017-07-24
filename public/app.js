@@ -1272,12 +1272,10 @@ function addCardholderController($scope, $http, $window, $location, Upload){
                 if (files && files.length)
                     $scope.file = files[0];
             }
-            console.log($scope.file);
             var cardObject = {
 		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
 				"privilege" : $window.sessionStorage.getItem("type"),
-				"file" : $scope.file,
 				"new_cardholder" : {
 				    "name" : $scope.cardData.name,
 				    "offer" : $scope.cardData.offer,
@@ -1293,6 +1291,12 @@ function addCardholderController($scope, $http, $window, $location, Upload){
                     "delete_date": $scope.cardData.delete_date,
 				}
 			};
+			if($scope.file == null) {
+
+			}
+			else {
+			    cardObject.file = $scope.file;
+			}
             Upload.upload({
                 url:'/aaibian/admin/add_cardholder',
                 method: 'POST',
