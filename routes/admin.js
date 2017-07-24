@@ -1133,6 +1133,33 @@ router.post('/upload_logo/:id', multiparty(), function(req, res, next) {
             });
         });
     }
+    else if (req.body.request.model == "card") {
+        var file_temp_path = req.files.file.path;
+        var file_name = req.files.file.originalFilename;
+        var file_new_name = randomstring.generate(7) + file_name;
+        var file_upload_path = reserved_tokens.upload_dir + '/' +  file_new_name;
+        fs.readFile(file_temp_path, function(err, data) {
+            fs.writeFile(file_upload_path, data, function(err) {
+                if (err) {
+                    res.json(messeges.interna_error());
+                }
+                else {
+                    Cardholder.findById(_id, function(err, current_benefit) {
+                        fs.unlink(file_temp_path);
+                        current_benefit.img_path = "data/uploads/" + file_new_name;
+                        current_benefit.save(function(err, s) {
+                            if(err) {
+                                res.json(messeges,not_valid_operation());
+                            }
+                            else {
+                                res.json(messeges.valid_operation());
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
     else {
         res.json(messeges.not_valid_operation());
     }

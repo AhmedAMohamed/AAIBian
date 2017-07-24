@@ -2960,11 +2960,11 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
                 "privilege" : $window.sessionStorage.getItem("type"),
                 "file" : $scope.file2,
                 "request" : {
-                    "model" : "benefit"
+                    "model" : "card"
                 }
             };
             Upload.upload({
-                url:'/aaibian/admin/upload_logo/' + $scope.benefit_id,
+                url:'/aaibian/admin/upload_logo/' + $scope.card_id,
                 method: 'POST',
                 data: benefitObject,
                 headers: {'Content-Type': 'application/JSON'}
@@ -2972,7 +2972,7 @@ function editCardController($scope, $http, $window, $location, $routeParams, Upl
             .then(function(response) {
                 if(response.data.valid){
                     $scope.logoUploaded = true;
-                    $location.path('/list_benefit');
+                    $location.path('/list_cards');
                 }
                 else {
                     $scope.logoUploaded = false;
