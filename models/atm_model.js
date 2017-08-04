@@ -25,6 +25,10 @@ var ATM_schema = mongoose.Schema(
         sector: {
             type: String,
             default: "atm"
+        },
+        group: {
+            type: String,
+            default: "General"
         }
     }
 );

@@ -34,7 +34,11 @@ var cardHolder_schema = mongoose.Schema(
             type: String,
             default: ""
         },
-        creation_date: Date
+        creation_date: Date,
+        group: {
+            type: String,
+            default: "General"
+        }
 
     }
 );

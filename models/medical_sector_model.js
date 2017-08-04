@@ -41,7 +41,11 @@ var medical_schema = mongoose.Schema(
             type: Boolean,
             default: false
         },
-        offer: String
+        offer: String,
+        group: {
+            type: String,
+            default: "General"
+        }
     }
 );
 var medical = mongoose.model('Medical', medical_schema);

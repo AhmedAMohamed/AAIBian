@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-var user_model = require('../models/user_model');
+//var user_model = require('../models/user_model');
 
 var connector = function(url, callback) {
-    console.log("here");
     var options = {
         user: 'alaa',
         pass: 'ahmed'

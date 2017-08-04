@@ -37,6 +37,10 @@ var benefit_schema = mongoose.Schema(
         sector: {
             type: String,
             default: "ben"
+        },
+        group: {
+            type: String,
+            default: "General"
         }
     }
 );
