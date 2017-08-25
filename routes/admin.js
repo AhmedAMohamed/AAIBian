@@ -513,7 +513,6 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                                         res.json(messeges.interna_error());
                                     }
                                     else {
-                                        console.log(req.body.new_cardholder)
                                         var d = {
                                             name: req.body.new_cardholder.name,
                                             type: req.body.new_cardholder.type,
