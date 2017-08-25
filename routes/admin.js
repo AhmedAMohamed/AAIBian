@@ -559,7 +559,7 @@ router.post('/add_cardholder', multiparty(), function(req, res, next) {
                             notification_date: new Date(Date.now()),
                             deleteDate: req.body.new_cardholder.delete_date,
                             creation_date: new Date(Date.now()),
-                            group: "Test 3",
+                            group: "Test 5",
                             pdf_path: "/data/uploads/" + file_new_name
                         };
                         var card = new Cardholder(d);
