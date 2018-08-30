@@ -32,7 +32,7 @@ router.post('/addBenefits', function (req, res, next) {
     if (Auth.general_creation_root.auth_check(req.body.email, req.body.password, req.body.api_key,req.body.token,
             req.body.privilege, req.body.task) || true) {
         var dat = [[]];
-        fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '/Users/ahmedalaa/Desktop/aaib_data/') + "staff_benefits.csv").pipe(csv()).
+        fs.createReadStream((process.env.OPENSHIFT_DATA_DIR || '/Users/ahmedalaa/Desktop/aaib_data/') + "branches_data_final.csv").pipe(csv()).
         on('data', function (data) {
             if(data.length >= 12) {
                 dat.push(data);
@@ -55,8 +55,8 @@ router.post('/addBenefits', function (req, res, next) {
                     name: data[1],
                     address: data[4],
                     location: [
-                        parseFloat(data[3]),
-                        parseFloat(data[2])
+                        data[3],
+                        data[2]
                     ],
                     zone: data[5],
                     group : data[6] == "" ? "General" : data[6],
@@ -68,7 +68,7 @@ router.post('/addBenefits', function (req, res, next) {
                     notification_date: notify_date,
                     deleteDate: to_delete_date,
                     notified: false,
-                    img_path: '/data/logos/' + data[13] + '.png',
+                    img_path: '/data/logos/' + (data[13]=="" ? 'trial' : data[13]) + '.png',
                     index : data[0]
                 };
                 var benefit = new Benefit(d);
