@@ -25,25 +25,87 @@ var app = angular.module('myApp',["ngRoute",'ngFileUpload']);
      	controller:"editRolesController"
      }).when("/feedback",{
      	templateUrl: "/pages/feedback.html",
-     	controller:""
+     	controller:"feedbackController"
      }).when("/error",{
      	templateUrl: "/pages/error.html",
      	controller:""
+     }).when("/add_atm", {
+        templateUrl : "/pages/addATM.html",
+        controller : "addATMController"
+     }).when("/add_staff_benefits", {
+        templateUrl : "/pages/addBenefit.html",
+        controller : "addBenefitController"
+     }).when("/add_area", {
+        templateUrl : "/pages/addArea.html",
+        controller : "addAreaController"
+     }).when("/add_category", {
+        templateUrl : "/pages/addCategory.html",
+        controller : "addCategoryController"
+     }).when("/add_medical", {
+        templateUrl : "/pages/addMedical.html",
+        controller : "addMedicalController"
+     }).when("/add_cardholder", {
+        templateUrl : "/pages/addCardholder.html",
+        controller : "addCardholderController"
+     }).when("/list_news", {
+        templateUrl : "/pages/listNews.html",
+        controller : "showNewsController"
+     }).when("/edit_news", {
+        templateUrl : "/pages/editNews.html",
+        controller : "editNewsController"
+     }).when("/edit_user", {
+        templateUrl : "/pages/editUser.html",
+        controller : "editUserController"
+     }).when("/list_atms", {
+        templateUrl : "/pages/listATM.html",
+        controller : "showATMController"
+     }).when('/list_areas', {
+        templateUrl : "/pages/listArea.html",
+        controller : "showAreaController"
+     }).when('/list_categories', {
+        templateUrl : "/pages/listCategory.html",
+        controller : "showCategoryController"
+     }).when('/list_cards', {
+        templateUrl : "/pages/listCards.html",
+        controller : "showCardController"
+     }).when('/list_benefit', {
+        templateUrl : "/pages/listBenefits.html",
+        controller : "showBenefitController"
+     }).when('/edit_area', {
+        templateUrl : '/pages/editArea.html',
+        controller : 'editAreaController'
+     }).when('/edit_category', {
+        templateUrl : '/pages/editCategory.html',
+        controller : 'editCategoryController'
+     }).when('/edit_atm', {
+        templateUrl : '/pages/editATM.html',
+        controller : 'editATMController'
+     }).when('/edit_benefit', {
+        templateUrl : '/pages/editBenefit.html',
+        controller : 'editBenefitController'
+     }).when('/edit_card', {
+        templateUrl : '/pages/editCard.html',
+        controller : 'editCardController'
      }).otherwise({
         redirectTo: '/error'
-      });
+     });
      $locationProvider.html5Mode(true);
  }]);
+
 ////////////////////////****************************   LOGIN Controller
 app.controller('loginController', loginController);
-//dependency injection
 loginController.$inject=['$scope', '$http', '$window','$location'];
 function loginController($scope, $http, $window, $location){
 	$scope.loginData = {};
-	$scope.login = function(){
+	$scope.loggedIn = false;
 
+	$scope.resetForm = function(form) {
+    	      	angular.copy({},form);
+    	      	$scope.created = false;
+        	}
+
+	$scope.login = function(){
 	var logObject = {
-		//'api_key': "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
  		'email': $scope.loginData.email,
  		'password': $scope.loginData.password
 	};
@@ -72,14 +134,16 @@ function loginController($scope, $http, $window, $location){
 					console.log($window.sessionStorage.getItem("functions"));
 					$location.path('/home');
 				}
-				else
-				$location.path('/error');
+				else {
+				    $location.path('/error');
+				}
 			});
 		}
 		else
 		{
 			console.log("ERROR");
-			$location.path('/error');
+			$scope.resetForm($scope.loginData);
+            $scope.loggedIn = true;
 		}
 
     });
@@ -88,24 +152,76 @@ function loginController($scope, $http, $window, $location){
 
 //////////////////////////*************************** Home Controller
 app.controller('homeController', homeController);
-//dependency injection
 homeController.$inject=['$scope', '$http', '$window', '$location'];
 function homeController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
-		$scope.opt = function(num){
-
-			if(num == 0 ){
-				$location.path('/feedback');
-			}
-			else if(num == 1){
-				//console.log("hi");
-				$location.path('/add-news');
-			}
-			else if(num == 2){
-				$location.path('/add-user');
-			}
+		var res=JSON.parse($window.sessionStorage.getItem("functions"));
+        $scope.functions = [];
+        for (var x in res){
+            res.hasOwnProperty(x) && $scope.functions.push(res[x])
+        }
+		$scope.opt = function(val){
+			console.log(val);
+			if(val == "Show Feedback"){
+                $location.path('/feedback');
+            }
+            else if(val == "Add News"){
+                console.log("hi");
+                $location.path('/add-news');
+            }
+            else if(val == "Add Users"){
+                console.log("Ahmed Alaa Mohamed");
+                $location.path('/add-user');
+            }
+            else if(val == "Edit Roles"){
+                $location.path('/edit_roles');
+            }
+            else if(val == "Add Category"){
+                $location.path('/add_category');
+            }
+            else if(val == "Add Staff Benefits"){
+                $location.path('/add_staff_benefits');
+            }
+            else if(val == "Add Medical Benefits"){
+                $location.path('/add_medical');
+            }
+            else if(val == "Add ATM"){
+                $location.path('/add_atm');
+            }
+            else if(val == 'Add Cardholders Benefits'){
+                $location.path('/add_cardholder');
+            }
+            else if(val == 'Add  Area'){
+                $location.path('/add_area');
+            }
+            else if(val == 'Change Staff Password'){
+                $location.path('/change_staff_password');
+            }
+            else if(val == 'Add Area'){
+                $location.path('/add_area');
+            }
+            else if(val == 'Show News') {
+                $location.path('/list_news');
+            }
+            else if(val == 'Show ATMs') {
+                $location.path('/list_atms');
+            }
+            else if (val == 'Show Areas') {
+                $location.path('/list_areas');
+            }
+            else if (val == "Show Users"){
+                $location.path('/list_users');
+            }
+            else if (val == 'Show Categories') {
+                $location.path('/list_categories');
+            }
+            else if(val == 'Show Staff Benefits') {
+                $location.path('/list_benefit');
+            }
+            else if(val == 'Show Cardholders Benefits') {
+                $location.path('/list_cards');
+            }
 		}
-
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
 				return true;
@@ -119,23 +235,14 @@ function homeController($scope, $http, $window, $location){
 }
 ////////////////////////***************************** Menu Controller
 app.controller('menuController', menuController);
-//dependency injection
 menuController.$inject=['$scope', '$http', '$window', '$location'];
 function menuController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
 		var res=JSON.parse($window.sessionStorage.getItem("functions"));
 		$scope.functions = [];
-		var icons = [];
 		for (var x in res){
 		   	res.hasOwnProperty(x) && $scope.functions.push(res[x])
-			// var obj = {};
-			// if (res[x] == "add_user") {
-			// 	obj.add_user = "glyphicon glyphicon-user";
-			// }
-			// icons.push(obj);
 		}
-		//$scope.icons = icons;
-		console.log($scope.functions);
 		$scope.behaviour=function(val){
 			if(val == "Show Feedback"){
 				$location.path('/feedback');
@@ -144,17 +251,17 @@ function menuController($scope, $http, $window, $location){
 				console.log("hi");
 				$location.path('/add-news');
 			}
-			else if(val == "Add User"){
+			else if(val == "Add Users"){
 				$location.path('/add-user');
 			}
 			else if (val == 3){
 				$window.sessionStorage.clear();
 				$location.path('/');
 			}
-			else if (val == 4){
+			else if (val == "Show Users"){
 				$location.path('/list_users');
 			}
-			else if(val == "set_privilege"){
+			else if(val == "Edit Roles"){
 				$location.path('/edit_roles');
 			}
 			else if(val == "Add Category"){
@@ -164,13 +271,13 @@ function menuController($scope, $http, $window, $location){
 				$location.path('/add_staff_benefits');
 			}
 			else if(val == "Add Medical Benefits"){
-				$location.path('/add_medical_benefits');
+				$location.path('/add_medical');
 			}
 			else if(val == "Add ATM"){
 				$location.path('/add_atm');
 			}
 			else if(val == 'Add Cardholders Benefits'){
-				$location.path('/add_carholders_benefits');
+				$location.path('/add_cardholder');
 			}
 			else if(val == 'Add  Area'){
 				$location.path('/add_area');
@@ -178,6 +285,27 @@ function menuController($scope, $http, $window, $location){
 			else if(val == 'Change Staff Password'){
 				$location.path('/change_staff_password');
 			}
+			else if(val == 'Add Area'){
+                $location.path('/add_area');
+            }
+            else if(val == 'Show News') {
+                $location.path('/list_news');
+            }
+            else if(val == 'Show ATMs') {
+                $location.path('/list_atms');
+            }
+            else if (val == 'Show Areas') {
+                $location.path('/list_areas');
+            }
+            else if (val == 'Show Categories') {
+                $location.path('/list_categories');
+            }
+            else if(val == 'Show Staff Benefits') {
+                $location.path('/list_benefit');
+            }
+            else if(val == 'Show Cardholders Benefits') {
+                $location.path('/list_cards');
+            }
 		}
 		$scope.testType = function(){
 			if($window.sessionStorage.getItem("type")=="gm"){
@@ -188,29 +316,81 @@ function menuController($scope, $http, $window, $location){
 	}
 	else $location.path('/error');
 }
+
 ///////////////////////////////////////////////////// ***** Edit Roles Controller
 app.controller('editRolesController', editRolesController);
-//dependency injection
 editRolesController.$inject=['$scope', '$http', '$window','$location'];
 function editRolesController($scope, $http, $window, $location){
-	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
-		//$scope.roles = [];
-		$scope.options = ["Add Users", "Add Category","Add Staff Benefits","Add News", 
+		$scope.getRoles = function(role) {
+		    console.log("get the privileges");
+		    $http({
+		        method: 'GET',
+		        url: 'aaibian/admin/get_privilege/' + role,
+		        headers: {'Content-Type': 'application/json'}
+
+		    }).then(function(response) {
+		        console.log("called to get role");
+                console.log(role);
+                console.log("he asked for that role");
+
+		        if (response.data.valid) {
+                    if (role == "admin") {
+                        $scope.admin_role = response.data.functions;
+                        console.log("that was the admin roles");
+                        console.log($scope.admin_role);
+		            }
+		            else if (role == 'root') {
+                        $scope.root_role = response.data.functions;
+                        console.log("that was the root roles");
+                        console.log($scope.root_role);
+		            }
+
+		            $scope.getCheckedValue = function(option, role) {
+                        console.log("in view the checked");
+                        if (role == "admin") {
+                            for(var val in $scope.admin_role) {
+                                console.log("in loop admin");
+                                console.log($scope.admin_role[val]);
+                                console.log(option);
+                                console.log("that was one check");
+                                if(option == $scope.admin_role[val]) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        else if (role == 'root') {
+                            for (var val in $scope.root_role) {
+                                console.log("in loop for the root");
+                                console.log($scope.root_role[val]);
+                                console.log(option);
+                                console.log("that was two check");
+                                if (option == $scope.root_role[val]) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    };
+
+		        }
+		        else {
+		            return [];
+		        }
+		    })
+		};
+        $scope.getRoles('admin');
+        $scope.getRoles('root');
+		$scope.options = ["Add Users", "Add Category","Add Staff Benefits","Add News",
 		"Add Medical Benefits","Add ATM","Add Cardholders Benefits","Add Area","Change Staff Password","Show Feedback"];
 		$scope.root_privilege = [];
 		$scope.admin_privilege = [];
-		
+
+
 		$scope.setRoles = function(){
-			console.log("here");
-
-			// $scope.roles.push({option: "Add News", root: false, admin: false});
-			// $scope.roles.push({option: "Add Users", root: false, admin: false});
-			// $scope.roles.push({option: "Show Feedback", root: false, admin: false});
-
-
 		  	var reqObject = {
-		    	"api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
 			    "privilege" : $window.sessionStorage.getItem("type"),
 			    "request": {
@@ -218,7 +398,6 @@ function editRolesController($scope, $http, $window, $location){
 				        "admin_privilege":Object.keys($scope.admin_privilege)
 				    }
 			};
-
 			$http({
 			method: 'POST',
 				url:'/aaibian/admin/set_privilege',
@@ -246,9 +425,9 @@ function editRolesController($scope, $http, $window, $location){
 		}
 	}
 }
+
 ////////////////////////****************************  Add User Controller
 app.controller('addUserController', addUserController);
-//dependency injection
 addUserController.$inject=['$scope', '$http', '$window','$location'];
 function addUserController($scope, $http, $window, $location){
 	if($window.sessionStorage.getItem("logged") == "true"){
@@ -262,7 +441,7 @@ function addUserController($scope, $http, $window, $location){
 		$scope.addUser = function(){
 			console.log("here");
 	  	var userObject = {
-	      	"api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+	      	"api_key" : $window.sessionStorage.getItem("api_key"),
 		    "user_id" : $window.sessionStorage.getItem("id"),
 		    "privilege" : $window.sessionStorage.getItem("type"),
 		    "new_user" : {
@@ -307,29 +486,20 @@ function addUserController($scope, $http, $window, $location){
 	else $location.path('/error');
 }
 
-
 ///////////////////////////////////////////////////// ***** VIEW USERS
 app.controller('getUsersController', getUsersController);
-//dependency injection
 getUsersController.$inject=['$scope', '$http', '$window','$location'];
 function getUsersController($scope, $http, $window, $location){
-	console.log("entered");
 	if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.users = [];
 
 		$scope.getUsers = function(){
-			console.log("here");
 		  	var reqObject = {
-		    	"api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 			    "user_id" : $window.sessionStorage.getItem("id"),
 			    "privilege" : $window.sessionStorage.getItem("type")
 			};
 
-			// $scope.users.push({name: "A", email:"X", type:"Y"});
-			// $scope.users.push({name: "B", email:"C", type:"D"});
-			// $scope.users.push({name: "H", email:"I", type:"J"});
-
-			console.log(reqObject);
 			$http({
 			method: 'POST',
 				url:'/aaibian/admin/list_users',
@@ -340,52 +510,56 @@ function getUsersController($scope, $http, $window, $location){
 				console.log(response.data);
 				console.log(response.data.valid);
 				console.log(response);
-				//console.log("session here");
         		$scope.users = response.data.result;
-				//console.log($window.sessionStorage.getItem("id"));
 				if(response.data.valid){
 					return true;
-
-					//$location.path('/new_user');
 				}
 				else
 				{
 					return false;
-					//$window.location.href='/pages/homeFalse.html';
 				}
 		    });
-		 
+
+		}
+
+		$scope.deleteUser = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_user',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "User deleted";
+                    console.log("here before update");
+                    $scope.getUsers();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "User not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editUser = function (id) {
+            $location.path('/edit_user/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
 		}
 	}
 }
-//////////////////////////////////////////////////// ************** Add News Controller + Directive
-/*The purpose of using the link option is to capture any changes that 
-occur in the file input element. 
-Now, how do we get the values? The answer is AngularJS $parse service. 
-Usually, a $parse takes an expression and returns a function and our link option,
-also, needs a function to return. 
-The parsed function onChange will have two parameters. The first parameter is the scope 
-and the second will add the files details in $files variable through the event object.*/
-//app.directive('ngFiles', ['$parse', function ($parse) {
-//
-//        function fn_link(scope, element, attrs) {
-//            console.log("fn_link");
-//            var onChange = $parse(attrs.ngFiles);
-//            element.on('change', function (event) {
-//                onChange(scope, { $files: event.target.files });
-//            });
-//        };
-//
-//        return {
-//            link: fn_link
-//        }
-//} ]);
 
+///////////////////////////////////////////////////// ***** ADD NEWS
 app.controller('addNewsController', addNewsController);
-//dependency injection
 addNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
 function addNewsController($scope, $http, $window, $location, Upload){
-	// if user is logged in
 	if($window.sessionStorage.getItem("logged") == "true"){
 		$scope.newsData = {};
 		$scope.created = false;
@@ -395,7 +569,7 @@ function addNewsController($scope, $http, $window, $location, Upload){
 	      	$scope.created = false;
 	      	angular.copy({},form);
     	}
-    	// function to get the files from the form 
+    	// function to get the files from the form
     	//var formdata = new FormData();
 
         //function to add the news, calls the api
@@ -404,18 +578,18 @@ function addNewsController($scope, $http, $window, $location, Upload){
 				if (files && files.length)
 				$scope.file = files[0];
 			}
-            console.log("here");
-            console.log($scope.file);
             var newsObject = {
-		    	"api_key" : "1698c2bea6c8000723d5bb70363a8352d846917et41GuPJ",
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
 				"user_id" : $window.sessionStorage.getItem("id"),
 				"privilege" : $window.sessionStorage.getItem("type"),
-				"file" : $scope.file,
 				"news" : {
 				    "title" : $scope.newsData.title,
 				    "Body" : $scope.newsData.body
 				}
 			};
+			if ($scope.file != null) {
+			    newsObject.file = $scope.file;
+			}
             Upload.upload({
                 url:'/aaibian/admin/add_news',
                 method: 'POST',
@@ -432,8 +606,6 @@ function addNewsController($scope, $http, $window, $location, Upload){
                         $location.path('/error');
                     }
               });
-            console.log("getsFiles");
-       // };
 		}
 		$scope.getStatus = function(){
 			console.log($scope.created);
@@ -445,4 +617,2381 @@ function addNewsController($scope, $http, $window, $location, Upload){
 
 	}
 	else $location.path('/error');
+}
+
+//////////////////////////////////************************* VIEW FEEDBACK
+app.controller('feedbackController', feedbackController);
+feedbackController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function feedbackController($scope, $http, $window,$location, Upload) {
+    if($window.sessionStorage.getItem("logged") == "true"){
+        $scope.feedbacks = [];
+        $scope.getFeedbacks = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type")
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/show_feedbacks',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.result);
+                    $scope.feedbacks = response.data.result;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.deleteFeedBack = function(id) {
+            var request = {
+                "to_delete_id": id
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/delete_feedback',
+                data: JSON.stringify(request),
+                headers: {'Content-Type' : 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "User deleted";
+                    console.log("here before update");
+                    $scope.getFeedbacks();
+                }
+                else {
+                    $scope.created = false;
+                    $scope.msg = "User not deleted yet";
+                }
+            });
+        };
+    }
+    else {
+        $location.path('/error');
+    }
+}
+
+////////////////////////****************************  Add ATM Controller
+app.controller('addATMController', addATMController);
+addATMController.$inject=['$scope', '$http', '$window','$location'];
+function addATMController($scope, $http, $window, $location){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.ATMData = {};
+		$scope.created = false;
+		$scope.zones = [];
+		$scope.industries = [];
+		$scope.resetForm = function(form) {
+	      	angular.copy({},form);
+	      	$scope.created = false;
+    	}
+
+    	$scope.getZone = function() {
+    	    console.log("here in areas");
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_areas',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.results);
+                    $scope.areas = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+        $scope.getCategories = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_categories',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.results);
+                    $scope.cities = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+
+        $scope.getZone();
+        $scope.getCategories();
+
+		$scope.addATM = function(){
+            var atmObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "new_atm" : {
+                      "loc_name" : $scope.ATMData.loc_name.name,
+                      "address": $scope.ATMData.address,
+                      "location": {
+                            "lat": $scope.ATMData.lat,
+                            "lng": $scope.ATMData.lng
+                        },
+                        "id": new Date(Date.now()).getTime(),
+                        "city": $scope.ATMData.city.name
+                    }
+                };
+            $http({
+                method: 'POST',
+                url:'/aaibian/admin/add_atm',
+                data:JSON.stringify(atmObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                console.log(response.data);
+                console.log(response.data.valid);
+                console.log(response);
+                if(response.data.valid){
+                    $scope.created = true;
+                    //$location.path('/new_user');
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        }
+
+		$scope.getStatus = function(){
+			//console.log($scope.created);
+			if($scope.created){
+				return true;
+			}
+			else return false;
+		}
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Add Benefit Controller
+app.controller('addBenefitController', addBenefitController);
+addBenefitController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addBenefitController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.benefitData = {};
+		$scope.created = false;
+		$scope.file ={};
+        $scope.minDate = new Date(Date.now());
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.industries = response.data.results;
+                }
+                else {
+                    $scope.industries = [];
+                }
+            });
+        };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+		// function to reset the form
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+    	$scope.fileUploadValue = true;
+    	// function to get the files from the form
+    	//var formdata = new FormData();
+        $scope.msg = "";
+        //function to add the news, calls the api
+        $scope.addBenefit = function(){
+			console.log($scope.benefitData.delete_date);
+
+			$scope.uploadFile = function(files){
+				if (files && files.length)
+				$scope.file = files[0];
+			}
+
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "new_benefit" : {
+                    "name" : $scope.benefitData.name,
+                    "address" : $scope.benefitData.address,
+                    "location" : {
+                        "lat": $scope.benefitData.lat,
+                        "lng": $scope.benefitData.lng
+                    },
+                    "zone": typeof $scope.benefitData.zone != 'undefined' ? $scope.benefitData.zone.name : "other",
+                    "contacts": [$scope.benefitData.contact1, $scope.benefitData.contact2,
+                        $scope.benefitData.contact3],
+                    "industry": typeof $scope.benefitData.industry != 'undefined' ? $scope.benefitData.industry.name : "other",
+                    "offer": $scope.benefitData.body,
+                    "delete_date": $scope.benefitData.delete_date
+                }
+            };
+
+            if ($scope.file == null) {
+
+            }
+            else {
+                benefitObject.file = $scope.file;
+            }
+            Upload.upload({
+                url:'/aaibian/admin/add_benefit',
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Benefit Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Benefit not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Add Area Controller
+app.controller('addAreaController', addAreaController);
+addAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addAreaController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		console.log("hi");
+		$scope.areaData = {};
+		$scope.sectors=["Cardholder's Benefits", "Staff Benefits", "Medical Benefits", "ATMs"];
+		$scope.created = false;
+		$scope.file ={};
+		// function to reset the form
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+
+        $scope.addArea = function(){
+
+            console.log("here");
+            $scope.sector = "";
+            if($scope.areaData.sector == "Cardholder's Benefits"){
+                $scope.sector = "card";
+            }
+            else if ($scope.areaData.sector == "Staff Benefits"){
+                $scope.sector = "ben";
+            }
+            else if ($scope.areaData.sector == "Medical Benefits"){
+                $scope.sector = "med";
+            }
+            else if ($scope.areaData.sector == "ATMs"){
+                            $scope.sector = "atm";
+                        }
+            var areaObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"new_area" : {
+				    "name" : $scope.areaData.name,
+				    "sector" : $scope.sector,
+				}
+			};
+			$http({
+                method: 'POST',
+                url: '/aaibian/admin/add_area',
+                data: JSON.stringify(areaObject),
+                headers: {'Content-Type': 'application/JSON'}
+             })
+            .then(function(response) {
+                if(response.data.valid) {
+                    console.log(response.data.result);
+                    $scope.created = true;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+
+		}
+		$scope.getStatus = function(){
+			console.log($scope.created);
+			if($scope.created){
+				return true;
+			}
+			else return false;
+		}
+
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Add Category Controller
+app.controller('addCategoryController', addCategoryController);
+addCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addCategoryController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.categoryData = {};
+		$scope.created = false;
+		$scope.file ={};
+
+		$scope.getSectors = function() {
+		    var sectors = [
+		        {
+		            "key": "atm",
+		            "value": "ATMs"
+		        },
+		        {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+		    ];
+
+		    $scope.sectors = sectors;
+		};
+        $scope.getSectors();
+		// function to reset the form
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+    	$scope.fileUploadValue = true;
+    	// function to get the files from the form
+    	//var formdata = new FormData();
+        $scope.msg = "";
+        //function to add the news, calls the api
+        $scope.addCategory = function(){
+			$scope.uploadFile = function(files){
+				if (files && files.length)
+				$scope.file = files[0];
+			}
+
+            var categoryObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"file" : $scope.file,
+				"new_category" : {
+				    "name" : $scope.categoryData.name,
+				    "sector" : $scope.categoryData.sector.key,
+				}
+			};
+            Upload.upload({
+                url:'/aaibian/admin/add_category',
+                method: 'POST',
+                data: categoryObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Category Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Category not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Add Medical benefit Controller
+app.controller('addMedicalController', addMedicalController);
+addMedicalController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addMedicalController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.medData = {};
+		$scope.created = false;
+		$scope.file ={};
+
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "med"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+            var reqObject = {
+                "sector" : "med"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.types = response.data.results;
+                }
+                else {
+                    $scope.types = [];
+                }
+            });
+        };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+
+    	$scope.fileUploadValue = true;
+
+        $scope.msg = "";
+
+        $scope.addMedical = function(){
+			$scope.uploadFile = function(files){
+				if (files && files.length)
+				$scope.file = files[0];
+			}
+
+            var medObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"new_medical" : {
+				    "name" : $scope.medData.name,
+				    "address" : $scope.medData.address,
+				    "location" : {
+                            "lat" : $scope.medData.location.lat,
+                            "lng" : $scope.medData.location.lng
+				    },
+				    "zone" : $scope.medData.zone,
+				    "type" : $scope.medData.type,
+				    "phone_numbers": [$scope.medData.contact1, $scope.medData.contact2,
+                    				        $scope.medData.contact3],
+                    "offer": $scope.medData.offer,
+                    "delete_date": $scope.medData.delete_date
+				}
+			};
+
+            if ($scope.file != null ) {
+                medObject.file = $scope.file;
+            }
+
+            Upload.upload({
+                url:'/aaibian/admin/add_medical',
+                method: 'POST',
+                data: medObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Medical Benefit  Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Medical Benefit not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Add Cardholder benefit Controller
+app.controller('addCardholderController', addCardholderController);
+addCardholderController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function addCardholderController($scope, $http, $window, $location, Upload){
+	if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.cardData = {};
+		$scope.created = false;
+		$scope.file ={};
+		$scope.zones = [];
+
+        $scope.getZones = function() {
+            var reqObject = {
+                "sector" : "card"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                    console.log(response.data.results);
+                    console.log("Printed results");
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+
+		$scope.getCategories = function() {
+            var reqObject = {
+                "sector" : "card"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.types = response.data.results;
+                }
+                else {
+                    $scope.types = [];
+                }
+            });
+        };
+
+        $scope.getCategories();
+        $scope.getZones();
+
+		$scope.resetForm = function(form) {
+	      	$scope.created = false;
+	      	angular.copy({},form);
+    	}
+
+    	$scope.fileUploadValue = true;
+
+        $scope.msg = "";
+
+        $scope.addCardholder = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                    $scope.file = files[0];
+            }
+            var cardObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+				"user_id" : $window.sessionStorage.getItem("id"),
+				"privilege" : $window.sessionStorage.getItem("type"),
+				"new_cardholder" : {
+				    "name" : $scope.cardData.name,
+				    "offer" : $scope.cardData.offer,
+				    "type" : typeof $scope.cardData.type != 'undefiled' ?  $scope.cardData.type.name : "other",
+				    "location" : {
+                        "lat": $scope.cardData.lat,
+                        "lng": $scope.cardData.lng
+                    },
+                    "address": $scope.cardData.address,
+                    "zone": typeof $scope.cardData.zone != 'undefined' ? $scope.cardData.zone.name : "other",
+                    "contacts": [$scope.cardData.contact1, $scope.cardData.contact2,
+                        $scope.cardData.contact3],
+                    "delete_date": $scope.cardData.delete_date,
+				}
+			};
+			if($scope.file == null) {
+
+			}
+			else {
+			    cardObject.file = $scope.file;
+			}
+            Upload.upload({
+                url:'/aaibian/admin/add_cardholder',
+                method: 'POST',
+                data: cardObject,
+                headers: {'Content-Type': 'application/JSON'}
+              })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.created = true;
+                }
+                else
+                {
+                    $scope.created = false;
+                    $location.path('/error');
+                }
+            });
+        };
+
+		$scope.getStatus = function(){
+			if($scope.created){
+				$scope.message = "Cardholder benefit Added Successfully"
+				return true;
+			}
+			else {
+                $scope.message = "Cardholder benefit not added correctly try again"
+                return false;
+			}
+		}
+
+	}
+	else $location.path('/error');
+}
+
+//////////////////////////////////////////////////// ************** Show News Controller
+app.controller('showNewsController', showNewsController);
+showNewsController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showNewsController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getNews = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_news',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.news = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+        $scope.attachmentShow = function(news) {
+            if (news.media_path == "" || typeof news.media_path == 'undefined') {
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
+
+		$scope.deleteNews = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_news',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log("in delete");
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "News deleted";
+                    $scope.getNews();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "News not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editNews = function(id) {
+            $location.path('/edit_news/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////// ************** Show ATM Controller
+app.controller('showATMController', showATMController);
+showATMController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showATMController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getATMs = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_atms',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.ATMs = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+
+		$scope.deleteATM = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_atm',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "ATM deleted";
+                    $scope.getATMs();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "ATM not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editATM = function(id) {
+            $location.path('/edit_atm/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Show Benefit Controller
+app.controller('showBenefitController', showBenefitController);
+showBenefitController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showBenefitController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getBenefits = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_benefits',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.benefits = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+        $scope.attachmentShow = function(ben) {
+            if (ben.pdf_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+		$scope.deleteBenefit = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_benefit',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Benefit deleted";
+                    $scope.getBenefits();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Benefit not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editBenefit = function(id) {
+            $location.path('/edit_benefit/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////// ************** Show Cardholder's Controller
+app.controller('showCardController', showCardController);
+showCardController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showCardController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getCards = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_cards',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.cards = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+        $scope.attachmentShow = function(ben) {
+            if (ben.pdf_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+		$scope.deleteCard = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_cards',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Cardholder benefit deleted";
+                    $scope.getCards();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Cardholder benefit not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editCard = function(id) {
+            $location.path('/edit_card/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////// ************** Show Area Controller
+app.controller('showAreaController', showAreaController);
+showAreaController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showAreaController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+		$scope.getAreas = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_areas',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.areas = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+		$scope.getSectorVal = function(val) {
+		    if (val == 'ben') {
+		        return "Staff Benefits";
+		    }
+		    else if (val == 'atm') {
+		        return "ATMs";
+		    }
+		    else if (val == 'card') {
+		        return "Cardholder's Benefits";
+		    }
+		    else if (val == 'med') {
+		        return "Medical Benefits";
+		    }
+		}
+
+
+		$scope.deleteArea = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_area',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Area deleted";
+                    $scope.getAreas();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Area not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editArea = function(id) {
+            $location.path('/edit_area/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Show Category Controller
+app.controller('showCategoryController', showCategoryController);
+showCategoryController.$inject=['$scope', '$http', '$window','$location', 'Upload'];
+function showCategoryController($scope, $http, $window, $location, Upload){
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+        console.log("here is show category");
+		$scope.getCategories = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'POST',
+				url:'/aaibian/admin/show_categories',
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+        		$scope.cats = response.data.result;
+				if(response.data.valid){
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+
+		}
+
+		$scope.getSectorVal = function(val) {
+		    if (val == 'ben') {
+		        return "Staff Benefits";
+		    }
+		    else if (val == 'atm') {
+		        return "ATMs";
+		    }
+		    else if (val == 'card') {
+		        return "Cardholder's Benefits";
+		    }
+		    else if (val == 'med') {
+		        return "Medical Benefits";
+		    }
+		}
+
+
+		$scope.deleteCategory = function(id) {
+		    var request = {
+		        "to_delete_id": id
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/delete_category',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        console.log(response.data);
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Area deleted";
+                    $scope.getCategories();
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Area not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.editCategory = function(id) {
+            $location.path('/edit_category/').search({"id" : id});
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit News Controller
+app.controller('editNewsController', editNewsController);
+editNewsController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editNewsController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.news_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.newsData = {};
+    $scope.news = {};
+    $scope.removed = false;
+    $scope.uploadDivView = false;
+    $scope.mediaUploaded = false;
+    $scope.uploadLogoDivView = false;
+
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getNewsDate = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_newsData/' + $scope.news_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.news = response.data.result;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		}
+
+        $scope.editNews = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "news_data" : {
+                    "title" : $scope.newsData.title == null ? $scope.news.title : $scope.newsData.title,
+                    "Body" : $scope.newsData.body == null ? $scope.news.Body : $scope.newsData.body
+                }
+            };
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_news/' + $scope.news_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_news');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+        $scope.uploadMedia = function() {
+
+            return !$scope.removed;
+        }
+
+        $scope.showAttachment = function() {
+            if ($scope.removed || $scope.news.media_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        $scope.uploadMediaFile = function() {
+            console.log("here in upload media file");
+            $scope.uploadDivView = true;
+        }
+
+        $scope.showUploadMedia = function() {
+            if ($scope.removed || $scope.news.media_path == "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+		$scope.removeMedia = function(id) {
+		    var request = {
+		        "to_delete_id": id,
+		        "model" : "news"
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/remove_media',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.msg = "Media deleted";
+                    $scope.removed = true;
+		        }
+		        else {
+                    $scope.created = false;
+                    $scope.msg = "Media not deleted yet";
+		        }
+		    });
+		}
+
+        $scope.addMedia = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file,
+                "request" : {
+                    "model" : "news"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_media/' + $scope.news_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.mediaUploaded = true;
+                    $location.path('list_news');
+                }
+                else {
+                    $scope.mediaUploaded = false;
+                }
+            });
+        }
+
+        $scope.editLogo = function(id) {
+            $scope.uploadLogoDivView = true;
+            console.log("edit logo");
+        }
+
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "news"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.news_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    $location.path('/list_news');
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            });
+        }
+
+        $scope.editMedia = function(id) {
+            $scope.uploadDivView = true;
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit User Controller
+app.controller('editUserController', editUserController);
+editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editUserController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.user_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.userData = {};
+    $scope.user = {};
+    $scope.removed = false;
+    $scope.uploadDivView = false;
+    $scope.mediaUploaded = false;
+    $scope.uploadLogoDivView = false;
+    $scope.showPasswordDiv = false;
+    $scope.showPasswordMsg = "Show Password";
+
+    console.log("HREHREHRJER");
+
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getUserDate = function(id){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_userData/' + $scope.user_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.user = response.data.result;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		}
+
+        $scope.editUser = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "user_data" : {
+                    "name" : $scope.userData.name == null ? $scope.user.name : $scope.userData.name,
+                    "email" : $scope.userData.email == null ? $scope.user.email : $scope.userData.email,
+                    "password" : $scope.userData.password == null ? $scope.user.password : $scope.userData.password
+                }
+            };
+
+            console.log(reqObject);
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_user/' + $scope.user_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_users');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+        $scope.showPasswordDivUpdate = function() {
+            $scope.showPasswordMsg = "Hide Password";
+            $scope.showPasswordDiv = ! $scope.showPasswordDiv;
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+	else {
+	    console.log("Not valid");
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Area Controller
+app.controller('editAreaController', editAreaController);
+editUserController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editAreaController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.area_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.areaData = {};
+    $scope.area = {};
+    $scope.sectors = [];
+
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getAreaData = function(id){
+
+		  	$scope.getSectors();
+
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_areaData/' + $scope.area_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.area = response.data.result;
+				    $scope.selected = $scope.sectors.filter(function(item) {
+                        console.log(item)
+                        $scope.area.sector
+                        if(item.key == $scope.area.sector) {
+                            return item;
+                        }
+                    });
+                    $scope.areaData.sector = $scope.selected[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+        $scope.getSectors = function() {
+            var sectors = [
+                {
+                    "key": "atm",
+                    "value": "ATMs"
+                },
+                {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+            ];
+            $scope.sectors = sectors;
+        };
+
+        $scope.editArea = function() {
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "area_data" : {
+                    "name" : $scope.areaData.name == null ? $scope.area.name : $scope.areaData.name,
+                    "sector" : $scope.areaData.sector != 'undefined' ? $scope.areaData.sector.key : $scope.area.sector
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_area/' + $scope.area_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_areas');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Category Controller
+app.controller('editCategoryController', editCategoryController);
+editCategoryController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editCategoryController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.category_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.areaData = {};
+    $scope.category = {};
+    $scope.sectors = [];
+    $scope.uploadLogoDivView = false;
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getCategoryData = function(id){
+		  	$scope.getSectors();
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_categoryData/' + $scope.category_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.category = response.data.result;
+				    $scope.selected = $scope.sectors.filter(function(item) {
+                        if(item.key == $scope.category.sector) {
+                            return item;
+                        }
+                    });
+                    $scope.categoryData.sector = $scope.selected[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+        $scope.getSectors = function() {
+            var sectors = [
+                {
+                    "key": "atm",
+                    "value": "ATMs"
+                },
+                {
+                    "key": "ben",
+                    "value": "Staff Benefits"
+                },
+                {
+                    "key": "med",
+                    "value": "Medical Benefits"
+                },
+                {
+                    "key": "card",
+                    "value": "Cardholder's Benefits"
+                }
+            ];
+            $scope.sectors = sectors;
+        }
+
+        $scope.editLogo = function() {
+            $scope.uploadLogoDivView = true;
+        }
+
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var categoryObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "category"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.category_id,
+                method: 'POST',
+                data: categoryObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                console.log("here");
+                console.log(response);
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    console.log("here in valid");
+                    $location.path('/list_categories');
+
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            })
+        }
+
+        $scope.editCategory = function() {
+
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "category_data" : {
+                    "name" : $scope.categoryData.name == null ? $scope.category.name : $scope.categoryData.name,
+                    "sector" : $scope.categoryData.sector != 'undefined' ? $scope.categoryData.sector.key : $scope.category.sector
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_category/' + $scope.category_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_categories');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit ATM Controller
+app.controller('editATMController', editATMController);
+editATMController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editATMController($scope, $http, $window, $location, $routeParams, Upload){
+
+
+    $scope.atm_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.atmData = {};
+    $scope.atm = {};
+    $scope.loc_names = [];
+    $scope.types = [];
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+		$scope.getATMData = function(id){
+		  	$scope.getATMLocations();
+            $scope.getCategories();
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_atmData/' + $scope.atm_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.atm = response.data.result;
+				    console.log($scope.atm);
+				    $scope.selectedArea = $scope.loc_names.filter(function(item) {
+                        if(item.name == $scope.atm.loc_name) {
+                            return item;
+                        }
+                    });
+                    $scope.atmData.loc_name = $scope.selectedArea[0];
+
+                    $scope.selectedCat = $scope.types.filter(function(item) {
+                        if(item.name == $scope.atm.zone) {
+                            return item;
+                        }
+                    })
+                    $scope.atmData.type = $scope.selectedCat[0];
+                    return true;
+				}
+				else {
+					return false;
+				}
+		    });
+		}
+
+		$scope.getCategories = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_categories',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    $scope.types = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.getATMLocations = function() {
+            var reqObject = {
+                "sector": 'atm'
+            };
+            $http({
+                method: 'POST',
+                url: '/aaibian/admin/get_areas',
+                data: JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid) {
+                    $scope.loc_names = response.data.results;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+
+        $scope.editATM = function() {
+
+            console.log($scope.atm);
+            console.log($scope.atmData);
+
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "atm_data" : {
+                    "address" : typeof $scope.atmData.address == "undefined" ? $scope.atm.address : $scope.atmData.address,
+                    "loc_name" : typeof $scope.atmData.loc_name != "undefined" ? $scope.atmData.loc_name.name : $scope.atm.loc_name.name,
+                    "zone" : typeof $scope.atmData.type != "undefined" ? $scope.atmData.type.name : $scope.atm.type.name,
+                    "location" : {
+                        "lat" : $scope.atmData.lat == null ? $scope.atm.location[0] : $scope.atmData.lat,
+                        "lng" : $scope.atmData.lng == null ? $scope.atm.location[1] : $scope.atmData.lng
+                    }
+                }
+            };
+
+
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_atm/' + $scope.atm_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    console.log("hereherehrhehrehrherhehrh")
+                    $location.path('/list_atms');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Benefit Controller
+app.controller('editBenefitController', editBenefitController);
+editBenefitController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editBenefitController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.benefit_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.benefitData = {};
+    $scope.benefit = {};
+    $scope.removed = false;
+    $scope.uploadDivView = false;
+    $scope.mediaUploaded = false;
+    $scope.uploadLogoDivView = false;
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+
+            var reqObject = {
+                "sector" : "ben"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.categories = response.data.results;
+                }
+                else {
+                    $scope.categories = [];
+                }
+            });
+        };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+		$scope.getBenefitDate = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_benefitData/' + $scope.benefit_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.benefit = response.data.result;
+				    var selected_area =  $scope.zones.filter(function(item) {
+				        if(item.name == $scope.benefit.zone) {
+				            return item;
+				        }
+				    });
+				    $scope.benefitData.zone = selected_area[0];
+
+				    var selected_cat = $scope.categories.filter(function(item) {
+                        console.log("here in category 2")
+				        if(item.name == $scope.benefit.industry) {
+				            console.log("here in category")
+				            return item;
+				        }
+				    });
+				    $scope.benefitData.category = selected_cat[0];
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		}
+
+        $scope.editBenefit = function() {
+            var contacts = [];
+            contacts[0] = $scope.benefitData.contact1 == null ? $scope.benefit.contacts[0] : $scope.benefitData.contact1;
+            contacts[1] = $scope.benefitData.contact2 == null ? $scope.benefit.contacts[1] : $scope.benefitData.contact2;
+            contacts[2] = $scope.benefitData.contact3 == null ? $scope.benefit.contacts[2] : $scope.benefitData.contact3;
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "benefit_data" : {
+                    "name" : $scope.benefitData.name == null ? $scope.benefit.name : $scope.benefitData.name,
+                    "address" : $scope.benefitData.address == null ? $scope.benefit.address : $scope.benefitData.address,
+                    "lat" : $scope.benefitData.lat == null ? $scope.benefit.location[0] : $scope.benefitData.lat,
+                    "lng" : $scope.benefitData.lng == null ? $scope.benefit.location[1] : $scope.benefitData.lng,
+                    "contacts" : contacts,
+                    "zone" : $scope.benefitData.zone == null ? $scope.benefit.zone : $scope.benefitData.zone.name,
+                    "category" : $scope.benefitData.category == null ? $scope.benefit.industry : $scope.benefitData.category.name,
+                    "offer" : $scope.benefitData.offer == null ? $scope.benefit.offer : $scope.benefitData.offer
+                }
+            };
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_benefit/' + $scope.benefit_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_benefit');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+        $scope.uploadMedia = function() {
+
+            return !$scope.removed;
+        }
+
+        $scope.showAttachment = function() {
+            if ($scope.removed || $scope.benefit.pdf_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        $scope.uploadMediaFile = function() {
+            $scope.uploadDivView = true;
+        }
+
+        $scope.showUploadMedia = function() {
+            if ($scope.removed || $scope.benefit.pdf_path == "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+		$scope.removeMedia = function(id) {
+		    var request = {
+		        "to_delete_id": id,
+		        "model" : "benefit"
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/remove_media',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.removed = true;
+		        }
+		        else {
+                    $scope.created = false;
+		        }
+		    });
+		}
+
+        $scope.addMedia = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file,
+                "request" : {
+                    "model" : "benefit"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_media/' + $scope.benefit_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.mediaUploaded = true;
+                    $location.path('/list_benefit');
+                }
+                else {
+                    $scope.mediaUploaded = false;
+                }
+            });
+        }
+
+        $scope.editLogo = function(id) {
+            $scope.uploadLogoDivView = true;
+        }
+
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "benefit"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.benefit_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    $location.path('/list_benefit');
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            });
+        }
+
+        $scope.editMedia = function(id) {
+            $scope.uploadDivView = true;
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
+}
+
+//////////////////////////////////////////////////// ************** Edit Cardholder Controller
+app.controller('editCardController', editCardController);
+editCardController.$inject=['$scope', '$http', '$window','$location','$routeParams' , 'Upload'];
+function editCardController($scope, $http, $window, $location, $routeParams, Upload){
+
+    $scope.card_id = $location.search().id;
+    $scope.showEdit = false;
+    $scope.showRemove = false;
+    $scope.cardData = {};
+    $scope.card = {};
+    $scope.removed = false;
+    $scope.uploadDivView = false;
+    $scope.mediaUploaded = false;
+    $scope.uploadLogoDivView = false;
+
+    if($window.sessionStorage.getItem("logged") == "true"){
+
+
+		$scope.getZones = function() {
+            var reqObject = {
+                "sector" : "card"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_areas',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.zones = response.data.results;
+                }
+                else {
+                    $scope.zones = [];
+                }
+            });
+        };
+        $scope.getCategories = function() {
+
+            var reqObject = {
+                "sector" : "card"
+            };
+            $http({
+                method: 'POST',
+                url: 'aaibian/admin/get_categories',
+                data: reqObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if (response.data.valid) {
+                    $scope.categories = response.data.results;
+                }
+                else {
+                    $scope.categories = [];
+                }
+            });
+        };
+
+        $scope.getZones();
+        $scope.getCategories();
+
+		$scope.getCardDate = function(){
+		  	var reqObject = {
+		    	"api_key" : $window.sessionStorage.getItem("api_key"),
+			    "user_id" : $window.sessionStorage.getItem("id"),
+			    "privilege" : $window.sessionStorage.getItem("type")
+			};
+			$http({
+			method: 'GET',
+				url:'/aaibian/admin/get_cardData/' + $scope.card_id,
+				data:JSON.stringify(reqObject),
+				headers: {'Content-Type': 'application/JSON'}
+			})
+			.then(function(response) {
+				if(response.data.valid){
+				    $scope.card = response.data.result;
+				    var selected_area =  $scope.zones.filter(function(item) {
+				        if(item.name == $scope.card.zone) {
+				            return item;
+				        }
+				    });
+				    $scope.cardData.zone = selected_area[0];
+
+				    var selected_cat = $scope.categories.filter(function(item) {
+				        console.log(item);
+				        console.log($scope.card.type);
+				        if(item.name == $scope.card.type) {
+				            return item;
+				        }
+				    });
+				    $scope.cardData.category = selected_cat[0];
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+		    });
+		}
+
+        $scope.editCard = function() {
+            var contacts = [];
+            contacts[0] = $scope.cardData.contact1 == null ? $scope.card.contacts[0] : $scope.cardData.contact1;
+            contacts[1] = $scope.cardData.contact2 == null ? $scope.card.contacts[1] : $scope.cardData.contact2;
+            contacts[2] = $scope.cardData.contact3 == null ? $scope.card.contacts[2] : $scope.cardData.contact3;
+            var reqObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "card_data" : {
+                    "name" : $scope.cardData.name == null ? $scope.card.name : $scope.cardData.name,
+                    "lat" : $scope.cardData.lat == null ? $scope.card.location[0] : $scope.cardData.lat,
+                    "lng" : $scope.cardData.lng == null ? $scope.card.location[1] : $scope.cardData.lng,
+                    "contacts" : contacts,
+                    "zone" : $scope.cardData.zone == null ? $scope.benefit.zone : $scope.cardData.zone.name,
+                    "category" : $scope.cardData.category == null ? $scope.card.type : $scope.cardData.category.name,
+                    "offer" : $scope.cardData.offer == null ? $scope.card.offer : $scope.cardData.offer
+                }
+            };
+            $http({
+            method: 'POST',
+                url:'/aaibian/admin/edit_card/' + $scope.card_id,
+                data:JSON.stringify(reqObject),
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $location.path('/list_cards');
+                    return true;
+                }
+                else
+                {
+                    $location.path("/error");
+                    return false;
+                }
+            });
+        }
+
+        $scope.uploadMedia = function() {
+
+            return !$scope.removed;
+        }
+
+        $scope.showAttachment = function() {
+            if ($scope.removed || $scope.card.pdf_path == "") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        $scope.uploadMediaFile = function() {
+            $scope.uploadDivView = true;
+        }
+
+        $scope.showUploadMedia = function() {
+            if ($scope.removed || $scope.card.pdf_path == "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+		$scope.removeMedia = function(id) {
+		    var request = {
+		        "to_delete_id": id,
+		        "model" : "card"
+		    };
+		    $http({
+		        method: 'POST',
+		        url: '/aaibian/admin/remove_media',
+		        data: JSON.stringify(request),
+		        headers: {'Content-Type' : 'application/JSON'}
+		    })
+		    .then(function(response) {
+		        if (response.data.valid) {
+                    $scope.created = true;
+                    $scope.removed = true;
+		        }
+		        else {
+                    $scope.created = false;
+		        }
+		    });
+		}
+
+        $scope.addMedia = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file,
+                "request" : {
+                    "model" : "card"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_media/' + $scope.card_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.mediaUploaded = true;
+                    $location.path('/list_cards');
+                }
+                else {
+                    $scope.mediaUploaded = false;
+                }
+            });
+        }
+
+        $scope.editLogo = function(id) {
+            $scope.uploadLogoDivView = true;
+        }
+
+        $scope.addLogo = function(){
+            $scope.uploadFile = function(files){
+                if (files && files.length)
+                $scope.file = files[0];
+            }
+            var benefitObject = {
+                "api_key" : $window.sessionStorage.getItem("api_key"),
+                "user_id" : $window.sessionStorage.getItem("id"),
+                "privilege" : $window.sessionStorage.getItem("type"),
+                "file" : $scope.file2,
+                "request" : {
+                    "model" : "card"
+                }
+            };
+            Upload.upload({
+                url:'/aaibian/admin/upload_logo/' + $scope.card_id,
+                method: 'POST',
+                data: benefitObject,
+                headers: {'Content-Type': 'application/JSON'}
+            })
+            .then(function(response) {
+                if(response.data.valid){
+                    $scope.logoUploaded = true;
+                    $location.path('/list_cards');
+                }
+                else {
+                    $scope.logoUploaded = false;
+                }
+            });
+        }
+
+        $scope.editMedia = function(id) {
+            $scope.uploadDivView = true;
+        }
+
+		$scope.getStatus = function() {
+            return $scope.created;
+		}
+	}
 }

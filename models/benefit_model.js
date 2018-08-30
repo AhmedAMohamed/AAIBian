@@ -27,13 +27,24 @@ var benefit_schema = mongoose.Schema(
         industry: String,
         img_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
         pdf_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
-        offer: String
+        offer: String,
+        sector: {
+            type: String,
+            default: "ben"
+        },
+        group: {
+            type: String,
+            default: "General"
+        },
+        index : {
+            type : Number
+        }
     }
 );
 var benefit = mongoose.model('Benefits', benefit_schema);

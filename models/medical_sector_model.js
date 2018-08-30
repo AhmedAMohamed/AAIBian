@@ -14,11 +14,9 @@ var medical_schema = mongoose.Schema(
         },
         zone: String,
         type: String,
-        phone_number: String,
+        phone_number: [String],
         id: {
-            type: String,
-            unique: true,
-            required: true
+            type: String
         },
         img_path: {
             type: String,
@@ -26,7 +24,25 @@ var medical_schema = mongoose.Schema(
         },
         pdf_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
+        },
+        sector: {
+            type: String,
+            default: "med"
+        },
+        creation_date: {
+            type: Date
+        },
+        notification_date: Date,
+        deleteDate: Date,
+        notified: {
+            type: Boolean,
+            default: false
+        },
+        offer: String,
+        group: {
+            type: String,
+            default: "General"
         }
     }
 );

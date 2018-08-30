@@ -1,0 +1,67 @@
+<div class="row">
+	<div class="col-md-2">
+	<ng-include src="'pages/menu.html'"></ng-include>
+	</div>
+<div class="col-md-10" ng-controller = "addATMController">
+	<div class="row">
+	  	<div class="col-xs-6 col-xs-offset-2">
+	  		<img src="images/image001.jpg" width="100%" height="200px">
+	  		<div class="content-box-large">
+			  	<div class="panel-heading">
+					<div class="panel-title">Add ATM</div>
+					<div class="panel-options">
+					    <a href="#" data-rel="collapse" ng-click = "resetForm(ATMData)"><i class="glyphicon glyphicon-refresh"></i></a>
+					    <!-- <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a> -->
+					</div>
+				</div>
+			  	<div class="panel-body" >
+  					<form class="form-horizontal" ng-submit="addATM()" role="form">
+						<div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">Location Name</label>
+							<div class="col-sm-10" id="inputEmail3">
+								<select ng-model="ATMData.loc_name" ng-options="x.name for x in areas">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+					    	<label class="col-sm-2 control-label">Address</label>
+					    	<div class="col-sm-10">
+					    		<input ng-model="ATMData.address" type="text" class="form-control"  placeholder="">
+					    	</div>
+						</div>
+						<div class ="panel-body">
+						<fieldset>
+						<legend> Location</legend>
+										<div class="form-group">
+											<label>Latitude</label>
+											<input class="form-control" ng-model="ATMData.lat" placeholder="e.g. 31.1736458" type="text">
+										</div>
+										<div class="form-group">
+											<label>Longitude</label>
+											<input class="form-control" ng-model="ATMData.lng" placeholder="e.g. 31.1736458" type="text">
+										</div>
+						</fieldset>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">City</label>
+							<div class="col-sm-10">
+								<select ng-model="ATMData.city" ng-options="x.name for x in cities">
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+					    	<div class="col-sm-offset-2 col-sm-10">
+					    		<button id="checkBtn" type="submit" class="btn btn-primary">Add</button>
+					    	</div>
+						</div>
+						<div class="form-group" ng-show="getStatus()">
+					    	<label class="col-sm-2 control-label">ATM Added Successfully!</label>
+						</div>
+					</form>
+  				</div>
+  			</div>
+		</div>
+	</div>
+</div>

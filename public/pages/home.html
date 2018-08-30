@@ -15,26 +15,26 @@
 							</div> -->
 						</div>
 						<div class="panel-body" ng-controller="homeController">
-							<div ng-show = "testType()" class="form-group" >
-								<button  class="btn btn-primary" ng-click="opt(0)" value = "Show Feedback" >
-								Show Feedback
-								</button>
-								<br/>
-							</div>	
-							<div class="form-group" >							
-								<button class="btn btn-primary" ng-click="opt(1)" value = "Add News">
-								Add News
+							<!--<div ng-show = "testType()" class="form-group" >-->
+								<!--<button  class="btn btn-primary" ng-click="opt(0)" value = "Show Feedback" >-->
+								<!--Show Feedback-->
+								<!--</button>-->
+								<!--<br/>-->
+							<!--</div>	-->
+							<div ng-repeat="x in functions" class="form-group" >
+								<button class="btn btn-primary" ng-click="opt(x)" value = "x">
+								{{x}}
 								</button>
 								<br/>
 
 							</div>
-							<div class="form-group" id="email-form">
-								<button  class="btn btn-primary" ng-click="opt(2)" value = "Add User" >
-								Add User
-								</button>
-								<br/>
-							</div>
-																	
+							<!--<div class="form-group" id="email-form">-->
+								<!--<button  class="btn btn-primary" ng-click="opt(2)" value = "Add User" >-->
+								<!--Add User-->
+								<!--</button>-->
+								<!--<br/>-->
+							<!--</div>-->
+
 						</div>
 					</div>
 				</div>

@@ -23,13 +23,16 @@
 								    <td align="middle">{{ x.name }}</td>
 								    <td align="middle">{{ x.email }}</td>
 								    <td align="middle">{{ x.privilege }}</td>
-								    <td align="middle"><a ng-click=""><i class="glyphicon glyphicon-edit"></i></a></td>
-								    <td align="middle"><a ng-click=""><i class="glyphicon glyphicon-remove"></i></a></td>
+								    <td align="middle"><a ng-click="editUser(x._id)"><i class="glyphicon glyphicon-edit"></i></a></td>
+								    <td align="middle"><a ng-click="deleteUser(x._id)"><i class="glyphicon glyphicon-remove"></i></a></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<!--<div class="form-group" ng-show="getStatus()">-->
+					<!--<label class="col-sm-2 control-label">{{msg}}</label>-->
+				<!--</div>-->
 			</div>
 		</div>
 	</div>

@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 var ATM_schema = mongoose.Schema(
     {
-        loc_name: {
+        loc_name: { // area
             type: String,
             required: true
         },
@@ -17,7 +17,19 @@ var ATM_schema = mongoose.Schema(
         creation_date: {
             type: Date
         },
-        address: String
+        address: String,
+        zone: { // government (Category)
+            type: String,
+            default: "cairo"
+        },
+        sector: {
+            type: String,
+            default: "atm"
+        },
+        group: {
+            type: String,
+            default: "General"
+        }
     }
 );
 var ATM = mongoose.model('ATMs', ATM_schema);

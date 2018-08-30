@@ -2,11 +2,34 @@
 	<div class="col-md-2">
 	<ng-include src="'pages/menu.html'"></ng-include>
 	</div>
-	<div class="col-md-10">
+	<div class="col-md-10" ng-controller= "feedbackController">
 		<div class="row">
 		  	<div class="col-xs-6 col-xs-offset-2">
 		  		<img src="images/image001.jpg" width="100%" height="200px">
 				<h1> FEEDBACK </h1>
+
+				<div class="content-box-large">
+					<div class="panel-heading" ng-init="getFeedbacks()">
+						<table class = "table">
+							<thread>
+								<tr>
+									<th align="middle">About</th>
+									<th align="middle">Feedback</th>
+									<th align="middle">Date</th>
+									<th align="middle">Delete</th>
+								</tr>
+							</thread>
+							<tbody>
+							<tr ng-repeat="x in feedbacks">
+								<td align="middle">{{ x.about }}</td>
+								<td align="middle">{{ x.body }}</td>
+								<td align="middle">{{ x.creation_date }}</td>
+								<td align="middle"><a ng-click="deleteFeedBack(x._id)"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>	
 	</div>

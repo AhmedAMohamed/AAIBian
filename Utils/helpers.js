@@ -58,25 +58,36 @@ var users_helpers = {
            }
         });
     },
-    update_user_login_status: function (user_id) {
-        User.findByIdAndUpdate(user_id, {login_status: reserved_tokens.old_login}, {new : true}, function (err, user) {
+    update_user_login_status: function (user_id, current_status, callback) {
+        console.log(current_status);
+        var updated_value = ((current_status == reserved_tokens.logout) ?
+                                                    reserved_tokens.first_login : reserved_tokens.old_login);
+        User.findByIdAndUpdate(user_id, {login_status: updated_value}, {new : true}, function (err, user) {
             if (err) {
-                return null;
+                callback(null);
             }
             else {
-                return user;
+                callback(user);
             }
         });
     },
     get_user_data: function(user_id, callback) {
-        User.findById(user_id, function(err, user) {
+        User.findById(user_id, function(err, us) {
             if(err) {
-                console.log(err);
                 callback(null);
             }
             else {
-                console.log(user);
-                callback(user);
+                if(us) {
+                    if (us.login_status != reserved_tokens.logout) {
+                        callback(us);
+                    }
+                    else {
+                        callback(null);
+                    }
+                }
+                else {
+                    callback(null);
+                }
             }
         });
     }
@@ -107,26 +118,33 @@ var notification_schedules_helpers = {
             });
         });
     },
-//    notifyNews: function (title, body, id, callback) {
-////        var fcm = new FCM(reserved_tokens.server_name);
-////        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-////            to: '/topics/news',
-////            collapse_key: 'trial',
-////
-////            data: {  //you can send only notification or only data(or include both)
-////                title: title,
-////                Body: body,
-////                id: id
-////            }
-////        };
-////        fcm.send(message, function(err, response){
-////            if (err) {
-////                callback(false);
-////            } else {
-////                callback(true);
-////            }
-////        });
-//    }
+    notifyNews: function (news, callback) {
+        var fcm = new FCM(reserved_tokens.server_name);
+        console.log("this is the data payload");
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            "to": '/topics/news',
+            "collapse_key": 'trial',
+            "notification": {
+                title: news.title,
+                body: news.Body,
+                sound: "default"
+            },
+            "data": news,
+            "priority": "high",
+            "content-available": true
+        };
+
+        fcm.send(message, function(err, response){
+            if (err) {
+                console.log("Error in fcm");
+                console.log(err);
+                callback(false);
+            } else {
+                console.log("Send msg");
+                callback(true);
+            }
+        });
+    }
 };
 
 var starter_helper = {

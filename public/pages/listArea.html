@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-2">
+        <ng-include src="'pages/menu.html'"></ng-include>
+    </div>
+
+
+    <div ng-controller="showAreaController" class="sidebar content-box" style="display: block;">
+        <div class="raw">
+            <div class="col-xs-6 col-xs-offset-2">
+                <img src="images/image001.jpg" width="100%" height="200px">
+                <h1> Areas </h1>
+
+                <div class="content-box-large">
+                    <div class="panel-heading" ng-init="getAreas()">
+
+                        <div ng-repeat="x in areas" class="collumn">
+                            <div ng-click="editArea(x._id)">
+                                <div class="head">
+                                    <h3 class="headline hl2">{{ x.name }} </h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Area sector</label>
+                                    <label class="form-control"> {{ getSectorVal(x.sector) }} </label>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <icon align="middle"><a ng-click="deleteArea(x._id)"><i
+                                            class="glyphicon glyphicon-remove"></i></a></icon>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+

@@ -1,7 +1,7 @@
 <div ng-controller="menuController" class="sidebar content-box" style="display: block;">
     <ul class="nav">
                     <!-- Main menu -->
-        <li ng-show = "testType()" ><a ng-click="behaviour(0)"><i class="glyphicon glyphicon-comment"></i> Show Feedback</a></li>
+        <!--<li ng-show = "testType()" ><a ng-click="behaviour(0)"><i class="glyphicon glyphicon-comment"></i> Show Feedback</a></li>-->
         <div ng-repeat="x in functions" class='nav'>
         	<li><a ng-click="behaviour(x)"  ><i class="glyphicon glyphicon-adjust"></i>{{x}}</a></li>
         <!-- <li><a ng-click="behaviour(2)"><i class="glyphicon glyphicon-user"></i> Add User</a></li>

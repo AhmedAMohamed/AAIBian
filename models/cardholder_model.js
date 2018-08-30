@@ -7,27 +7,40 @@ var mongoose = require('mongoose');
 var cardHolder_schema = mongoose.Schema(
     {
         name: String,
+        offer: String,
+        type: String,
+        sector: {
+            type: String,
+            default: "card"
+        },
         address: String,
         location: {
             type: [Number],
             index: '2d'
         },
+        zone: String,
+        contacts: [String],
+        notification_date: Date,
+        deleteDate: Date,
+        notified: {
+            type: Boolean,
+            default: false
+        },
         img_path: {
             type: String,
-            default: "/data/uploads/logo.jpg"
+            default: ""
         },
-        merchant: String,
-        zone: String,
-        id: {
-            type: Number,
-            unique: true
+        pdf_path: {
+            type: String,
+            default: ""
         },
-        contacts: [String],
-        validity_date: Number,
-        industry: String,
-        offer: String,
-        creation_date: Date
+        creation_date: Date,
+        group: {
+            type: String,
+            default: "General"
+        }
+
     }
 );
-var benefit = mongoose.model('CardHolder', cardHolder_schema);
-module.exports = benefit;
+var cardModel = mongoose.model('CardHolder', cardHolder_schema);
+module.exports = cardModel;

@@ -32,15 +32,22 @@ router.post('/login', function (req, res, next) {
                               privilege:users[0].privilege,
                               user_data: users[0],
                               api_key: api.api_key,
-                              login_status: users[0].login_status,
-
                           },
                           msg: messeges.operation_valid_msg()
                     };
                     mhelper['users'].update_user_time(users[0]._id, function(u) {
                         if (u != null) {
                             response.result.user_id = u._id;
-                            res.json(response);
+                            mhelper['users'].update_user_login_status(u._id, u.login_status, function(user) {
+                                if (user) {
+                                    response.result.user_data.login_status = user.login_status;
+                                    response.result.login_status = user.login_status;
+                                    res.json(response);
+                                }
+                                else {
+                                    res.json(messeges.not_valid_operation());
+                                }
+                            });
                         }
                         else {
                           res.json(messeges.not_valid_operation());

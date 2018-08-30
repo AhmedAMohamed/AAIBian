@@ -27,6 +27,7 @@ build/Release
 node_modules
 .idea
 *.iml
+.openshift
 .DS_Store
 
 # Debug log from npm

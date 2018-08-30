@@ -9,6 +9,7 @@ var tokens = {
     card_selected: "card",
     first_login: "new_login",
     old_login: "current_user",
+    logout: "logout",
     default_password: "AhmedAlaa",
     all_categories: "SUBSCRIBED_IN_ALL",
     medical_sector: "SUBSCRIBED_IN_MEDICAL_ALL",
@@ -20,6 +21,7 @@ var tokens = {
     cardholders_required: "card_required",
     areas_required: "area_required",
     medical_required: "med_required",
+    atm_required: "atm_required",
     function_name: {
         add_user: "Add Users",
         add_cat: "Add Category",
@@ -29,14 +31,23 @@ var tokens = {
         add_cardholder: "Add Cardholders Benefits",
         add_news: "Add News",
         add_area: "Add Area",
-        change_password: "Change Staff Password",
-        set_privilege: "set_privilege",
-        show_feedbacks: "Show Feedback"
+
+        set_privilege: "Edit Roles",
+
+        show_feedbacks: "Show Feedback",
+        show_news: "Show News",
+        show_users: "Show Users",
+        show_atms: "Show ATMs",
+        show_benefits: "Show Staff Benefits",
+        show_cards: "Show Cardholders Benefits",
+        show_medicals: "Show Medical Benefits",
+        show_areas: "Show Areas",
+        show_cat: "Show Categories",
     },
     radius: (15 / 3963.2),
-    upload_dir: /* "/Users/ahmedalaa/Desktop", */process.env.OPENSHIFT_DATA_DIR + "/uploads/"
-    //server_name: 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
-    //             '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'
+    upload_dir:  /*"/Users/ahmedalaa/Desktop", */ process.env.OPENSHIFT_DATA_DIR + "/uploads/",
+    server_name: 'AAAA6_tt21g:APA91bGY8TlMcQxbiHzwpuly5vdZE92gbgGNAF_yaBMG0wIEdQUxMsk_xk4VlrtJB_9FA' +
+                 '-ruy1dMpA3XNOFaZwcYll2nMgF1c0GGaYE7sQIRAnpYIZXEqZVMGNXOe9_-GxYs2SQOrR2h'
 };
 
 module.exports = tokens;

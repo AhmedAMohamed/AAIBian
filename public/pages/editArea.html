@@ -2,44 +2,46 @@
     <div class="col-md-2">
         <ng-include src="'pages/menu.html'"></ng-include>
     </div>
-    <div class="col-md-10" ng-controller = "addAreaController">
-        <div class="row">
+    <div class="col-md-10" ng-controller = "editAreaController">
+        <div class="row" ng-init="getAreaData(area_id)">
             <div class="col-xs-6 col-xs-offset-2">
                 <img src="images/image001.jpg" width="100%" height="200px">
                 <div class="content-box-large">
                     <div class="panel-heading">
-                        <div class="panel-title">Add Area</div>
-                        <div class="panel-options">
-                            <a href="#" data-rel="collapse" ng-click = "resetForm(AreaData)"><i class="glyphicon glyphicon-refresh"></i></a>
-                            <!-- <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a> -->
-                        </div>
+                        <div class="panel-title">Edit Area</div>
                     </div>
                     <div class="panel-body" >
-                        <form class="form-horizontal" ng-submit="addArea()" role="form">
+                        <form class="form-horizontal" role="form" ng-submit="editArea()">
+
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Area Name</label>
+                                <label for="title" class="col-sm-2 control-label">Name</label>
                                 <div class="col-sm-10">
-                                    <input ng-model="areaData.name" type="text" class="form-control" id="inputEmail3" placeholder="e.g. New Cairo" required>
+                                    <input ng-model="areaData.name" type="text" class="form-control" id="title"
+                                           placeholder="{{area.name}}" ng-init="areaData.name=area.name">
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Sector</label>
                                 <div class="col-sm-10">
-                                    <select ng-model="areaData.sector" ng-options="x for x in sectors">
+                                    <select ng-model="areaData.sector" ng-options="x.value for x in sectors"
+                                            ng-init="areaData.sector" ng-selected="benefit">
                                     </select>
                                 </div>
                             </div>
 
-
                             <div class="form-group">
+                                <br>
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button id="checkBtn" type="submit" class="btn btn-primary">Add</button>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                             <div class="form-group" ng-show="getStatus()">
-                                <label class="col-sm-10 control-label">Area Added Successfully!</label>
+                                <label class="col-sm-2 control-label"> {{ msg }}</label>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
